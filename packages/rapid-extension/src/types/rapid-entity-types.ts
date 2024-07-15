@@ -271,7 +271,7 @@ export type RapidField<TEntitySingularCodes extends string = string, TDictionary
   maxLength?: number;
 };
 
-export type RapidSearchFormItemFilterMode = EntityFilterRelationalOperators;
+export type RapidSearchFormItemFilterMode = EntityFilterRelationalOperators | "range";
 
 export interface SearchFormFilterConfiguration {
   /**

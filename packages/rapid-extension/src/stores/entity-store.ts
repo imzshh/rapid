@@ -57,6 +57,10 @@ export class EntityStore implements IStore<EntityStoreConfig> {
     return this.#config;
   }
 
+  updateConfig(storeConfig: Partial<EntityStoreConfig>) {
+    Object.assign(this.#config, storeConfig);
+  }
+
   setPropertyExpression(propName: string, propExpression: string) {
     if (!this.#config.$exps) {
       this.#config.$exps = {};

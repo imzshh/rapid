@@ -319,15 +319,7 @@ export default {
       ],
     };
 
-    const toolbarRockConfig: RapidToolbarRockConfig = {
-      $id: `${props.$id}-toolbar`,
-      $type: "rapidToolbar",
-      items: props.listActions,
-      extras: props.extraActions,
-      dataSourceCode: props.dataSourceCode,
-    };
-
-    const rockChildrenConfig: RockChildrenConfig = [toolbarRockConfig, tableRockConfig];
+    const rockChildrenConfig: RockChildrenConfig = [tableRockConfig];
 
     return renderRockChildren({ context, rockChildrenConfig });
   },

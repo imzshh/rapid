@@ -35,7 +35,13 @@ export default {
               $id: `${props.$id}-form`,
               $type: "antdForm",
               initialValues: {},
-              children: props.extras,
+              children: [
+                {
+                  $type: "antdSpace",
+                  $id: `${props.$id}-extras-space`,
+                  children: props.extras,
+                },
+              ],
             },
           ],
         },

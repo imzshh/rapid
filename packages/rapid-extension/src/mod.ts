@@ -38,6 +38,7 @@ export * from "./rocks/rapid-dictionary-entry-renderer/rapid-dictionary-entry-re
 export * from "./rocks/rapid-document-form-control/rapid-document-form-control-types";
 export * from "./rocks/rapid-entity-form/rapid-entity-form-types";
 export * from "./rocks/rapid-entity-list/rapid-entity-list-types";
+export * from "./rocks/rapid-entity-search-form/rapid-entity-search-form-types";
 export * from "./rocks/rapid-file-size-renderer/rapid-file-size-renderer-types";
 export * from "./rocks/rapid-radio-list-form-input/rapid-radio-list-form-input-types";
 export * from "./rocks/rapid-reference-renderer/rapid-reference-renderer-types";

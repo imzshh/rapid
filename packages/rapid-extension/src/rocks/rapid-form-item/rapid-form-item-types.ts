@@ -121,6 +121,7 @@ export type RapidSearchFormItemConfig = {
 
 export type RapidFormItemType =
   | "auto"
+  | "box"
   | "text"
   | "textarea"
   | "number"

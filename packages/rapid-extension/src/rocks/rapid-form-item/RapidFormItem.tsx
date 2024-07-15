@@ -5,6 +5,7 @@ import { RapidFormItemRockConfig } from "./rapid-form-item-types";
 import RapidExtensionSetting from "../../RapidExtensionSetting";
 
 const formItemTypeToControlRockTypeMap: Record<string, string> = {
+  box: "box",
   text: "antdInput",
   textarea: "antdInputTextArea",
   password: "antdInputPassword",

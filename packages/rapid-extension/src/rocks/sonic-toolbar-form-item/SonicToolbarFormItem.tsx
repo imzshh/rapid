@@ -4,6 +4,8 @@ import { renderRock } from "@ruiapp/react-renderer";
 import type { SonicToolbarFormItemRockConfig } from "./sonic-toolbar-form-item-types";
 import { RapidFormItemRockConfig } from "../rapid-form-item/rapid-form-item-types";
 import { SearchFormFilterConfiguration } from "../../types/rapid-entity-types";
+import { EntityStore } from "../../mod";
+import { searchParamsToFilters } from "../../functions/searchParamsToFilters";
 
 export default {
   Renderer(context, props) {
@@ -32,7 +34,7 @@ export default {
                 [`stores-${dataSourceCode}-pageNum`]: 1,
               });
 
-              const store: IStore = scope.stores[dataSourceCode];
+              const store = scope.stores[dataSourceCode] as EntityStore;
               // 设置过滤filters
               const filterConfigurations: SearchFormFilterConfiguration[] = [];
               filterConfigurations.push({
@@ -40,7 +42,9 @@ export default {
                 filterMode: props.filterMode,
                 filterFields: props.filterFields,
               });
-              store.setPropertyExpression("filters", `$functions.searchParamsToFilters(${JSON.stringify(filterConfigurations)}, $scope.vars)`);
+              store.updateConfig({
+                filters: searchParamsToFilters(filterConfigurations, scope.vars),
+              });
               // 重新加载数据
               store.loadData();
             },

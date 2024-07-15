@@ -71,6 +71,7 @@
 .rui-toolbar {
   display: flex;
   padding-bottom: 12px;
+  justify-content: space-between;
 }
 
 .rui-toolbar .ant-btn + .ant-btn {
@@ -78,7 +79,7 @@
 }
 
 .rui-toolbar-items {
-  flex: 1;
+  display: flex;
 }
 
 .rui-toolbar-extras {

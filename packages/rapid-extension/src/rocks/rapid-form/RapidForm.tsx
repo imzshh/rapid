@@ -108,6 +108,9 @@ export default {
             {
               $id: `${props.$id}-actions-wrap-form-item`,
               $type: "antdFormItem",
+              style: {
+                textAlign: props.actionsAlign || "left",
+              },
               wrapperCol: isHorizonLayout ? { offset: 8 } : null,
               children: formActionRocks,
             },

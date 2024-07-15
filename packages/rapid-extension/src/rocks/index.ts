@@ -9,6 +9,7 @@ import RapidDictionaryEntryRenderer from "./rapid-dictionary-entry-renderer/Rapi
 import RapidDocumentFormControl from "./rapid-document-form-control/RapidDocumentFormControl";
 import RapidEntityForm from "./rapid-entity-form/RapidEntityForm";
 import RapidEntityList from "./rapid-entity-list/RapidEntityList";
+import RapidEntitySearchForm from "./rapid-entity-search-form/RapidEntitySearchForm";
 import RapidFileSizeRenderer from "./rapid-file-size-renderer/RapidFileSizeRenderer";
 import RapidForm from "./rapid-form/RapidForm";
 import RapidFormItem from "./rapid-form-item/RapidFormItem";
@@ -60,6 +61,7 @@ export default [
   RapidDocumentFormControl,
   RapidEntityForm,
   RapidEntityList,
+  RapidEntitySearchForm,
   RapidFileSizeRenderer,
   RapidForm,
   RapidFormItem,

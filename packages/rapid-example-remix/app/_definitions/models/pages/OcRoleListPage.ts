@@ -166,16 +166,6 @@ const page: RapidPage = {
       ],
       newForm: cloneDeep(formConfig),
       editForm: cloneDeep(formConfig),
-      searchForm: {
-        entityCode: "OcRole",
-        items: [
-          {
-            type: "auto",
-            code: "name",
-            filterMode: "contains",
-          },
-        ],
-      },
     } as SonicEntityListRockConfig,
   ],
 };

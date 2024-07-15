@@ -40,6 +40,11 @@ export type RapidFormConfig = {
   actions?: RapidFormAction[];
 
   /**
+   * 操作按钮对齐方式
+   */
+  actionsAlign?: "left" | "right" | "center";
+
+  /**
    * 表单固定字段，用于数据提交
    */
   fixedFields?: Record<string, any>;

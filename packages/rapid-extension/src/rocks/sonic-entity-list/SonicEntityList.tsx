@@ -1,4 +1,4 @@
-import { MoveStyleUtils, RockChildrenConfig, RockEventHandler, type Rock, type RockConfig } from "@ruiapp/move-style";
+import { MoveStyleUtils, RockChildrenConfig, RockEvent, RockEventHandler, type Rock, type RockConfig } from "@ruiapp/move-style";
 import { renderRock } from "@ruiapp/react-renderer";
 import RapidEntityListMeta from "./SonicEntityListMeta";
 import type { SonicEntityListRockConfig } from "./sonic-entity-list-types";
@@ -7,6 +7,7 @@ import type { RapidEntityListConfig, RapidEntityListRockConfig } from "../rapid-
 import rapidAppDefinition from "../../rapidAppDefinition";
 import { generateRockConfigOfError } from "../../rock-generators/generateRockConfigOfError";
 import { RapidEntity } from "../../types/rapid-entity-types";
+import { EntityStore, RapidToolbarRockConfig } from "../../mod";
 
 const DEFAULT_PAGE_SIZE = 10;
 
@@ -61,6 +62,69 @@ export default {
       $type: "rapidEntityList",
       $id: `${props.$id}-rapidEntityList`,
     };
+
+    const toolbarExtraActions: RockConfig[] = props.extraActions || [];
+    if (props.searchForm) {
+      toolbarExtraActions.push({
+        $id: `${props.$id}-advancedSearchButton`,
+        $type: "anchor",
+        children: [
+          {
+            $type: "text",
+            text: "高级搜索 ",
+          },
+          {
+            $type: "antdIcon",
+            name: "DownOutlined",
+            $exps: {
+              name: `$scope.vars["searchBoxVisible"] ? "UpOutlined" : "DownOutlined"`,
+            },
+          },
+        ],
+        onClick: [
+          {
+            $action: "script",
+            script: (event: RockEvent) => {
+              console.log(event);
+              event.scope.setVars({
+                searchBoxVisible: !event.scope.vars["searchBoxVisible"],
+              });
+            },
+          },
+        ],
+      });
+    }
+
+    const toolbarRockConfig: RapidToolbarRockConfig = {
+      $id: `${props.$id}-toolbar`,
+      $type: "rapidToolbar",
+      items: props.listActions,
+      extras: props.extraActions,
+      dataSourceCode: props.dataSourceCode,
+    };
+
+    const searchFormRockConfig: RockConfig | null = props.searchForm
+      ? {
+          $id: `${props.$id}-searchForm`,
+          $type: "rapidEntitySearchForm",
+          entityCode: entityCode,
+          items: props.searchForm.items,
+          actionsAlign: "right",
+          onSearch: [
+            {
+              $action: "script",
+              script: async (event: RockEvent) => {
+                const store: EntityStore = event.scope.getStore("list");
+                store.updateConfig({
+                  filters: event.args[0].filters,
+                });
+                // 重新加载数据
+                store.loadData();
+              },
+            },
+          ],
+        }
+      : null;
 
     const newModalRockConfig: RockConfig | null = props.newForm
       ? {
@@ -213,7 +277,28 @@ export default {
         }
       : null;
 
-    const childrenConfig: RockChildrenConfig = [entityListRockConfig];
+    const childrenConfig: RockChildrenConfig = [];
+    childrenConfig.push(toolbarRockConfig);
+
+    if (searchFormRockConfig) {
+      childrenConfig.push({
+        $id: `${props.$id}-searchBox`,
+        $type: "box",
+        style: {
+          backgroundColor: "#f2f2f2",
+          borderRadius: "5px",
+          padding: "24px",
+          paddingBottom: "0",
+          marginBottom: "12px",
+        },
+        children: searchFormRockConfig,
+        $exps: {
+          "style.display": `$scope.vars["searchBoxVisible"] ? "block" : "none"`,
+        },
+      });
+    }
+
+    childrenConfig.push(entityListRockConfig);
     if (newModalRockConfig) {
       childrenConfig.push(newModalRockConfig);
     }

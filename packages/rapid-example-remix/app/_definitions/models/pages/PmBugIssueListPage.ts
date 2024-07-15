@@ -153,6 +153,30 @@ const page: RapidPage = {
       ],
       newForm: cloneDeep(formConfig),
       editForm: cloneDeep(formConfig),
+      searchForm: {
+        items: [
+          {
+            type: "auto",
+            code: "title",
+            filterMode: "contains",
+          },
+          {
+            type: "auto",
+            code: "bugLevel",
+            filterMode: "eq",
+          },
+          {
+            type: "auto",
+            code: "state",
+            filterMode: "eq",
+          },
+          {
+            type: "auto",
+            code: "createdAt",
+            filterMode: "range",
+          },
+        ],
+      },
       $exps: {
         "newForm.fixedFields.taskType": "'bug'",
       },
