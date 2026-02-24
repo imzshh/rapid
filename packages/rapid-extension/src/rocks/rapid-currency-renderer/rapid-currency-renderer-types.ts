@@ -5,4 +5,4 @@ export interface RapidCurrencyRendererProps {
   currencyCode?: string;
 }
 
-export interface RapidCurrencyRendererRockConfig extends RapidCurrencyRendererProps, Omit<RapidNumberRendererRockConfig, 'value'> {}
+export interface RapidCurrencyRendererRockConfig extends RapidCurrencyRendererProps, Omit<RapidNumberRendererRockConfig, "value"> {}

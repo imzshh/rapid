@@ -12,9 +12,7 @@
     "outDir": "./dist",
     "baseUrl": ".",
     "paths": {
-      "~/*": [
-        "./src/*"
-      ]
+      "~/*": ["./src/*"]
     }
   },
   "exclude": ["src/**/*.spec.ts", "src/**/*.spec.tsx", "node_modules"],

@@ -18,7 +18,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20.x
-          registry-url: 'https://registry.npmjs.org'
+          registry-url: "https://registry.npmjs.org"
 
       - uses: pnpm/action-setup@v3
         name: Install pnpm
@@ -44,8 +44,8 @@ jobs:
 
       - name: Check git status
         shell: bash
-        run: git status      
-        
+        run: git status
+
       - name: Build
         run: pnpm build
 
