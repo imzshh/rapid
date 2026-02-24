@@ -1,31 +1,25 @@
-import { Rock, RockConfig } from "@ruiapp/move-style";
+import { Rock } from "@ruiapp/move-style";
 import RapidDictionaryEntryRendererMeta from "./RapidDictionaryEntryRendererMeta";
-import { RapidDictionaryEntryRendererRockConfig } from "./rapid-dictionary-entry-renderer-types";
-import { renderRock } from "@ruiapp/react-renderer";
+import { RapidDictionaryEntryRendererProps, RapidDictionaryEntryRendererRockConfig } from "./rapid-dictionary-entry-renderer-types";
+import { genRockRenderer } from "@ruiapp/react-renderer";
+import { Tag } from "antd";
+
+export function configRapidDictionaryEntryRenderer(config: RapidDictionaryEntryRendererRockConfig): RapidDictionaryEntryRendererRockConfig {
+  return config;
+}
+
+export function RapidDictionaryEntryRenderer(props: RapidDictionaryEntryRendererProps) {
+  const { value } = props;
+
+  if (!value) {
+    return null;
+  }
+
+  return <Tag color={value.color}>{value.name}</Tag>;
+}
 
 export default {
-  $type: "rapidDictionaryEntryRenderer",
-
-  Renderer(context, props: RapidDictionaryEntryRendererRockConfig) {
-    const { value } = props;
-
-    if (!value) {
-      return null;
-    }
-
-    const rockConfig: RockConfig = {
-      $id: `${props.$id}`,
-      $type: "antdTag",
-      color: value.color,
-      children: {
-        $id: `${props.$id}-txt`,
-        $type: "text",
-        text: value.name,
-      },
-    } as RockConfig;
-
-    return renderRock({ context, rockConfig });
-  },
+  Renderer: genRockRenderer(RapidDictionaryEntryRendererMeta.$type, RapidDictionaryEntryRenderer),
 
   ...RapidDictionaryEntryRendererMeta,
-} as Rock;
+} as Rock<RapidDictionaryEntryRendererRockConfig>;
