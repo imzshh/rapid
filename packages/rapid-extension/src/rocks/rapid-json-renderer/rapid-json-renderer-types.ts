@@ -1,9 +1,8 @@
 import { SimpleRockConfig } from "@ruiapp/move-style";
 
-export type RapidJsonRendererConfig = {
+export interface RapidJsonRendererProps {
   value: any;
-
   defaultText?: string;
-};
+}
 
-export interface RapidJsonRendererRockConfig extends SimpleRockConfig, RapidJsonRendererConfig {}
+export interface RapidJsonRendererRockConfig extends SimpleRockConfig, RapidJsonRendererProps {}
