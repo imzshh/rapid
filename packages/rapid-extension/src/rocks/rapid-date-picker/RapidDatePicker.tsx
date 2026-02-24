@@ -1,45 +1,53 @@
-import { Rock, RockConfig } from "@ruiapp/move-style";
-import RapidToolbarLinkMeta from "./RapidDatePickerMeta";
-import { renderRock } from "@ruiapp/react-renderer";
-import { RapidDatePickerRockConfig } from "./rapid-date-picker-types";
+import { Rock } from "@ruiapp/move-style";
+import RapidDatePickerMeta from "./RapidDatePickerMeta";
+import { genRockRenderer } from "@ruiapp/react-renderer";
+import { RapidDatePickerProps, RapidDatePickerRockConfig } from "./rapid-date-picker-types";
+import { DatePicker } from "antd";
 import { isString } from "lodash";
 import moment from "moment";
 
+export function configRapidDatePicker(config: RapidDatePickerRockConfig): RapidDatePickerRockConfig {
+  return config;
+}
+
+export function RapidDatePicker(props: RapidDatePickerProps) {
+  let { value, onChange, picker } = props;
+
+  // Convert string value to moment object
+  if (isString(value)) {
+    value = moment(value);
+  }
+
+  function handleChange(date: moment.Moment | null, dateString: string) {
+    if (!onChange) {
+      return;
+    }
+
+    if (!date) {
+      onChange(null);
+      return;
+    }
+
+    let formattedValue: string;
+    switch (picker) {
+      case "year":
+        formattedValue = date.format("YYYY");
+        break;
+      case "month":
+        formattedValue = date.format("YYYY-MM");
+        break;
+      default:
+        formattedValue = date.format("YYYY-MM-DD");
+        break;
+    }
+    onChange(formattedValue);
+  }
+
+  return <DatePicker value={value as moment.Moment} onChange={handleChange} picker={picker} showTime={false} />;
+}
+
 export default {
-  $type: "rapidDatePicker",
+  Renderer: genRockRenderer(RapidDatePickerMeta.$type, RapidDatePicker),
 
-  Renderer(context, props) {
-    if (isString(props.value)) {
-      props.value = moment(props.value);
-    }
-
-    function onDatePickerChange(value: any) {
-      if (props.onChange) {
-        let formatedValue: any;
-        switch (props.picker) {
-          case "year":
-            formatedValue = value.format("YYYY");
-            break;
-          case "month":
-            formatedValue = value.format("YYYY-MM");
-            break;
-          default:
-            formatedValue = value.format("YYYY-MM-DD");
-            break;
-        }
-        return props.onChange(formatedValue);
-      }
-    }
-
-    const rockConfig: RockConfig = {
-      ...props,
-      $id: `${props.$id}-inner`,
-      $type: "antdDatePicker",
-      onChange: props.showTime ? props.onChange : onDatePickerChange,
-    };
-
-    return renderRock({ context, rockConfig });
-  },
-
-  ...RapidToolbarLinkMeta,
+  ...RapidDatePickerMeta,
 } as Rock<RapidDatePickerRockConfig>;

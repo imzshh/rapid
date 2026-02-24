@@ -2,7 +2,7 @@ import { Rock, SimpleRockConfig } from "@ruiapp/move-style";
 import RapidBoolRendererMeta from "./RapidBoolRendererMeta";
 import { getExtensionLocaleStringResource } from "../../helpers/i18nHelper";
 
-export interface RapidReferenceRendererProps extends SimpleRockConfig {
+export interface RapidBoolRendererProps {
   value: boolean | null | undefined;
   strictEquals?: boolean;
   trueText?: string;
@@ -10,10 +10,16 @@ export interface RapidReferenceRendererProps extends SimpleRockConfig {
   defaultText?: string;
 }
 
+export interface RapidBoolRendererRockConfig extends SimpleRockConfig, RapidBoolRendererProps {}
+
+export function configRapidBoolRenderer(config: RapidBoolRendererRockConfig): RapidBoolRendererRockConfig {
+  return config;
+}
+
 export default {
   $type: "rapidBoolRenderer",
 
-  Renderer(context, props: RapidReferenceRendererProps) {
+  Renderer(context, props: RapidBoolRendererRockConfig) {
     const { framework } = context;
     const { value, strictEquals, trueText, falseText, defaultText } = props;
     if (strictEquals) {
