@@ -75,7 +75,7 @@ export function configRapidDatePicker(config: RapidDatePickerRockConfig): RapidD
 - 阅读 [renderRock 用法文档](renderRock-usage.md)，理解`renderRock`以及相关函数的调用方法，以便理解原代码的渲染逻辑
 - 如果原代码使用 `renderRock` 渲染 `antdTag`、`antdButton` 等 Rock，应改为直接导入并使用 Ant Design 的 `Tag`、`Button` 等组件
 - 只有当组件必须嵌套其他动态 Rock 配置时，才考虑保留 `renderRock` 调用
-- 利用 `genRockRenderer` 自动处理 Rock 的渲染逻辑
+- 利用 `genRockRenderer` 自动生成 Rock.Renderer
 
 ```typescript
 // ✅ 推荐：直接使用 antd 组件

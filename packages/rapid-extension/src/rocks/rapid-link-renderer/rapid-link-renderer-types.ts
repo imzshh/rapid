@@ -1,6 +1,6 @@
 import { RockConfig, SimpleRockConfig } from "@ruiapp/move-style";
 
-export interface RapidLinkRendererRockConfig extends SimpleRockConfig {
+export interface RapidLinkRendererProps {
   value: Record<string, any> | null | undefined;
 
   defaultText?: string;
@@ -9,3 +9,5 @@ export interface RapidLinkRendererRockConfig extends SimpleRockConfig {
 
   url?: string;
 }
+
+export interface RapidLinkRendererRockConfig extends SimpleRockConfig, RapidLinkRendererProps {}
