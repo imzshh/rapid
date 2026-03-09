@@ -1,7 +1,7 @@
-import type { Rock, RuiRockLogger, RockConfig } from "@ruiapp/move-style";
-import { renderRock } from "@ruiapp/react-renderer";
+import type { Rock, RuiRockLogger, RockConfig, RockInstance } from "@ruiapp/move-style";
+import { genRockRenderer, renderRock } from "@ruiapp/react-renderer";
 import RapidEntityDescriptionsMeta from "./RapidEntityDescriptionsMeta";
-import type { RapidDescriptionsItemConfig, RapidEntityDescriptionsRockConfig } from "./rapid-entity-descriptions-types";
+import type { RapidDescriptionsItemConfig, RapidEntityDescriptionsProps, RapidEntityDescriptionsRockConfig } from "./rapid-entity-descriptions-types";
 import { get, isUndefined, omit } from "lodash";
 import rapidAppDefinition from "../../rapidAppDefinition";
 import type { RapidDataDictionary, RapidDataDictionaryEntry, RapidEntity, RapidField, RapidFieldType } from "@ruiapp/rapid-common";
@@ -9,6 +9,7 @@ import { generateRockConfigOfError } from "../../rock-generators/generateRockCon
 import { RapidOptionFieldRendererConfig } from "../rapid-option-field-renderer/rapid-option-field-renderer-types";
 import RapidExtensionSetting from "../../RapidExtensionSetting";
 import { generateEntityDetailStoreConfig } from "../../helpers/entityStoreHelper";
+import { Descriptions } from "antd";
 
 export interface GenerateEntityDescriptionItemOption {
   descriptionItemConfig: RapidDescriptionsItemConfig;
@@ -94,6 +95,121 @@ function generateDataDescriptionItem(logger: RuiRockLogger, entityDescriptionsPr
   return descriptionItem;
 }
 
+export function configRapidEntityDescriptions(config: RapidEntityDescriptionsRockConfig): RapidEntityDescriptionsRockConfig {
+  return config;
+}
+
+export function RapidEntityDescriptions(props: RapidEntityDescriptionsProps) {
+  const { $id, _context: context } = props as any as RockInstance;
+  const { logger, page, scope } = context;
+  const dataDictionaries = rapidAppDefinition.getDataDictionaries();
+  const descriptionsConfig = props;
+  const mainEntityCode = descriptionsConfig.entityCode;
+  const mainEntity = rapidAppDefinition.getEntityByCode(mainEntityCode);
+
+  if (!mainEntity) {
+    const errorRockConfig = generateRockConfigOfError(new Error(`Entitiy with code '${mainEntityCode}' not found.`));
+    return renderRock({ context, rockConfig: errorRockConfig });
+  }
+
+  const items = (props.items || []).map((item) => ({ ...item }));
+
+  for (const descriptionItem of items) {
+    const field = rapidAppDefinition.getEntityFieldByCode(mainEntity, descriptionItem.code);
+    if (field) {
+      // 使用字段名称作为表单项的标签
+      if (isUndefined(descriptionItem.label)) {
+        descriptionItem.label = field?.name;
+      }
+
+      if (!descriptionItem.valueFieldType) {
+        descriptionItem.valueFieldType = field.type;
+      }
+    }
+
+    // 推断渲染器类型
+    if (!descriptionItem.rendererType) {
+      if (descriptionItem.valueFieldType) {
+        descriptionItem.rendererType = RapidExtensionSetting.getDefaultRendererTypeOfFieldType(descriptionItem.valueFieldType);
+      } else {
+        descriptionItem.rendererType = RapidExtensionSetting.getDefaultRendererTypeOfDisplayType(descriptionItem.type);
+      }
+    }
+  }
+
+  const descriptionItemRocks: RockConfig[] = [];
+  let dataSource = props.dataSource;
+  if (!dataSource) {
+    const dataSourceCode = props.dataSourceCode || "detail";
+    dataSource = get(scope.stores[dataSourceCode], "data.list[0]");
+  }
+
+  if (!dataSource) {
+    return null;
+  }
+
+  const form = {
+    getFieldValue(name: string) {
+      return get(dataSource, name);
+    },
+  };
+
+  items.forEach((descriptionItemConfig) => {
+    const propValue = get(dataSource, descriptionItemConfig.valueFieldName || descriptionItemConfig.code);
+
+    const descriptionItem = generateDataDescriptionItem(
+      logger,
+      props,
+      {
+        descriptionItemConfig,
+        mainEntity,
+        dataDictionaries,
+      },
+      propValue,
+    );
+
+    // 兼容 rapidEntityForm
+    (descriptionItem as any).form = form;
+    page.interpreteComponentProperties(props as any as RockConfig, descriptionItem as any, {});
+
+    const itemRockId = `${$id}-items-${descriptionItemConfig.uniqueKey || descriptionItemConfig.code}`;
+    const descriptionItemRockConfig: RockConfig = {
+      $id: itemRockId,
+      $type: "antdDescriptionsItem",
+      _hidden: (descriptionItem as any)._hidden,
+      $i18n: descriptionItemConfig.$i18n,
+      $locales: descriptionItemConfig.$locales,
+      label: descriptionItem.label,
+      labelStyle: descriptionItem.labelStyle,
+      contentStyle: descriptionItem.contentStyle,
+      span: descriptionItem.column,
+      children: {
+        $id: `${itemRockId}-display`,
+        $type: descriptionItem.rendererType,
+        value: descriptionItem.value,
+        ...descriptionItem.rendererProps,
+      },
+    };
+
+    if (!descriptionItemRockConfig._hidden && !descriptionItemConfig.hidden) {
+      descriptionItemRocks.push(descriptionItemRockConfig);
+    }
+  });
+
+  const rockConfig: RockConfig = {
+    $id: `${$id}-internal`,
+    $type: "antdDescriptions",
+    bordered: descriptionsConfig.bordered,
+    size: descriptionsConfig.size,
+    layout: descriptionsConfig.layout,
+    colon: descriptionsConfig.colon,
+    column: descriptionsConfig.column,
+    labelStyle: descriptionsConfig.labelStyle,
+    children: descriptionItemRocks,
+  };
+  return renderRock({ context, rockConfig });
+}
+
 export default {
   onInit(context, props) {
     const mainEntityCode = props.entityCode;
@@ -118,112 +234,7 @@ export default {
     }
   },
 
-  Renderer(context, props, state) {
-    const { logger, page, scope } = context;
-    const dataDictionaries = rapidAppDefinition.getDataDictionaries();
-    const descriptionsConfig = props;
-    const mainEntityCode = descriptionsConfig.entityCode;
-    const mainEntity = rapidAppDefinition.getEntityByCode(mainEntityCode);
-    if (!mainEntity) {
-      const errorRockConfig = generateRockConfigOfError(new Error(`Entitiy with code '${mainEntityCode}' not found.`));
-      return renderRock({ context, rockConfig: errorRockConfig });
-    }
-
-    for (const descriptionItem of props.items) {
-      const field = rapidAppDefinition.getEntityFieldByCode(mainEntity, descriptionItem.code);
-      if (field) {
-        // 使用字段名称作为表单项的标签
-        if (isUndefined(descriptionItem.label)) {
-          descriptionItem.label = field?.name;
-        }
-
-        if (!descriptionItem.valueFieldType) {
-          descriptionItem.valueFieldType = field.type;
-        }
-      }
-
-      // 推断渲染器类型
-      if (!descriptionItem.rendererType) {
-        if (descriptionItem.valueFieldType) {
-          descriptionItem.rendererType = RapidExtensionSetting.getDefaultRendererTypeOfFieldType(descriptionItem.valueFieldType);
-        } else {
-          descriptionItem.rendererType = RapidExtensionSetting.getDefaultRendererTypeOfDisplayType(descriptionItem.type);
-        }
-      }
-    }
-
-    const descriptionItems: RockConfig[] = [];
-    let dataSource = props.dataSource;
-    if (!dataSource) {
-      const dataSourceCode = props.dataSourceCode || "detail";
-      dataSource = get(scope.stores[dataSourceCode], "data.list[0]");
-    }
-
-    if (!dataSource) {
-      return null;
-    }
-
-    const form = {
-      getFieldValue(name: string) {
-        return get(dataSource, name);
-      },
-    };
-
-    if (descriptionsConfig && descriptionsConfig.items) {
-      descriptionsConfig.items.forEach((descriptionItemConfig) => {
-        const propValue = get(dataSource, descriptionItemConfig.valueFieldName || descriptionItemConfig.code);
-
-        const descriptionItem = generateDataDescriptionItem(
-          logger,
-          props,
-          {
-            descriptionItemConfig,
-            mainEntity,
-            dataDictionaries,
-          },
-          propValue,
-        );
-        (descriptionItem as any).form = form; // 兼容 rapidEntityForm
-        page.interpreteComponentProperties(props, descriptionItem as any, {});
-
-        const itemRockId = `${props.$id}-items-${descriptionItemConfig.uniqueKey || descriptionItemConfig.code}`;
-        const descriptionItemRockConfig: RockConfig = {
-          $id: itemRockId,
-          $type: "antdDescriptionsItem",
-          _hidden: (descriptionItem as any)._hidden,
-          $i18n: descriptionItemConfig.$i18n,
-          $locales: descriptionItemConfig.$locales,
-          label: descriptionItem.label,
-          labelStyle: descriptionItem.labelStyle,
-          contentStyle: descriptionItem.contentStyle,
-          span: descriptionItem.column,
-          children: {
-            $id: `${itemRockId}-display`,
-            $type: descriptionItem.rendererType,
-            value: descriptionItem.value,
-            ...descriptionItem.rendererProps,
-          },
-        };
-
-        if (!descriptionItemRockConfig._hidden && !descriptionItemConfig.hidden) {
-          descriptionItems.push(descriptionItemRockConfig);
-        }
-      });
-    }
-
-    const rockConfig: RockConfig = {
-      $id: `${props.$id}-internal`,
-      $type: "antdDescriptions",
-      bordered: descriptionsConfig.bordered,
-      size: descriptionsConfig.size,
-      layout: descriptionsConfig.layout,
-      colon: descriptionsConfig.colon,
-      column: descriptionsConfig.column,
-      labelStyle: descriptionsConfig.labelStyle,
-      children: descriptionItems,
-    };
-    return renderRock({ context, rockConfig });
-  },
+  Renderer: genRockRenderer(RapidEntityDescriptionsMeta.$type, RapidEntityDescriptions, true),
 
   ...RapidEntityDescriptionsMeta,
 } as Rock<RapidEntityDescriptionsRockConfig>;

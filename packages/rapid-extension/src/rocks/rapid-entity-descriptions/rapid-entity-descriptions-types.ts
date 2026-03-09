@@ -3,7 +3,9 @@ import { FindEntityFindRelationEntitiesOptions, RapidFieldType } from "@ruiapp/r
 import { CSSProperties } from "react";
 import { RapidPropertyDisplayType } from "~/types/rapid-extension-types";
 
-export interface RapidEntityDescriptionsConfig extends SimpleRockConfig {
+export const RAPID_ENTITY_DESCRIPTIONS_ROCK_TYPE = "rapidEntityDescriptions" as const;
+
+export interface RapidEntityDescriptionsProps {
   entityCode: string;
 
   entityId?: string;
@@ -155,4 +157,6 @@ export type RapidDescriptionsItemConfig = {
   $locales?: RockLocalesConfig;
 };
 
-export interface RapidEntityDescriptionsRockConfig extends SimpleRockConfig, RapidEntityDescriptionsConfig {}
+export interface RapidEntityDescriptionsRockConfig extends SimpleRockConfig, RapidEntityDescriptionsProps {
+  $type: typeof RAPID_ENTITY_DESCRIPTIONS_ROCK_TYPE;
+}
