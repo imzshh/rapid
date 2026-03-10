@@ -1,4 +1,4 @@
-import { Framework, MoveStyleUtils, Rock, RockInstanceContext, RuiRockLogger, RockInstance, fireEvent } from "@ruiapp/move-style";
+import { Framework, MoveStyleUtils, Rock, RockInstanceContext, RuiRockLogger, RockInstance, fireEvent, omitSystemRockConfigFields } from "@ruiapp/move-style";
 import { toRenderRockSlot, convertToEventHandlers, convertToSlotProps, renderRock, genRockRenderer } from "@ruiapp/react-renderer";
 import { Table, TableProps } from "antd";
 import { ColumnType } from "antd/lib/table/interface";
@@ -182,10 +182,11 @@ export function RapidTable(props: RapidTableProps) {
     };
   }
 
-  const antdProps: TableProps<any> = {
-    ...omit(merge({ expandable }, MoveStyleUtils.omitSystemRockConfigFields(props as any)), "expandedRow"),
+  let antdProps: TableProps<any> = {
+    ...omitSystemRockConfigFields(props as any),
     ...eventHandlers,
     ...slotProps,
+    expandable,
     dataSource: dataSource,
     rowKey: props.rowKey || "id",
     pagination: props.pagination
@@ -200,6 +201,20 @@ export function RapidTable(props: RapidTableProps) {
       y: props.height || tableHeight,
     },
   };
+
+  antdProps = omit(
+    antdProps,
+    "expandedRow",
+    "onRowClick",
+    "convertListToTree",
+    "dataSourceAdapter",
+    "listParentField",
+    "listIdField",
+    "treeChildrenField",
+    "treeTopParentValue",
+    "virtual",
+    "tableAutoHeight",
+  );
 
   let summaryRenderer: any;
   if (dataSource && dataSource.length && some(columns, (item) => !!item.summaryMethod)) {
