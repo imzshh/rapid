@@ -480,14 +480,14 @@ importers:
         specifier: ~1.19.3
         version: 1.19.3
       '@ruiapp/move-style':
-        specifier: ^0.5.3
-        version: 0.5.3(@ruiapp/log@0.1.0(dayjs@1.11.10)(winston@3.11.0))(lodash@4.17.21)
+        specifier: ^0.5.5
+        version: 0.5.5(@ruiapp/log@0.1.0(dayjs@1.11.10)(winston@3.11.0))(lodash@4.17.21)
       '@ruiapp/rapid-common':
         specifier: workspace:^
         version: link:../rapid-common
       '@ruiapp/react-renderer':
-        specifier: ^0.6.4
-        version: 0.6.4(@ruiapp/move-style@0.5.3(@ruiapp/log@0.1.0(dayjs@1.11.10)(winston@3.11.0))(lodash@4.17.21))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        specifier: ^0.6.6
+        version: 0.6.6(@ruiapp/move-style@0.5.5(@ruiapp/log@0.1.0(dayjs@1.11.10)(winston@3.11.0))(lodash@4.17.21))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       axios:
         specifier: ^1.1.2
         version: 1.6.7
@@ -2745,10 +2745,23 @@ packages:
       '@ruiapp/log': ^0.1.0
       lodash: ^4.17.21
 
+  '@ruiapp/move-style@0.5.5':
+    resolution: {integrity: sha512-UI3rsbWHpTt0wjuUZb/2fBnKdW12DkQMzoVq/AsSJXBoIm6kebGnmFe/2U0Kz8BM2ZRSQ7n+rfdajgzGoB2Uqw==}
+    peerDependencies:
+      '@ruiapp/log': ^0.1.0
+      lodash: ^4.17.21
+
   '@ruiapp/react-renderer@0.6.4':
     resolution: {integrity: sha512-K2rqjFYdoGScxgQvqgjF5nItPjhpqwn2jRbdkeUOg28tBBD9ihFflMgf4lUvpOTmh5l5bi6rXxrZ8iW5qQnc0Q==}
     peerDependencies:
       '@ruiapp/move-style': ^0.5.3
+      react: ^18.2.0
+      react-dom: ^18.2.0
+
+  '@ruiapp/react-renderer@0.6.6':
+    resolution: {integrity: sha512-oTCb3NszH5FcZBr7pdMJcdDKWhWzRZsbK08VZB5/UddTv1GNqdX6HcftrsnZ2mgasRMto1CA0ZWgt5WWLqfQmA==}
+    peerDependencies:
+      '@ruiapp/move-style': ^0.5.4
       react: ^18.2.0
       react-dom: ^18.2.0
 
@@ -11780,9 +11793,25 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
+  '@ruiapp/move-style@0.5.5(@ruiapp/log@0.1.0(dayjs@1.11.10)(winston@3.11.0))(lodash@4.17.21)':
+    dependencies:
+      '@ruiapp/log': 0.1.0(dayjs@1.11.10)(winston@3.11.0)
+      axios: 1.6.8
+      events: 3.3.0
+      lodash: 4.17.21
+      qs: 6.12.1
+    transitivePeerDependencies:
+      - debug
+
   '@ruiapp/react-renderer@0.6.4(@ruiapp/move-style@0.5.3(@ruiapp/log@0.1.0(dayjs@1.11.10)(winston@3.11.0))(lodash@4.17.21))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
       '@ruiapp/move-style': 0.5.3(@ruiapp/log@0.1.0(dayjs@1.11.10)(winston@3.11.0))(lodash@4.17.21)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+
+  '@ruiapp/react-renderer@0.6.6(@ruiapp/move-style@0.5.5(@ruiapp/log@0.1.0(dayjs@1.11.10)(winston@3.11.0))(lodash@4.17.21))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+    dependencies:
+      '@ruiapp/move-style': 0.5.5(@ruiapp/log@0.1.0(dayjs@1.11.10)(winston@3.11.0))(lodash@4.17.21)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
 
