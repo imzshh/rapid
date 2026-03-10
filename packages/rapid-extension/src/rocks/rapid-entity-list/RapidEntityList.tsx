@@ -1,4 +1,13 @@
-import { fireEvent, RockInstance, RockInstanceContext, type Rock, type RockChildrenConfig, type RockConfig, type RockEvent } from "@ruiapp/move-style";
+import {
+  fireEvent,
+  RockInstance,
+  RockInstanceContext,
+  RuiRockLogger,
+  type Rock,
+  type RockChildrenConfig,
+  type RockConfig,
+  type RockEvent,
+} from "@ruiapp/move-style";
 import { genRockRenderer, renderRock, renderRockChildren } from "@ruiapp/react-renderer";
 import RapidEntityListMeta from "./RapidEntityListMeta";
 import { RapidEntityListProps, RapidEntityListRockConfig, RapidEntityListState } from "./rapid-entity-list-types";
@@ -18,8 +27,14 @@ export function configRapidEntityList(config: RapidEntityListRockConfig): RapidE
   return config;
 }
 
-export function autoConfigTableColumnToRockConfig(context: RockInstanceContext, parentProps: any, column: RapidTableColumnConfig, mainEntity: RapidEntity) {
-  const { framework, logger, page } = context;
+export function autoConfigTableColumnToRockConfig(
+  context: RockInstanceContext,
+  logger: RuiRockLogger,
+  parentProps: any,
+  column: RapidTableColumnConfig,
+  mainEntity: RapidEntity,
+) {
+  const { framework, page } = context;
   if (column.$exps) {
     page.interpreteComponentProperties(null, column as any, {
       $self: column,
@@ -50,7 +65,7 @@ export function autoConfigTableColumnToRockConfig(context: RockInstanceContext, 
     return {
       $type: "rapidTableColumn",
       title: columnTitle,
-      children: map(column.children, (childColumn) => autoConfigTableColumnToRockConfig(context, parentProps, childColumn, mainEntity)),
+      children: map(column.children, (childColumn) => autoConfigTableColumnToRockConfig(context, logger, parentProps, childColumn, mainEntity)),
     };
   }
 
@@ -203,7 +218,8 @@ function onReceiveMessage(message, state, props, rockInstance) {
 
 export function RapidEntityList(props: RapidEntityListProps) {
   const { $id, _context: context } = props as any as RockInstance;
-  const { framework, logger, page } = context;
+  const { framework, page } = context;
+  const logger = framework.getRockLogger(RapidEntityListMeta.$type, $id);
   const entityCode = props.entityCode;
   let mainEntity: RapidEntity | undefined;
 
@@ -237,7 +253,7 @@ export function RapidEntityList(props: RapidEntityListProps) {
   }
 
   props.columns.forEach((column) => {
-    const tableColumnRock = autoConfigTableColumnToRockConfig(context, props, column, mainEntity);
+    const tableColumnRock = autoConfigTableColumnToRockConfig(context, logger, props, column, mainEntity);
     tableColumnRocks.push(tableColumnRock);
   });
 

@@ -127,7 +127,8 @@ export function configRapidTable(config: RapidTableRockConfig): RapidTableRockCo
 
 export function RapidTable(props: RapidTableProps) {
   const { $id, _context: context } = props as any as RockInstance;
-  const { framework, logger, page, scope } = context;
+  const { framework, page, scope } = context;
+  const logger = framework.getRockLogger(RAPID_TABLE_ROCK_TYPE, $id);
 
   const tableRef = useRef<any>(null);
   const [tableHeight, setTableHeight] = useState<number | undefined>(undefined);

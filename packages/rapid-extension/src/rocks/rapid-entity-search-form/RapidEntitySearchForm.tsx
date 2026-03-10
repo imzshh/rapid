@@ -301,7 +301,8 @@ export default {
   },
 
   Renderer(context, props, state) {
-    const { framework, logger } = context;
+    const { framework } = context;
+    const logger = framework.getRockLogger(RapidEntitySearchFormMeta.$type, props.$id);
     const dataDictionaries = rapidAppDefinition.getDataDictionaries();
     const formConfig = props;
     const mainEntityCode = formConfig.entityCode;

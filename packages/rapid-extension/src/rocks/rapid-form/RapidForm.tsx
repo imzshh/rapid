@@ -17,7 +17,8 @@ export function configRapidForm(config: RapidFormRockConfig): RapidFormRockConfi
 export function RapidForm(props: RapidFormProps) {
   const { $id, _context: context, _state: state } = props as unknown as RockInstance;
   const { form } = state as RapidFormState;
-  const { framework, page, scope, logger } = context;
+  const { framework, page, scope } = context;
+  const logger = framework.getRockLogger(RAPID_FORM_ROCK_TYPE, $id);
 
   // 当前主要是触发 rerender
   // const [, setCurrentFormData] = useState<Record<string, any>>({});

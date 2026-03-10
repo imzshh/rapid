@@ -32,7 +32,8 @@ export function configRapidTableSelect(config: RapidTableSelectRockConfig): Rapi
 
 export function RapidTableSelect(props: RapidTableSelectProps) {
   const { $id, _context: context } = props as any as RockInstance;
-  const { framework, logger } = context;
+  const { framework } = context;
+  const logger = framework.getRockLogger(RapidTableSelectMeta.$type, $id);
   const {
     listValueFieldName = "id",
     listTextFieldName = "name",

@@ -101,7 +101,8 @@ export function configRapidEntityDescriptions(config: RapidEntityDescriptionsRoc
 
 export function RapidEntityDescriptions(props: RapidEntityDescriptionsProps) {
   const { $id, _context: context } = props as any as RockInstance;
-  const { logger, page, scope } = context;
+  const { page, scope, framework } = context;
+  const logger = framework.getRockLogger(RapidEntityDescriptionsMeta.$type, $id);
   const dataDictionaries = rapidAppDefinition.getDataDictionaries();
   const descriptionsConfig = props;
   const mainEntityCode = descriptionsConfig.entityCode;

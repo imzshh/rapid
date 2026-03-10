@@ -41,7 +41,8 @@ export default {
   },
 
   Renderer(context, props, state) {
-    const { logger, scope } = context;
+    const { scope, framework } = context;
+    const logger = framework.getRockLogger(SonicEntityDetailsMeta.$type, props.$id);
 
     const mainEntityCode = props.entityCode;
     const mainEntity = rapidAppDefinition.getEntityByCode(mainEntityCode);

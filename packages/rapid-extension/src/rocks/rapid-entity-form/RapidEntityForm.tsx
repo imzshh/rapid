@@ -274,7 +274,8 @@ export function configRapidEntityForm(config: RapidEntityFormRockConfig): RapidE
 
 export function RapidEntityForm(props: RapidEntityFormProps) {
   const { $id, _context: context } = props as any as RockInstance;
-  const { logger, framework } = context;
+  const { framework } = context;
+  const logger = framework.getRockLogger(RapidEntityFormMeta.$type, $id);
   const formConfig = props;
   const mainEntityCode = formConfig.entityCode;
   const mainEntity = rapidAppDefinition.getEntityByCode(mainEntityCode);

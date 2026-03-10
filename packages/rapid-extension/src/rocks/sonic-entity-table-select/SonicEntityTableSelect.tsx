@@ -39,7 +39,8 @@ export function configSonicEntityTableSelect(config: SonicEntityTableSelectRockC
 
 export function SonicEntityTableSelect(props: SonicEntityTableSelectProps) {
   const { $id, _context: context } = props as any as RockInstance;
-  const { framework, logger, page, scope } = context;
+  const { framework } = context;
+  const logger = framework.getRockLogger(SonicEntityTableSelectMeta.$type, $id);
 
   const entity = rapidAppDefinition.getEntityByCode(props.entityCode);
   const displayPropertyCode = entity.displayPropertyCode || "name";

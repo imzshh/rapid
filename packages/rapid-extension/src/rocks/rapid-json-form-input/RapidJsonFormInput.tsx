@@ -12,7 +12,8 @@ export function configRapidJsonFormInput(config: RapidJsonFormInputRockConfig): 
 export function RapidJsonFormInput(props: RapidJsonFormInputProps) {
   const { $id, _context: context } = props as any as RockInstance;
   const { value, onChange } = props;
-  const { logger, framework, page, scope } = context;
+  const { framework, page, scope } = context;
+  const logger = framework.getRockLogger(RapidJsonFormInputMeta.$type, $id);
 
   const cmdsEditor = useRef<{
     getCodeContent(): string;
