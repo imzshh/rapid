@@ -143,7 +143,7 @@ export function RapidForm(props: RapidFormProps) {
       framework,
       page,
       scope,
-      sender: props,
+      sender: { ...props, form },
       senderCategory: "component",
       eventHandlers: props.onValuesChange,
       eventArgs: [allValues, changedValues],
@@ -183,7 +183,7 @@ export function RapidForm(props: RapidFormProps) {
         framework,
         page: page as any,
         scope,
-        sender: props,
+        sender: { ...props, form },
         senderCategory: "component",
         eventHandlers: props.beforeSubmit,
         eventArgs: [submitData, submitOptions],
@@ -229,7 +229,7 @@ export function RapidForm(props: RapidFormProps) {
       framework,
       page: page as any,
       scope,
-      sender: props,
+      sender: { ...props, form },
       senderCategory: "component",
       eventHandlers: onSubmit,
       eventArgs: [submitData, submitOptions],
@@ -294,8 +294,8 @@ export default {
 
   async onReceiveMessage(message, state, props, rockInstance) {
     // TODO: refactor to write less if-else
+    const form = state.form;
     if (message.name === "submit") {
-      const form = state.form;
       try {
         const values = await form.validateFields();
         form.submit();
@@ -313,7 +313,7 @@ export default {
         framework: message.framework,
         page: message.page as any,
         scope: rockInstance._scope,
-        sender: props,
+        sender: { ...props, form },
         senderCategory: "component",
         eventHandlers: props.onFormRefresh,
         eventArgs: [{ form: state.form }],
@@ -325,7 +325,7 @@ export default {
         framework: message.framework,
         page: message.page as any,
         scope: rockInstance._scope,
-        sender: props,
+        sender: { ...props, form },
         senderCategory: "component",
         eventHandlers: props.onFormRefresh,
         eventArgs: [{ form: state.form }],
