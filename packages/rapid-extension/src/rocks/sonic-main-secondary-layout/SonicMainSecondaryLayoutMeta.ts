@@ -7,11 +7,13 @@ export default {
     main: {
       allowMultiComponents: true,
       required: true,
+      lazyCreate: true,
     },
 
     secondary: {
       allowMultiComponents: true,
       required: true,
+      lazyCreate: true,
     },
   },
 
