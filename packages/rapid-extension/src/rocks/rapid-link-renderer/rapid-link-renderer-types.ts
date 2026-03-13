@@ -1,13 +1,12 @@
-import { RockConfig, SimpleRockConfig } from "@ruiapp/move-style";
+import { RockConfig } from "@ruiapp/move-style";
+
+export const RAPID_LINK_RENDERER_ROCK_TYPE = "rapidLinkRenderer" as const;
 
 export interface RapidLinkRendererProps {
   value: Record<string, any> | null | undefined;
-
   defaultText?: string;
-
-  text?: string | RockConfig;
-
+  text?: string;
   url?: string;
 }
 
-export interface RapidLinkRendererRockConfig extends SimpleRockConfig, RapidLinkRendererProps {}
+export type RapidLinkRendererRockConfig = RockConfig<RapidLinkRendererProps, typeof RAPID_LINK_RENDERER_ROCK_TYPE>;
