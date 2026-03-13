@@ -1,5 +1,6 @@
-import { SimpleRockConfig } from "@ruiapp/move-style";
+import type { RockConfig } from "@ruiapp/move-style";
 
+export const RAPID_NUMBER_RENDERER_ROCK_TYPE = "rapidNumberRenderer" as const;
 export interface RapidNumberRendererProps {
   value: string | number | null | undefined;
   defaultText?: string;
@@ -25,4 +26,4 @@ export interface RapidNumberRendererProps {
   conversionCoefficient?: number;
 }
 
-export interface RapidNumberRendererRockConfig extends SimpleRockConfig, RapidNumberRendererProps {}
+export type RapidNumberRendererRockConfig = RockConfig<RapidNumberRendererProps, typeof RAPID_NUMBER_RENDERER_ROCK_TYPE>;

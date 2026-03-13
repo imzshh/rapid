@@ -1,7 +1,8 @@
 import { RockMeta } from "@ruiapp/move-style";
+import { RAPID_NUMBER_RENDERER_ROCK_TYPE } from "./rapid-number-renderer-types";
 
 export default {
-  $type: "rapidNumberRenderer",
+  $type: RAPID_NUMBER_RENDERER_ROCK_TYPE,
 
   slots: {},
 
@@ -41,4 +42,4 @@ export default {
       ],
     },
   ],
-} as RockMeta;
+} as RockMeta<typeof RAPID_NUMBER_RENDERER_ROCK_TYPE>;

@@ -1,13 +1,15 @@
-import { Rock } from "@ruiapp/move-style";
+import { Rock, RockComponentProps, RockInstanceProps } from "@ruiapp/move-style";
 import RapidNumberRendererMeta from "./RapidNumberRendererMeta";
 import { RapidNumberRendererProps, RapidNumberRendererRockConfig } from "./rapid-number-renderer-types";
 import { isNull, isString, isUndefined } from "lodash";
+import { wrapToRockComponent } from "@ruiapp/react-renderer";
 
-export function configRapidNumberRenderer(config: RapidNumberRendererRockConfig): RapidNumberRendererRockConfig {
-  return config;
+export function configRapidNumberRenderer(config: RockComponentProps<RapidNumberRendererRockConfig>): RapidNumberRendererRockConfig {
+  config.$type = RapidNumberRendererMeta.$type;
+  return config as RapidNumberRendererRockConfig;
 }
 
-export function RapidNumberRenderer(props: RapidNumberRendererProps) {
+export function RapidNumberRendererComponent(props: RockInstanceProps<RapidNumberRendererProps>) {
   const { defaultText, conversionCoefficient, usingThousandSeparator, decimalPlaces, roundingMode } = props;
   let { value } = props;
 
@@ -38,10 +40,9 @@ export function RapidNumberRenderer(props: RapidNumberRendererProps) {
   }).format(value);
 }
 
+export const RapidNumberRenderer = wrapToRockComponent(RapidNumberRendererMeta, RapidNumberRendererComponent);
+
 export default {
-  $type: "rapidNumberRenderer",
-  Renderer(context, props: RapidNumberRendererRockConfig) {
-    return RapidNumberRenderer(props);
-  },
+  Renderer: RapidNumberRendererComponent,
   ...RapidNumberRendererMeta,
 } as Rock<RapidNumberRendererRockConfig>;
