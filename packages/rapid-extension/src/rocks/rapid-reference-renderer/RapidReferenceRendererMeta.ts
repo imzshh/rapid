@@ -1,7 +1,8 @@
 import { RockMeta } from "@ruiapp/move-style";
+import { RAPID_REFERENCE_RENDERER_ROCK_TYPE } from "./rapid-reference-renderer-types";
 
 export default {
-  $type: "rapidReferenceRenderer",
+  $type: RAPID_REFERENCE_RENDERER_ROCK_TYPE,
 
   slots: {
     itemRenderer: {
@@ -31,4 +32,4 @@ export default {
       ],
     },
   ],
-} as RockMeta;
+} as RockMeta<typeof RAPID_REFERENCE_RENDERER_ROCK_TYPE>;

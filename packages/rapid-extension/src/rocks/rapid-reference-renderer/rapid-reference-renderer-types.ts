@@ -1,7 +1,9 @@
-import { RockConfig, RockInstance, SimpleRockConfig } from "@ruiapp/move-style";
-import { ReactNode } from "react";
+import type { RockConfig } from "@ruiapp/move-style";
+import type { ReactNode } from "react";
 
-export interface RapidReferenceRendererProps extends RockInstance {
+export const RAPID_REFERENCE_RENDERER_ROCK_TYPE = "rapidReferenceRenderer" as const;
+
+export interface RapidReferenceRendererProps {
   value?: any;
   list?: Record<string, any>[];
   valueFieldName: string;
@@ -9,6 +11,9 @@ export interface RapidReferenceRendererProps extends RockInstance {
   itemRenderer?: (value: any) => ReactNode;
 }
 
-export interface RapidReferenceRendererRockConfig extends SimpleRockConfig, Omit<RapidReferenceRendererProps, "itemRenderer"> {
-  itemRenderer?: RockConfig;
-}
+export type RapidReferenceRendererRockConfig = RockConfig<
+  Omit<RapidReferenceRendererProps, "itemRenderer"> & {
+    itemRenderer?: RockConfig;
+  },
+  typeof RAPID_REFERENCE_RENDERER_ROCK_TYPE
+>;
