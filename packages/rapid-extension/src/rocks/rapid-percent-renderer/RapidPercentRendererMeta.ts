@@ -1,7 +1,8 @@
-import { RockMeta } from "@ruiapp/move-style";
+import type { RockMeta } from "@ruiapp/move-style";
+import { RAPID_PERCENT_RENDERER_ROCK_TYPE } from "./rapid-percent-renderer-types";
 
 export default {
-  $type: "rapidPercentRenderer",
+  $type: RAPID_PERCENT_RENDERER_ROCK_TYPE,
 
   slots: {},
 
@@ -46,4 +47,4 @@ export default {
       ],
     },
   ],
-} as RockMeta;
+} as RockMeta<typeof RAPID_PERCENT_RENDERER_ROCK_TYPE>;

@@ -1,13 +1,15 @@
-import { Rock } from "@ruiapp/move-style";
+import type { Rock, RockComponentProps, RockInstanceProps } from "@ruiapp/move-style";
 import RapidPercentRendererMeta from "./RapidPercentRendererMeta";
-import { RapidPercentRendererProps, RapidPercentRendererRockConfig } from "./rapid-percent-renderer-types";
+import { RAPID_PERCENT_RENDERER_ROCK_TYPE, type RapidPercentRendererProps, type RapidPercentRendererRockConfig } from "./rapid-percent-renderer-types";
 import { isNull, isString, isUndefined } from "lodash";
+import { wrapToRockComponent } from "@ruiapp/react-renderer";
 
-export function configRapidPercentRenderer(config: RapidPercentRendererRockConfig): RapidPercentRendererRockConfig {
-  return config;
+export function configRapidPercentRenderer(config: RockComponentProps<RapidPercentRendererRockConfig>): RapidPercentRendererRockConfig {
+  config.$type = RAPID_PERCENT_RENDERER_ROCK_TYPE;
+  return config as RapidPercentRendererRockConfig;
 }
 
-export function RapidPercentRenderer(props: RapidPercentRendererProps) {
+export function RapidPercentRendererComponent(props: RockInstanceProps<RapidPercentRendererProps>) {
   const { defaultText, usingThousandSeparator, decimalPlaces, roundingMode } = props;
   let { value } = props;
 
@@ -37,9 +39,9 @@ export function RapidPercentRenderer(props: RapidPercentRendererProps) {
   }).format(value);
 }
 
+export const RapidPercentRenderer = wrapToRockComponent(RapidPercentRendererMeta, RapidPercentRendererComponent);
+
 export default {
-  Renderer(context, props: RapidPercentRendererRockConfig) {
-    return RapidPercentRenderer(props);
-  },
+  Renderer: RapidPercentRendererComponent,
   ...RapidPercentRendererMeta,
 } as Rock<RapidPercentRendererRockConfig>;
