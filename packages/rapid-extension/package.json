@@ -39,7 +39,7 @@
     "@ant-design/icons": "^4.7.0",
     "@ruiapp/rapid-common": "workspace:^",
     "@remix-run/node": "~1.19.3",
-    "@ruiapp/move-style": "^0.5.6",
+    "@ruiapp/move-style": "^0.5.7",
     "@ruiapp/react-renderer": "^0.6.11",
     "@types/node": "^22.7.4",
     "@wangeditor/editor": "^5.1.23",
