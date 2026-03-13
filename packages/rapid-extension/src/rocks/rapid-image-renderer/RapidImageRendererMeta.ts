@@ -17,4 +17,4 @@ export default {
       ],
     },
   ],
-} as RockMeta;
+} as RockMeta<typeof RAPID_IMAGE_RENDERER_ROCK_TYPE>;

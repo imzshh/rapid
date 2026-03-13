@@ -1,16 +1,17 @@
-import { Rock } from "@ruiapp/move-style";
+import { Rock, RockComponentProps, RockInstanceProps } from "@ruiapp/move-style";
 import RapidImageRendererMeta from "./RapidImageRendererMeta";
 import { RapidImageRendererProps, RapidImageRendererRockConfig } from "./rapid-image-renderer-types";
-import { genRockRenderer } from "@ruiapp/react-renderer";
+import { wrapToRockComponent } from "@ruiapp/react-renderer";
 import { isArray } from "lodash";
 import { Image } from "antd";
 import rapidAppDefinition from "../../rapidAppDefinition";
 
-export function configRapidImageRenderer(config: RapidImageRendererRockConfig): RapidImageRendererRockConfig {
-  return config;
+export function configRapidImageRenderer(config: RockComponentProps<RapidImageRendererRockConfig>): RapidImageRendererRockConfig {
+  config.$type = RapidImageRendererMeta.$type;
+  return config as RapidImageRendererRockConfig;
 }
 
-export function RapidImageRenderer(props: RapidImageRendererProps) {
+export function RapidImageRendererComponent(props: RockInstanceProps<RapidImageRendererProps>) {
   const { value, preview, height, width, fallback, alt, style, className } = props;
 
   if (!value) {
@@ -21,7 +22,7 @@ export function RapidImageRenderer(props: RapidImageRendererProps) {
     return (
       <div className={className} style={{ display: "flex", gap: "8px", flexWrap: "wrap", ...style }}>
         {value.map((fileInfo, index) => (
-          <RapidImageRenderer key={fileInfo.key || index} value={fileInfo} preview={preview} height={height} width={width} fallback={fallback} alt={alt} />
+          <RapidImageRendererComponent key={fileInfo.key || String(index)} {...({ value: fileInfo, preview, height, width, fallback, alt } as any)} />
         ))}
       </div>
     );
@@ -34,7 +35,9 @@ export function RapidImageRenderer(props: RapidImageRendererProps) {
   return <Image className={className} style={style} src={downloadUrl} preview={preview} height={height} width={width} fallback={fallback} alt={alt} />;
 }
 
+export const RapidImageRenderer = wrapToRockComponent(RapidImageRendererMeta, RapidImageRendererComponent);
+
 export default {
-  Renderer: genRockRenderer(RapidImageRendererMeta.$type, RapidImageRenderer, true),
+  Renderer: RapidImageRendererComponent,
   ...RapidImageRendererMeta,
 } as Rock<RapidImageRendererRockConfig>;

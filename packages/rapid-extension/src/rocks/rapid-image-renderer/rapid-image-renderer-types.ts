@@ -1,4 +1,4 @@
-import { SimpleRockConfig } from "@ruiapp/move-style";
+import { RockConfig } from "@ruiapp/move-style";
 import { RapidFileInfo } from "../rapid-uploader-form-input/rapid-uploader-form-input-types";
 import { CSSProperties } from "react";
 
@@ -15,6 +15,4 @@ export interface RapidImageRendererProps {
   className?: string;
 }
 
-export interface RapidImageRendererRockConfig extends SimpleRockConfig, RapidImageRendererProps {
-  $type: typeof RAPID_IMAGE_RENDERER_ROCK_TYPE;
-}
+export type RapidImageRendererRockConfig = RockConfig<RapidImageRendererProps, typeof RAPID_IMAGE_RENDERER_ROCK_TYPE>;
