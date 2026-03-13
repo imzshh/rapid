@@ -40,7 +40,7 @@
     "@ruiapp/rapid-common": "workspace:^",
     "@remix-run/node": "~1.19.3",
     "@ruiapp/move-style": "^0.5.6",
-    "@ruiapp/react-renderer": "^0.6.8",
+    "@ruiapp/react-renderer": "^0.6.9",
     "@types/node": "^22.7.4",
     "@wangeditor/editor": "^5.1.23",
     "@wangeditor/editor-for-react": "^1.0.6",
