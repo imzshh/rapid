@@ -1,13 +1,15 @@
-import { Rock } from "@ruiapp/move-style";
+import { Rock, RockComponentProps, RockInstanceProps } from "@ruiapp/move-style";
 import RapidTextRendererMeta from "./RapidTextRendererMeta";
 import { RapidTextRendererProps, RapidTextRendererRockConfig } from "./rapid-text-renderer-types";
 import { isNull, isUndefined } from "lodash";
+import { wrapToRockComponent } from "@ruiapp/react-renderer";
 
-export function configRapidTextRenderer(config: RapidTextRendererRockConfig): RapidTextRendererRockConfig {
-  return config;
+export function configRapidTextRenderer(config: RockComponentProps<RapidTextRendererRockConfig>): RapidTextRendererRockConfig {
+  config.$type = RapidTextRendererMeta.$type;
+  return config as RapidTextRendererRockConfig;
 }
 
-export function RapidTextRenderer(props: RapidTextRendererProps) {
+export function RapidTextRendererComponent(props: RockInstanceProps<RapidTextRendererProps>) {
   const { value, defaultText } = props;
 
   if (isUndefined(value) || isNull(value)) {
@@ -17,10 +19,9 @@ export function RapidTextRenderer(props: RapidTextRendererProps) {
   return value.toString();
 }
 
+export const RapidTextRenderer = wrapToRockComponent(RapidTextRendererMeta, RapidTextRendererComponent);
+
 export default {
-  $type: "rapidTextRenderer",
-  Renderer(context, props: RapidTextRendererRockConfig) {
-    return RapidTextRenderer(props);
-  },
+  Renderer: RapidTextRendererComponent,
   ...RapidTextRendererMeta,
 } as Rock<RapidTextRendererRockConfig>;

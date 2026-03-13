@@ -1,9 +1,11 @@
-import { SimpleRockConfig } from "@ruiapp/move-style";
+import type { RockConfig } from "@ruiapp/move-style";
+
+export const RAPID_TEXT_RENDERER_ROCK_TYPE = "rapidTextRenderer" as const;
 
 export interface RapidTextRendererProps {
-  value: string | Record<string, any> | null | undefined;
+  value?: string | null;
   defaultText?: string;
   format?: string;
 }
 
-export interface RapidTextRendererRockConfig extends SimpleRockConfig, RapidTextRendererProps {}
+export type RapidTextRendererRockConfig = RockConfig<RapidTextRendererProps, typeof RAPID_TEXT_RENDERER_ROCK_TYPE>;

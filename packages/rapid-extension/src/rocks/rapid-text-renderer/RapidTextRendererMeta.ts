@@ -1,7 +1,8 @@
 import { RockMeta } from "@ruiapp/move-style";
+import { RAPID_TEXT_RENDERER_ROCK_TYPE } from "./rapid-text-renderer-types";
 
 export default {
-  $type: "rapidTextRenderer",
+  $type: RAPID_TEXT_RENDERER_ROCK_TYPE,
 
   propertyPanels: [
     {
@@ -15,4 +16,4 @@ export default {
       ],
     },
   ],
-} as RockMeta;
+} as RockMeta<typeof RAPID_TEXT_RENDERER_ROCK_TYPE>;
