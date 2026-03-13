@@ -1,43 +1,42 @@
-import { Rock, SimpleRockConfig } from "@ruiapp/move-style";
+import { Rock, RockComponentProps, RockInstanceProps } from "@ruiapp/move-style";
 import RapidBoolRendererMeta from "./RapidBoolRendererMeta";
+import { RapidBoolRendererRockConfig } from "./rapid-bool-renderer-types";
 import { getExtensionLocaleStringResource } from "../../helpers/i18nHelper";
+import { useRockInstanceContext, wrapToRockComponent } from "@ruiapp/react-renderer";
 
-export interface RapidBoolRendererProps {
-  value: boolean | null | undefined;
-  strictEquals?: boolean;
-  trueText?: string;
-  falseText?: string;
-  defaultText?: string;
+export function configRapidBoolRenderer(config: RockComponentProps<RapidBoolRendererRockConfig>): RapidBoolRendererRockConfig {
+  config.$type = RapidBoolRendererMeta.$type;
+  return config as RapidBoolRendererRockConfig;
 }
 
-export interface RapidBoolRendererRockConfig extends SimpleRockConfig, RapidBoolRendererProps {}
+export function RapidBoolRendererComponent(props: RockInstanceProps<RapidBoolRendererRockConfig>) {
+  const context = useRockInstanceContext();
+  const { framework } = context;
+  const { value, strictEquals, trueText, falseText, defaultText } = props;
 
-export function configRapidBoolRenderer(config: RapidBoolRendererRockConfig): RapidBoolRendererRockConfig {
-  return config;
+  let text = "";
+  if (strictEquals) {
+    if (value === true) {
+      text = trueText || getExtensionLocaleStringResource(framework, "boolTrue");
+    } else if (value === false) {
+      text = falseText || getExtensionLocaleStringResource(framework, "boolFalse");
+    } else {
+      text = defaultText || "";
+    }
+  } else {
+    if (value) {
+      text = trueText || getExtensionLocaleStringResource(framework, "boolTrue");
+    } else {
+      text = falseText || getExtensionLocaleStringResource(framework, "boolFalse");
+    }
+  }
+
+  return text;
 }
+
+export const RapidBoolRenderer = wrapToRockComponent(RapidBoolRendererMeta, RapidBoolRendererComponent);
 
 export default {
-  $type: "rapidBoolRenderer",
-
-  Renderer(context, props: RapidBoolRendererRockConfig) {
-    const { framework } = context;
-    const { value, strictEquals, trueText, falseText, defaultText } = props;
-    if (strictEquals) {
-      if (value === true) {
-        return trueText || getExtensionLocaleStringResource(framework, "boolTrue");
-      } else if (value === false) {
-        return falseText || getExtensionLocaleStringResource(framework, "boolFalse");
-      } else {
-        return defaultText || "";
-      }
-    } else {
-      if (value) {
-        return trueText || getExtensionLocaleStringResource(framework, "boolTrue");
-      } else {
-        return falseText || getExtensionLocaleStringResource(framework, "boolFalse");
-      }
-    }
-  },
-
+  Renderer: RapidBoolRendererComponent,
   ...RapidBoolRendererMeta,
-} as Rock;
+} as Rock<RapidBoolRendererRockConfig>;
