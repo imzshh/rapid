@@ -1,7 +1,8 @@
 import { RockMeta } from "@ruiapp/move-style";
+import { RAPID_DATE_TIME_RENDERER_ROCK_TYPE } from "./rapid-date-time-renderer-types";
 
 export default {
-  $type: "rapidDateTimeRenderer",
+  $type: RAPID_DATE_TIME_RENDERER_ROCK_TYPE,
 
   propertyPanels: [
     {
@@ -15,4 +16,4 @@ export default {
       ],
     },
   ],
-} as RockMeta;
+} as RockMeta<typeof RAPID_DATE_TIME_RENDERER_ROCK_TYPE>;

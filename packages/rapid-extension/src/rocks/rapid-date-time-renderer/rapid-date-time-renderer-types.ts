@@ -1,8 +1,10 @@
-import type { SimpleRockConfig } from "@ruiapp/move-style";
+import type { RockConfig } from "@ruiapp/move-style";
+
+export const RAPID_DATE_TIME_RENDERER_ROCK_TYPE = "rapidDateTimeRenderer" as const;
 
 export interface RapidDateTimeRendererProps {
-  value: any;
-  format: string;
+  value?: any;
+  format?: string;
 }
 
-export interface RapidDateTimeRendererRockConfig extends SimpleRockConfig, RapidDateTimeRendererProps {}
+export type RapidDateTimeRendererRockConfig = RockConfig<RapidDateTimeRendererProps, typeof RAPID_DATE_TIME_RENDERER_ROCK_TYPE>;
