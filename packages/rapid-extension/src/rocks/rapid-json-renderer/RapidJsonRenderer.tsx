@@ -1,26 +1,26 @@
-import { Rock } from "@ruiapp/move-style";
+import { Rock, RockComponentProps, RockInstanceProps } from "@ruiapp/move-style";
 import RapidJsonRendererMeta from "./RapidJsonRendererMeta";
 import { RapidJsonRendererProps, RapidJsonRendererRockConfig } from "./rapid-json-renderer-types";
+import { wrapToRockComponent } from "@ruiapp/react-renderer";
 
-export function configRapidJsonRenderer(config: RapidJsonRendererRockConfig): RapidJsonRendererRockConfig {
-  return config;
+export function configRapidJsonRenderer(config: RockComponentProps<RapidJsonRendererRockConfig>): RapidJsonRendererRockConfig {
+  config.$type = RapidJsonRendererMeta.$type;
+  return config as RapidJsonRendererRockConfig;
 }
 
-export function RapidJsonRenderer(props: RapidJsonRendererProps) {
+export function RapidJsonRendererComponent(props: RockInstanceProps<RapidJsonRendererProps>) {
   const { value, defaultText } = props;
+
   if (value) {
     return <pre>{JSON.stringify(value, null, 2)}</pre>;
-  } else {
-    return defaultText || "";
   }
+
+  return defaultText || "";
 }
 
+export const RapidJsonRenderer = wrapToRockComponent(RapidJsonRendererMeta, RapidJsonRendererComponent);
+
 export default {
-  $type: "rapidJsonRenderer",
-
-  Renderer(context, props: RapidJsonRendererRockConfig) {
-    return RapidJsonRenderer(props);
-  },
-
+  Renderer: RapidJsonRendererComponent,
   ...RapidJsonRendererMeta,
 } as Rock<RapidJsonRendererRockConfig>;
