@@ -7,4 +7,4 @@ export default {
   slots: {},
 
   propertyPanels: [],
-} as RockMeta;
+} as RockMeta<typeof RAPID_CHECKBOX_LIST_FORM_INPUT_ROCK_TYPE>;

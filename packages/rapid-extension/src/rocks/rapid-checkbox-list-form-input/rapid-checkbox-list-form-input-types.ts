@@ -1,4 +1,4 @@
-import type { RockEventHandlerConfig, SimpleRockConfig } from "@ruiapp/move-style";
+import type { RockConfig, RockEventHandlerConfig } from "@ruiapp/move-style";
 import { CSSProperties } from "react";
 
 export const RAPID_CHECKBOX_LIST_FORM_INPUT_ROCK_TYPE = "rapidCheckboxListFormInput" as const;
@@ -17,7 +17,7 @@ export interface RapidCheckboxListFormInputProps {
   /**
    * 值变更回调
    */
-  onChange?(value: any): void;
+  onChange?: RockEventHandlerConfig;
 
   /**
    * 值的字段名
@@ -149,8 +149,4 @@ export interface RapidCheckboxListFormInputProps {
   direction?: "horizontal" | "vertical";
 }
 
-export interface RapidCheckboxListFormInputRockConfig extends SimpleRockConfig, Omit<RapidCheckboxListFormInputProps, "onChange"> {
-  $type: typeof RAPID_CHECKBOX_LIST_FORM_INPUT_ROCK_TYPE;
-
-  onChange?: RockEventHandlerConfig;
-}
+export type RapidCheckboxListFormInputRockConfig = RockConfig<RapidCheckboxListFormInputProps, typeof RAPID_CHECKBOX_LIST_FORM_INPUT_ROCK_TYPE>;

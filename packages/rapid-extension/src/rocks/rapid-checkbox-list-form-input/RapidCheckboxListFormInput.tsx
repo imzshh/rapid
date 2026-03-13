@@ -1,21 +1,22 @@
-import { MoveStyleUtils, Rock, RockInstance } from "@ruiapp/move-style";
+import { MoveStyleUtils, Rock, RockComponentProps, RockInstanceProps, fireEvent } from "@ruiapp/move-style";
 import { Checkbox } from "antd";
-import { RapidCheckboxListFormInputProps, RapidCheckboxListFormInputRockConfig } from "./rapid-checkbox-list-form-input-types";
+import { RapidCheckboxListFormInputRockConfig } from "./rapid-checkbox-list-form-input-types";
 import RapidCheckboxListFormInputMeta from "./RapidCheckboxListFormInputMeta";
 import { filter, get, isObject, map } from "lodash";
 import type { CheckboxGroupProps, CheckboxOptionType } from "antd/lib/checkbox";
 import { CSSProperties, useMemo } from "react";
-import { genRockRenderer } from "@ruiapp/react-renderer";
+import { useRockInstanceContext, wrapToRockComponent } from "@ruiapp/react-renderer";
 
 import "./RapidCheckboxListFormInput.css";
 
-export function configRapidCheckboxListFormInput(config: RapidCheckboxListFormInputRockConfig): RapidCheckboxListFormInputRockConfig {
-  return config;
+export function configRapidCheckboxListFormInput(config: RockComponentProps<RapidCheckboxListFormInputRockConfig>): RapidCheckboxListFormInputRockConfig {
+  config.$type = RapidCheckboxListFormInputMeta.$type;
+  return config as RapidCheckboxListFormInputRockConfig;
 }
 
-export function RapidCheckboxListFormInput(props: RapidCheckboxListFormInputProps) {
-  const { _context: context } = props as any as RockInstance;
-  const { scope } = context;
+export function RapidCheckboxListFormInputComponent(props: RockInstanceProps<RapidCheckboxListFormInputRockConfig>) {
+  const context = useRockInstanceContext();
+  const { framework, page, scope } = context;
   const {
     groupByFieldName,
     listTextFormat,
@@ -81,7 +82,17 @@ export function RapidCheckboxListFormInput(props: RapidCheckboxListFormInputProp
   const antdProps: CheckboxGroupProps = {
     disabled: disabled,
     value: selectedValue,
-    onChange: onChange,
+    onChange: (checkedValues) => {
+      fireEvent({
+        eventName: "onChange",
+        framework,
+        page,
+        scope,
+        sender: props,
+        eventHandlers: onChange,
+        eventArgs: [checkedValues],
+      });
+    },
     style: { width: "100%" },
   };
 
@@ -145,8 +156,10 @@ export function RapidCheckboxListFormInput(props: RapidCheckboxListFormInputProp
   return <Checkbox.Group {...antdProps}>{checkboxList}</Checkbox.Group>;
 }
 
+export const RapidCheckboxListFormInput = wrapToRockComponent(RapidCheckboxListFormInputMeta, RapidCheckboxListFormInputComponent);
+
 export default {
-  Renderer: genRockRenderer(RapidCheckboxListFormInputMeta.$type, RapidCheckboxListFormInput, true),
+  Renderer: RapidCheckboxListFormInputComponent,
   ...RapidCheckboxListFormInputMeta,
 } as Rock<RapidCheckboxListFormInputRockConfig>;
 
