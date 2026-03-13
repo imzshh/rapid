@@ -1,18 +1,19 @@
-import { Rock } from "@ruiapp/move-style";
+import { Rock, RockComponentProps, RockInstanceProps } from "@ruiapp/move-style";
 import RapidFileInfoRendererMeta from "./RapidFileInfoRendererMeta";
 import { RapidFileInfoRendererProps, RapidFileInfoRendererRockConfig } from "./rapid-file-info-renderer-types";
-import { genRockRenderer } from "@ruiapp/react-renderer";
+import { wrapToRockComponent } from "@ruiapp/react-renderer";
 import { isArray } from "lodash";
 import { RapidFileInfo } from "../rapid-uploader-form-input/rapid-uploader-form-input-types";
 import { formatFileSize } from "../../utils/format-utility";
 import rapidAppDefinition from "../../rapidAppDefinition";
 import { RapidArrayRenderer } from "../rapid-array-renderer/RapidArrayRenderer";
 
-export function configRapidFileInfoRenderer(config: RapidFileInfoRendererRockConfig): RapidFileInfoRendererRockConfig {
-  return config;
+export function configRapidFileInfoRenderer(config: RockComponentProps<RapidFileInfoRendererRockConfig>): RapidFileInfoRendererRockConfig {
+  config.$type = RapidFileInfoRendererMeta.$type;
+  return config as RapidFileInfoRendererRockConfig;
 }
 
-export function RapidFileInfoRenderer(props: RapidFileInfoRendererProps) {
+export function RapidFileInfoRendererComponent(props: RapidFileInfoRendererProps) {
   const { value, showFileSize, fileSizeDecimalPlaces } = props;
   if (!value) {
     return null;
@@ -24,7 +25,7 @@ export function RapidFileInfoRenderer(props: RapidFileInfoRendererProps) {
         value={value}
         listContainer={(items) => <div>{items}</div>}
         itemContainer={(item) => <div>{item}</div>}
-        item={(itemValue) => <RapidFileInfoRenderer value={itemValue} showFileSize={showFileSize} fileSizeDecimalPlaces={fileSizeDecimalPlaces} />}
+        item={(itemValue) => <RapidFileInfoRendererComponent value={itemValue} showFileSize={showFileSize} fileSizeDecimalPlaces={fileSizeDecimalPlaces} />}
         noSeparator={true}
         {...props.arrayRendererProps}
       />
@@ -43,7 +44,9 @@ export function RapidFileInfoRenderer(props: RapidFileInfoRendererProps) {
   }
 }
 
+export const RapidFileInfoRenderer = wrapToRockComponent(RapidFileInfoRendererMeta, RapidFileInfoRendererComponent);
+
 export default {
-  Renderer: genRockRenderer(RapidFileInfoRendererMeta.$type, RapidFileInfoRenderer, true),
+  Renderer: RapidFileInfoRendererComponent,
   ...RapidFileInfoRendererMeta,
 } as Rock<RapidFileInfoRendererRockConfig>;

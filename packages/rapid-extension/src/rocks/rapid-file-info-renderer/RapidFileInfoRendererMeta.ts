@@ -16,4 +16,4 @@ export default {
       ],
     },
   ],
-} as RockMeta;
+} as RockMeta<typeof RAPID_FILE_INFO_RENDERER_ROCK_TYPE>;

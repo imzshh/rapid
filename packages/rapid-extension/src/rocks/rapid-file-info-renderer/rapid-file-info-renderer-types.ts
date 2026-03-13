@@ -1,4 +1,4 @@
-import { SimpleRockConfig } from "@ruiapp/move-style";
+import { RockConfig } from "@ruiapp/move-style";
 import { RapidFileInfo } from "../rapid-uploader-form-input/rapid-uploader-form-input-types";
 
 export const RAPID_FILE_INFO_RENDERER_ROCK_TYPE = "rapidFileInfoRenderer" as const;
@@ -10,6 +10,4 @@ export interface RapidFileInfoRendererProps {
   arrayRendererProps?: any;
 }
 
-export interface RapidFileInfoRendererRockConfig extends SimpleRockConfig, RapidFileInfoRendererProps {
-  $type: typeof RAPID_FILE_INFO_RENDERER_ROCK_TYPE;
-}
+export type RapidFileInfoRendererRockConfig = RockConfig<RapidFileInfoRendererProps, typeof RAPID_FILE_INFO_RENDERER_ROCK_TYPE>;
