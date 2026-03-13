@@ -1,24 +1,25 @@
-import { MoveStyleUtils, Rock, RockInstance } from "@ruiapp/move-style";
+import { MoveStyleUtils, Rock, RockComponentProps, RockInstanceProps } from "@ruiapp/move-style";
 import { Radio, Space } from "antd";
 import { RapidRadioListFormInputProps, RapidRadioListFormInputRockConfig } from "./rapid-radio-list-form-input-types";
 import RapidRadioListFormInputMeta from "./RapidRadioListFormInputMeta";
-import { genRockRenderer } from "@ruiapp/react-renderer";
+import { useRockInstanceContext, wrapToRockComponent } from "@ruiapp/react-renderer";
 import { get, isObject, map } from "lodash";
 import type { RadioGroupProps } from "antd/lib/radio";
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 
-export function configRapidRadioListFormInput(config: RapidRadioListFormInputRockConfig): RapidRadioListFormInputRockConfig {
-  return config;
+export function configRapidRadioListFormInput(config: RockComponentProps<RapidRadioListFormInputRockConfig>): RapidRadioListFormInputRockConfig {
+  config.$type = RapidRadioListFormInputMeta.$type;
+  return config as RapidRadioListFormInputRockConfig;
 }
 
-export function RapidRadioListFormInput(props: RapidRadioListFormInputProps) {
-  const { _context: context } = props as any as RockInstance;
+export function RapidRadioListFormInputComponent(props: RockInstanceProps<RapidRadioListFormInputProps>) {
+  const context = useRockInstanceContext();
   const { scope } = context;
   const { listTextFormat, direction = "horizontal" } = props;
 
   let listItems = [];
   if (props.listDataSourceCode) {
-    listItems = scope.stores[props.listDataSourceCode]?.data?.list;
+    listItems = scope.stores[props.listDataSourceCode]?.data?.list || [];
   } else {
     listItems = props.listItems || props.listDataSource?.data?.list || [];
   }
@@ -73,12 +74,14 @@ export function RapidRadioListFormInput(props: RapidRadioListFormInputProps) {
         })}
       </Space>
     );
-  }, [listItems, direction]);
+  }, [listItems, direction, listTextFormat, listTextFieldName, listValueFieldName]);
 
   return <Radio.Group {...antdProps}>{radioList}</Radio.Group>;
 }
 
+export const RapidRadioListFormInput = wrapToRockComponent(RapidRadioListFormInputMeta, RapidRadioListFormInputComponent);
+
 export default {
-  Renderer: genRockRenderer(RapidRadioListFormInputMeta.$type, RapidRadioListFormInput, true),
+  Renderer: RapidRadioListFormInputComponent,
   ...RapidRadioListFormInputMeta,
 } as Rock<RapidRadioListFormInputRockConfig>;
