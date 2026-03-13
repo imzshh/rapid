@@ -1,7 +1,8 @@
 import { RockMeta } from "@ruiapp/move-style";
+import { RAPID_FILE_SIZE_RENDERER_ROCK_TYPE } from "./rapid-file-size-renderer-types";
 
 export default {
-  $type: "rapidFileSizeRenderer",
+  $type: RAPID_FILE_SIZE_RENDERER_ROCK_TYPE,
 
   propertyPanels: [
     {
@@ -21,4 +22,4 @@ export default {
       ],
     },
   ],
-} as RockMeta;
+} as RockMeta<typeof RAPID_FILE_SIZE_RENDERER_ROCK_TYPE>;

@@ -1,14 +1,16 @@
-import { Rock } from "@ruiapp/move-style";
+import { Rock, RockComponentProps, RockInstanceProps } from "@ruiapp/move-style";
 import RapidFileSizeRendererMeta from "./RapidFileSizeRendererMeta";
 import { RapidFileSizeRendererProps, RapidFileSizeRendererRockConfig } from "./rapid-file-size-renderer-types";
+import { wrapToRockComponent } from "@ruiapp/react-renderer";
 import { isNull, isUndefined } from "lodash";
 import { formatFileSize } from "../../utils/format-utility";
 
-export function configRapidFileSizeRenderer(config: RapidFileSizeRendererRockConfig): RapidFileSizeRendererRockConfig {
-  return config;
+export function configRapidFileSizeRenderer(config: RockComponentProps<RapidFileSizeRendererRockConfig>): RapidFileSizeRendererRockConfig {
+  config.$type = RapidFileSizeRendererMeta.$type;
+  return config as RapidFileSizeRendererRockConfig;
 }
 
-export function RapidFileSizeRenderer(props: RapidFileSizeRendererProps) {
+export function RapidFileSizeRendererComponent(props: RockInstanceProps<RapidFileSizeRendererProps>) {
   const { value, decimalPlaces, defaultText } = props;
   if (isUndefined(value) || isNull(value)) {
     return defaultText || "";
@@ -17,9 +19,9 @@ export function RapidFileSizeRenderer(props: RapidFileSizeRendererProps) {
   return formatFileSize(value, decimalPlaces || 2);
 }
 
+export const RapidFileSizeRenderer = wrapToRockComponent(RapidFileSizeRendererMeta, RapidFileSizeRendererComponent);
+
 export default {
-  Renderer(context, props: RapidFileSizeRendererRockConfig) {
-    return RapidFileSizeRenderer(props);
-  },
+  Renderer: RapidFileSizeRendererComponent,
   ...RapidFileSizeRendererMeta,
 } as Rock<RapidFileSizeRendererRockConfig>;

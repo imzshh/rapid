@@ -1,4 +1,6 @@
-import { SimpleRockConfig } from "@ruiapp/move-style";
+import type { RockConfig } from "@ruiapp/move-style";
+
+export const RAPID_FILE_SIZE_RENDERER_ROCK_TYPE = "rapidFileSizeRenderer" as const;
 
 export interface RapidFileSizeRendererProps {
   value: number;
@@ -9,4 +11,4 @@ export interface RapidFileSizeRendererProps {
   decimalPlaces?: number;
 }
 
-export interface RapidFileSizeRendererRockConfig extends SimpleRockConfig, RapidFileSizeRendererProps {}
+export type RapidFileSizeRendererRockConfig = RockConfig<RapidFileSizeRendererProps, typeof RAPID_FILE_SIZE_RENDERER_ROCK_TYPE>;
