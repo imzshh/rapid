@@ -310,12 +310,7 @@ export default {
    - {RockName}RockConfig 使用 `RockConfig` 或 `ContainerRockConfig` (当 `{RockName}Props` 包含 children 属性时) 泛型定义
    - 当需要扩展 RockConfig 类型时，使用 intersection type (`&`) 而不是 `extends`
 
-3. **wrapToRockComponent**:
-
-   - 仅用于渲染 antd 组件或自定义 React 组件的场景
-   - 纯渲染函数（返回字符串等）不需要使用
-
-4. **Slots 处理**:
+3. **Slots 处理**:
 
    当组件需要配置 slots（如 itemRenderer、separator 等）时，需要区分 Props 和 RockConfig 中的类型定义：
 
@@ -428,14 +423,14 @@ export default {
    }
    ```
 
-5. **{ROCK_NAME}\_ROCK_TYPE 常量**:
+4. **{ROCK_NAME}\_ROCK_TYPE 常量**:
 
    - 在 types 文件中定义 `export const {ROCK_NAME}_ROCK_TYPE = "rockName" as const;`
    - `{RockName}RockConfig` 类型定义中使用 `typeof {ROCK_NAME}_ROCK_TYPE` 作为泛型参数
    - Meta 文件中引用 `{ROCK_NAME}_ROCK_TYPE` 常量而非硬编码字符串
    - 优点：单一来源、类型安全、避免重复、便于重构
 
-6. **在 React 组件中触发 RockEvent**:
+5. **在 React 组件中触发 RockEvent**:
 
    当需要在 React 组件中触发 Rock 事件（如通知事件、调用其他组件的动作等），使用 `fireEvent` 函数：
 
@@ -456,12 +451,12 @@ export default {
    // ...
    ```
 
-7. **修复问题**:
+6. **修复问题**:
 
    - 检查并修复拼写错误（如 `formatedValue` → `formattedValue`）
    - 确保导入的 Meta 类型和文件名一致
 
-8. **useRockInstance 使用时机**:
+7. **useRockInstance 使用时机**:
 
 渲染组件时，不一定要调用 `useRockInstance`。在以下情况下可以调用 `useRockInstance` 以获取自身 `$id`：
 
