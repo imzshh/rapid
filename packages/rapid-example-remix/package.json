@@ -29,7 +29,7 @@
     "@ruiapp/designer-hud": "^0.1.2",
     "@ruiapp/echarts-extension": "^0.4.0",
     "@ruiapp/monaco-extension": "^0.4.0",
-    "@ruiapp/move-style": "^0.5.7",
+    "@ruiapp/move-style": "^0.5.8",
     "@ruiapp/rapid-core": "workspace:^",
     "@ruiapp/rapid-express": "workspace:^",
     "@ruiapp/rapid-extension": "workspace:^",
