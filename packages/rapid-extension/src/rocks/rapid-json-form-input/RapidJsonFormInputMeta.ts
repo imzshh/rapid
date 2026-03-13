@@ -5,4 +5,4 @@ export default {
   $type: RAPID_JSON_FORM_INPUT_ROCK_TYPE,
 
   propertyPanels: [],
-} as RockMeta;
+} as RockMeta<typeof RAPID_JSON_FORM_INPUT_ROCK_TYPE>;

@@ -1,19 +1,19 @@
-import { fireEvent, MoveStyleUtils, Rock, RockConfig, RockInstance } from "@ruiapp/move-style";
+import { fireEvent, MoveStyleUtils, Rock, RockComponentProps, RockConfig, RockInstanceProps } from "@ruiapp/move-style";
 import RapidJsonFormInputMeta from "./RapidJsonFormInputMeta";
 import { RapidJsonFormInputProps, RapidJsonFormInputRockConfig } from "./rapid-json-form-input-types";
-import { Modal } from "antd";
+import { message, Modal } from "antd";
 import { useRef, useState } from "react";
-import { genRockRenderer, renderRock } from "@ruiapp/react-renderer";
+import { renderRock, useRockInstance, useRockInstanceContext, wrapToRockComponent } from "@ruiapp/react-renderer";
 
-export function configRapidJsonFormInput(config: RapidJsonFormInputRockConfig): RapidJsonFormInputRockConfig {
-  return config;
+export function configRapidJsonFormInput(config: RockComponentProps<RapidJsonFormInputRockConfig>): RapidJsonFormInputRockConfig {
+  config.$type = RapidJsonFormInputMeta.$type;
+  return config as RapidJsonFormInputRockConfig;
 }
 
-export function RapidJsonFormInput(props: RapidJsonFormInputProps) {
-  const { $id, _context: context } = props as any as RockInstance;
+export function RapidJsonFormInputComponent(props: RockInstanceProps<RapidJsonFormInputProps>) {
+  const context = useRockInstanceContext();
+  const { $id } = useRockInstance(props, RapidJsonFormInputMeta.$type);
   const { value, onChange } = props;
-  const { framework, page, scope } = context;
-  const logger = framework.getRockLogger(RapidJsonFormInputMeta.$type, $id);
 
   const cmdsEditor = useRef<{
     getCodeContent(): string;
@@ -32,6 +32,10 @@ export function RapidJsonFormInput(props: RapidJsonFormInputProps) {
       return;
     }
 
+    if (!onChange) {
+      return;
+    }
+
     let codeContent = cmdsEditor.current.getCodeContent();
     let newValue: any;
     if (codeContent) {
@@ -41,23 +45,15 @@ export function RapidJsonFormInput(props: RapidJsonFormInputProps) {
       try {
         newValue = JSON.parse(codeContent);
       } catch (ex) {
-        logger.error(props, "Invalid JSON string.", { error: ex });
+        message.error("Invalid JSON string.");
+        return;
       }
     } else {
       newValue = null;
     }
 
     setCodeEditorVisible(false);
-    fireEvent({
-      eventName: "onChange",
-      framework,
-      page,
-      scope,
-      sender: props,
-      senderCategory: "component",
-      eventHandlers: onChange,
-      eventArgs: [newValue],
-    });
+    onChange(newValue);
   };
 
   const onModalCancel = () => {
@@ -83,7 +79,9 @@ export function RapidJsonFormInput(props: RapidJsonFormInputProps) {
   );
 }
 
+export const RapidJsonFormInput = wrapToRockComponent(RapidJsonFormInputMeta, RapidJsonFormInputComponent);
+
 export default {
-  Renderer: genRockRenderer(RapidJsonFormInputMeta.$type, RapidJsonFormInput, true),
+  Renderer: RapidJsonFormInputComponent,
   ...RapidJsonFormInputMeta,
 } as Rock<RapidJsonFormInputRockConfig>;
