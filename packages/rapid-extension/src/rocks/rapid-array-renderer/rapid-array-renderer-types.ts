@@ -16,10 +16,10 @@ export interface RapidArrayRendererProps {
 
 export type RapidArrayRendererRockConfig = RockConfig<
   Omit<RapidArrayRendererProps, "item" | "separator" | "listContainer" | "itemContainer"> & {
-    item?: RockConfig;
-    separator?: RockConfig;
-    listContainer?: ContainerRockConfig;
-    itemContainer?: ContainerRockConfig;
+    item?: RockConfig | RapidArrayRendererProps["item"];
+    separator?: RockConfig | RapidArrayRendererProps["separator"];
+    listContainer?: ContainerRockConfig | RapidArrayRendererProps["listContainer"];
+    itemContainer?: ContainerRockConfig | RapidArrayRendererProps["itemContainer"];
   },
   typeof RAPID_ARRAY_RENDERER_ROCK_TYPE
 >;
