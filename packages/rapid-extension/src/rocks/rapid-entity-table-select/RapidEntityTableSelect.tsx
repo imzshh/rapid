@@ -21,6 +21,7 @@ export default {
     }
   },
   Renderer(context, props) {
+    const logger = context.framework.getRockLogger();
     const { entityCode, queryProperties, extraProperties, relations, fixedFilters, orderBy, keepNonPropertyFields, ...rapidTableSelectProps } = props;
     let { columns } = props;
 
@@ -62,7 +63,7 @@ export default {
         },
       ] satisfies RapidEntityTableSelectRockConfig["columns"];
     }
-    const tableColumnRocks: RapidTableColumnConfig[] = columns.map((column) => autoConfigTableColumnToRockConfig(context, props, column, mainEntity));
+    const tableColumnRocks: RapidTableColumnConfig[] = columns.map((column) => autoConfigTableColumnToRockConfig(context, logger, props, column, mainEntity));
 
     const properties: string[] = uniq(
       queryProperties || [

@@ -1,6 +1,6 @@
 import type { RockEventHandlerConfig, SimpleRockConfig } from "@ruiapp/move-style";
 import { RapidToolbarButtonProps } from "../rapid-toolbar-button/rapid-toolbar-button-types";
-import { RapidEntityFormConfig } from "../rapid-entity-form/rapid-entity-form-types";
+import { RapidEntityFormProps } from "../rapid-entity-form/rapid-entity-form-types";
 
 export interface SonicRecordActionEditEntityConfig extends Omit<RapidToolbarButtonProps, "actionEventName"> {
   /**
@@ -8,7 +8,7 @@ export interface SonicRecordActionEditEntityConfig extends Omit<RapidToolbarButt
    */
   modalTitle?: string;
 
-  form?: Partial<RapidEntityFormConfig>;
+  form?: Partial<RapidEntityFormProps>;
 
   successMessage?: string;
 
