@@ -1,7 +1,8 @@
 import type { RockMeta } from "@ruiapp/move-style";
+import { RAPID_ARRAY_RENDERER_ROCK_TYPE } from "./rapid-array-renderer-types";
 
 export default {
-  $type: "rapidArrayRenderer",
+  $type: RAPID_ARRAY_RENDERER_ROCK_TYPE,
 
   slots: {
     separator: {
@@ -49,4 +50,4 @@ export default {
       ],
     },
   ],
-} as RockMeta;
+} as RockMeta<typeof RAPID_ARRAY_RENDERER_ROCK_TYPE>;

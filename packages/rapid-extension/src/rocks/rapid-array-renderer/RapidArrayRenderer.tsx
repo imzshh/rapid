@@ -1,17 +1,18 @@
 import type { Rock } from "@ruiapp/move-style";
 import { MoveStyleUtils } from "@ruiapp/move-style";
 import RapidArrayRendererMeta from "./RapidArrayRendererMeta";
-import { RapidArrayRendererProps, RapidArrayRendererRockConfig } from "./rapid-array-renderer-types";
+import { RAPID_ARRAY_RENDERER_ROCK_TYPE, RapidArrayRendererProps, RapidArrayRendererRockConfig } from "./rapid-array-renderer-types";
 import { map } from "lodash";
-import { genRockRenderer } from "@ruiapp/react-renderer";
+import { wrapToRockComponent, wrapToRockRenderer } from "@ruiapp/react-renderer";
 import { Divider } from "antd";
 import { Fragment, ReactElement, ReactNode } from "react";
 
 export function configRapidArrayRenderer(config: RapidArrayRendererRockConfig): RapidArrayRendererRockConfig {
+  config.$type = RAPID_ARRAY_RENDERER_ROCK_TYPE;
   return config;
 }
 
-export function RapidArrayRenderer(props: RapidArrayRendererProps): ReactElement | null {
+export function RapidArrayRendererComponent(props: RapidArrayRendererProps) {
   const { value, format, item, separator, noSeparator, listContainer, itemContainer, defaultText } = props;
 
   if (!value || value.length === 0) {
@@ -64,7 +65,9 @@ export function RapidArrayRenderer(props: RapidArrayRendererProps): ReactElement
   return null;
 }
 
+export const RapidArrayRenderer = wrapToRockComponent<RapidArrayRendererRockConfig>(RapidArrayRendererMeta, RapidArrayRendererComponent);
+
 export default {
-  Renderer: genRockRenderer(RapidArrayRendererMeta.$type, RapidArrayRenderer, true),
+  Renderer: wrapToRockRenderer(RapidArrayRendererMeta, RapidArrayRendererComponent),
   ...RapidArrayRendererMeta,
 } as Rock<RapidArrayRendererRockConfig>;

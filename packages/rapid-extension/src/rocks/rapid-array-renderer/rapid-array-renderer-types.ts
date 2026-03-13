@@ -1,5 +1,7 @@
-import type { ContainerRockConfig, RockConfig, RockInstance, SimpleRockConfig } from "@ruiapp/move-style";
+import type { ContainerRockConfig, RockConfig } from "@ruiapp/move-style";
 import type { ReactNode } from "react";
+
+export const RAPID_ARRAY_RENDERER_ROCK_TYPE = "rapidArrayRenderer" as const;
 
 export interface RapidArrayRendererProps {
   value?: any[] | null;
@@ -12,11 +14,12 @@ export interface RapidArrayRendererProps {
   itemContainer?: (children: ReactNode, value: any, index: number) => ReactNode;
 }
 
-export interface RapidArrayRendererRockConfig
-  extends SimpleRockConfig,
-    Omit<RapidArrayRendererProps, "item" | "separator" | "listContainer" | "itemContainer"> {
-  item?: RockConfig;
-  separator?: RockConfig;
-  listContainer?: ContainerRockConfig;
-  itemContainer?: ContainerRockConfig;
-}
+export type RapidArrayRendererRockConfig = RockConfig<
+  Omit<RapidArrayRendererProps, "item" | "separator" | "listContainer" | "itemContainer"> & {
+    item?: RockConfig;
+    separator?: RockConfig;
+    listContainer?: ContainerRockConfig;
+    itemContainer?: ContainerRockConfig;
+  },
+  typeof RAPID_ARRAY_RENDERER_ROCK_TYPE
+>;
