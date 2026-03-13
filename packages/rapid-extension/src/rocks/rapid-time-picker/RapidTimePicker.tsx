@@ -1,24 +1,24 @@
-import { Rock } from "@ruiapp/move-style";
+import { Rock, RockComponentProps, RockInstanceProps } from "@ruiapp/move-style";
 import RapidTimePickerMeta from "./RapidTimePickerMeta";
-import { genRockRenderer } from "@ruiapp/react-renderer";
+import { wrapToRockComponent } from "@ruiapp/react-renderer";
 import { RapidTimePickerProps, RapidTimePickerRockConfig } from "./rapid-time-picker-types";
 import { TimePicker } from "antd";
 import { isString } from "lodash";
 import moment from "moment";
 
-export function configRapidTimePicker(config: RapidTimePickerRockConfig): RapidTimePickerRockConfig {
-  return config;
+export function configRapidTimePicker(config: RockComponentProps<RapidTimePickerRockConfig>): RapidTimePickerRockConfig {
+  config.$type = RapidTimePickerMeta.$type;
+  return config as RapidTimePickerRockConfig;
 }
 
-export function RapidTimePicker(props: RapidTimePickerProps) {
+export function RapidTimePickerComponent(props: RockInstanceProps<RapidTimePickerProps>) {
   let { value, onChange } = props;
 
-  // Convert string value to moment object
   if (isString(value)) {
     value = moment(moment().format("YYYY-MM-DD") + " " + value);
   }
 
-  function handleChange(time: moment.Moment | null, timeString: string) {
+  function handleChange(time: moment.Moment | null) {
     if (!onChange) {
       return;
     }
@@ -35,7 +35,9 @@ export function RapidTimePicker(props: RapidTimePickerProps) {
   return <TimePicker value={value as moment.Moment} onChange={handleChange} />;
 }
 
+export const RapidTimePicker = wrapToRockComponent(RapidTimePickerMeta, RapidTimePickerComponent);
+
 export default {
-  Renderer: genRockRenderer(RapidTimePickerMeta.$type, RapidTimePicker, true),
+  Renderer: RapidTimePickerComponent,
   ...RapidTimePickerMeta,
 } as Rock<RapidTimePickerRockConfig>;
