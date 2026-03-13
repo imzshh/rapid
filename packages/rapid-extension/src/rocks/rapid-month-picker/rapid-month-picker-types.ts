@@ -1,8 +1,10 @@
-import type { SimpleRockConfig } from "@ruiapp/move-style";
+import type { RockConfig } from "@ruiapp/move-style";
+
+export const RAPID_MONTH_PICKER_ROCK_TYPE = "rapidMonthPicker" as const;
 
 export interface RapidMonthPickerProps {
   value?: string | moment.Moment | null;
   onChange?(value: string | null): void;
 }
 
-export interface RapidMonthPickerRockConfig extends SimpleRockConfig, RapidMonthPickerProps {}
+export type RapidMonthPickerRockConfig = RockConfig<RapidMonthPickerProps, typeof RAPID_MONTH_PICKER_ROCK_TYPE>;
