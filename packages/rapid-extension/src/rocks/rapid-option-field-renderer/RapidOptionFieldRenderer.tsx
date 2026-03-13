@@ -5,7 +5,7 @@ import { genRockRenderer } from "@ruiapp/react-renderer";
 import { find, isArray } from "lodash";
 import rapidAppDefinition from "../../rapidAppDefinition";
 import { getMetaDictionaryEntryLocaleName } from "../../helpers/i18nHelper";
-import { RapidDictionaryEntryRenderer } from "../rapid-dictionary-entry-renderer/RapidDictionaryEntryRenderer";
+import { RapidDictionaryEntryRendererComponent } from "../rapid-dictionary-entry-renderer/RapidDictionaryEntryRenderer";
 import { RapidArrayRenderer } from "../rapid-array-renderer/RapidArrayRenderer";
 import { ReactNode } from "react";
 
@@ -43,7 +43,7 @@ export function RapidOptionFieldRenderer(props: RapidOptionFieldRendererProps) {
         ...entry,
         name: getMetaDictionaryEntryLocaleName(framework, dataDictionary, entry),
       };
-      return <RapidDictionaryEntryRenderer value={entry} />;
+      return <RapidDictionaryEntryRendererComponent value={entry} {...({} as any)} />;
     }
     return "" + value;
   };

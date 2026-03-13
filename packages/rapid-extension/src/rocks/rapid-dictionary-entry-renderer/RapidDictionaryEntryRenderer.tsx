@@ -1,14 +1,15 @@
-import { Rock } from "@ruiapp/move-style";
+import { Rock, RockComponentProps, RockInstanceProps } from "@ruiapp/move-style";
 import RapidDictionaryEntryRendererMeta from "./RapidDictionaryEntryRendererMeta";
 import { RapidDictionaryEntryRendererProps, RapidDictionaryEntryRendererRockConfig } from "./rapid-dictionary-entry-renderer-types";
-import { genRockRenderer } from "@ruiapp/react-renderer";
+import { wrapToRockComponent } from "@ruiapp/react-renderer";
 import { Tag } from "antd";
 
-export function configRapidDictionaryEntryRenderer(config: RapidDictionaryEntryRendererRockConfig): RapidDictionaryEntryRendererRockConfig {
-  return config;
+export function configRapidDictionaryEntryRenderer(config: RockComponentProps<RapidDictionaryEntryRendererRockConfig>): RapidDictionaryEntryRendererRockConfig {
+  config.$type = RapidDictionaryEntryRendererMeta.$type;
+  return config as RapidDictionaryEntryRendererRockConfig;
 }
 
-export function RapidDictionaryEntryRenderer(props: RapidDictionaryEntryRendererProps) {
+export function RapidDictionaryEntryRendererComponent(props: RockInstanceProps<RapidDictionaryEntryRendererProps>) {
   const { value } = props;
 
   if (!value) {
@@ -18,8 +19,9 @@ export function RapidDictionaryEntryRenderer(props: RapidDictionaryEntryRenderer
   return <Tag color={value.color}>{value.name}</Tag>;
 }
 
-export default {
-  Renderer: genRockRenderer(RapidDictionaryEntryRendererMeta.$type, RapidDictionaryEntryRenderer, true),
+export const RapidDictionaryEntryRenderer = wrapToRockComponent(RapidDictionaryEntryRendererMeta, RapidDictionaryEntryRendererComponent);
 
+export default {
+  Renderer: RapidDictionaryEntryRendererComponent,
   ...RapidDictionaryEntryRendererMeta,
 } as Rock<RapidDictionaryEntryRendererRockConfig>;
