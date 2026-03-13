@@ -1,6 +1,7 @@
 import { RockMeta } from "@ruiapp/move-style";
+import { RAPID_MULTILINE_TEXT_RENDERER_ROCK_TYPE } from "./rapid-multiline-text-renderer-types";
 
 export default {
-  $type: "rapidMultilineTextRenderer",
+  $type: RAPID_MULTILINE_TEXT_RENDERER_ROCK_TYPE,
   propertyPanels: [],
-} as RockMeta;
+} as RockMeta<typeof RAPID_MULTILINE_TEXT_RENDERER_ROCK_TYPE>;
