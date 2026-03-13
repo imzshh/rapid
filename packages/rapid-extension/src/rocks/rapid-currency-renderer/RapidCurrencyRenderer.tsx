@@ -1,13 +1,15 @@
-import { Rock } from "@ruiapp/move-style";
+import { Rock, RockComponentProps, RockInstanceProps } from "@ruiapp/move-style";
 import RapidCurrencyRendererMeta from "./RapidCurrencyRendererMeta";
 import { RapidCurrencyRendererRockConfig } from "./rapid-currency-renderer-types";
 import { isNull, isString, isUndefined } from "lodash";
+import { wrapToRockComponent } from "@ruiapp/react-renderer";
 
-export function configRapidCurrencyRenderer(config: RapidCurrencyRendererRockConfig): RapidCurrencyRendererRockConfig {
-  return config;
+export function configRapidCurrencyRenderer(config: RockComponentProps<RapidCurrencyRendererRockConfig>): RapidCurrencyRendererRockConfig {
+  config.$type = RapidCurrencyRendererMeta.$type;
+  return config as RapidCurrencyRendererRockConfig;
 }
 
-export function RapidCurrencyRenderer(props: RapidCurrencyRendererRockConfig) {
+export function RapidCurrencyRendererComponent(props: RockInstanceProps<RapidCurrencyRendererRockConfig>) {
   const { defaultText, conversionCoefficient, usingThousandSeparator, decimalPlaces, roundingMode, currencyCode } = props;
   let { value } = props;
   if (isUndefined(value) || isNull(value)) {
@@ -39,12 +41,9 @@ export function RapidCurrencyRenderer(props: RapidCurrencyRendererRockConfig) {
   }).format(value);
 }
 
+export const RapidCurrencyRenderer = wrapToRockComponent(RapidCurrencyRendererMeta, RapidCurrencyRendererComponent);
+
 export default {
-  $type: "rapidCurrencyRenderer",
-
-  Renderer(context, props: RapidCurrencyRendererRockConfig) {
-    return RapidCurrencyRenderer(props);
-  },
-
+  Renderer: RapidCurrencyRendererComponent,
   ...RapidCurrencyRendererMeta,
-} as Rock;
+} as Rock<RapidCurrencyRendererRockConfig>;

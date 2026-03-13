@@ -1,7 +1,8 @@
 import { RockMeta } from "@ruiapp/move-style";
+import { RAPID_CURRENCY_RENDERER_ROCK_TYPE } from "./rapid-currency-renderer-types";
 
 export default {
-  $type: "rapidCurrencyRenderer",
+  $type: RAPID_CURRENCY_RENDERER_ROCK_TYPE,
 
   slots: {},
 
@@ -46,4 +47,4 @@ export default {
       ],
     },
   ],
-} as RockMeta;
+} as RockMeta<typeof RAPID_CURRENCY_RENDERER_ROCK_TYPE>;
