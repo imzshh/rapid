@@ -87,7 +87,7 @@ export function configAnchor(config: RockComponentProps<AnchorRockConfig>): Anch
 - 阅读 [renderRock 用法文档](renderRock-usage.md)，理解`renderRock`以及相关函数的调用方法，以便理解原代码的渲染逻辑
 - 如果原代码使用 `renderRock` 渲染 `antdTag`、`antdButton` 等 Rock，应改为直接导入并使用 Ant Design 的 `Tag`、`Button` 等组件
 - 只有当组件必须嵌套其他动态 Rock 配置时，才考虑保留 `renderRock` 或 `renderRockChildren` 调用
-- 组件 Props 使用 `RockInstanceProps<{RockName}RockConfig>`
+- 组件 Props 使用 `RockInstanceProps<{RockName}Props>`
 - 使用 `useRockInstance` 获取 `$id` 等实例信息，注意传入第二个参数 `Meta.$type`
 - 使用 `wrapToRockComponent` 将 React 组件包装为 Rock 组件并导出
 
@@ -95,7 +95,7 @@ export function configAnchor(config: RockComponentProps<AnchorRockConfig>): Anch
 // Anchor.tsx
 import { RockInstanceProps, fireEvent, CommonProps } from "@ruiapp/move-style";
 import AnchorMeta from "./AnchorMeta";
-import { AnchorRockConfig } from "./anchor-types";
+import { AnchorProps, AnchorRockConfig } from "./anchor-types";
 import { renderRockChildren, useRockInstance, useRockInstanceContext } from "@ruiapp/react-renderer";
 import React from "react";
 import { pick } from "lodash";
@@ -107,7 +107,7 @@ const boxStylePropNames = [
   ...CommonProps.TextStylePropNames,
 ];
 
-export function AnchorComponent(props: RockInstanceProps<AnchorRockConfig>) {
+export function AnchorComponent(props: RockInstanceProps<AnchorProps>) {
   const context = useRockInstanceContext();
   const { framework, page, scope } = context;
   const { $id } = useRockInstance(props, AnchorMeta.$type);
@@ -164,7 +164,7 @@ export default {
 
 #### 2.4 直接包装现有组件 (wrapToRockRenderer)
 
-如果已经有一个标准的 React 组件（接受普通 Props 而非 `RockInstanceProps`），或者希望直接复用第三方组件库的组件，可以使用 `wrapToRockRenderer` 将其转换为 Rock Renderer。
+如果已经有一个标准的 React 组件，或者希望直接复用第三方组件库的组件，可以使用 `wrapToRockRenderer` 将其转换为 Rock Renderer。
 
 ```typescript
 // Button.tsx
@@ -184,7 +184,7 @@ export default {
 
 1. 自动处理 `RockInstanceProps` 到普通 Props 的转换（剔除 `$type`, `$id` 等系统属性）。
 2. 自动转换事件处理函数：将 Rock 事件配置转换为函数调用。
-3. 自动转换插槽（Slots）：将插槽配置转换为 ReactNode。
+3. 自动转换插槽（Slots）：将插槽配置转换为 ReactNode 或者 renderProp。
 
 **使用场景：**
 
@@ -228,7 +228,7 @@ export default {
 // Anchor.tsx
 import { Rock, RockComponentProps, fireEvent, CommonProps, RockInstanceProps } from "@ruiapp/move-style";
 import AnchorMeta from "./AnchorMeta";
-import { AnchorRockConfig } from "./anchor-types";
+import { AnchorProps, AnchorRockConfig } from "./anchor-types";
 import { renderRockChildren, useRockInstance, useRockInstanceContext, wrapToRockComponent } from "@ruiapp/react-renderer";
 import React from "react";
 import { pick } from "lodash";
@@ -245,7 +245,7 @@ export function configAnchor(config: RockComponentProps<AnchorRockConfig>): Anch
   return config as AnchorRockConfig;
 }
 
-export function AnchorComponent(props: RockInstanceProps<AnchorRockConfig>) {
+export function AnchorComponent(props: RockInstanceProps<AnchorProps>) {
   const context = useRockInstanceContext();
   const { framework, page, scope } = context;
   const { $id } = useRockInstance(props, AnchorMeta.$type);
@@ -384,7 +384,7 @@ export default {
 
    ```typescript
    // RapidArrayRenderer.tsx
-   export function RapidArrayRenderer(props: RockInstanceProps<RapidArrayRendererRockConfig>) {
+   export function RapidArrayRenderer(props: RockInstanceProps<RapidArrayRendererProps>) {
      const { value, item, separator, noSeparator, listContainer, itemContainer } = props;
 
      if (!value || value.length === 0) {
@@ -473,7 +473,7 @@ export default {
 ## 再次强调
 
 - 在理解原 `Rock.Renderer` 方法的功能后，再抽取并导出同名的 React 组件，使用 JSX 语法。
-- 新组件应直接接收 `RockInstanceProps<{RockName}RockConfig>` 类型
+- 新组件应直接接收 `RockInstanceProps<{RockName}Props>` 类型
 - 新组件的功能和原 `Rock.Renderer` 方法保持一致
 - 如果原代码使用 `renderRock` 渲染 `antdTag`、`antdButton` 等 Rock，应改为直接导入并使用 Ant Design 的 `Tag`、`Button` 等组件
 - 只有当组件必须嵌套其他动态 Rock 配置时，才考虑保留 `renderRock` 或 `renderRockChildren` 调用
