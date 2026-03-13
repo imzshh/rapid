@@ -1,12 +1,11 @@
-import { Rock } from "@ruiapp/move-style";
+import { Rock, RockComponentProps, RockInstanceProps } from "@ruiapp/move-style";
 import RapidSecretTextRendererMeta from "./RapidSecretTextRendererMeta";
 import { useState } from "react";
 import { CopyOutlined, EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons";
-import { Space, Tooltip } from "antd";
+import { Space, Tooltip, message } from "antd";
 import { RapidSecretTextRendererProps, RapidSecretTextRendererRockConfig } from "./rapid-secret-text-renderer-types";
-import { message } from "antd";
 import { copyToClipboard } from "../../utils/clipboard-utility";
-import { genRockRenderer } from "@ruiapp/react-renderer";
+import { wrapToRockComponent } from "@ruiapp/react-renderer";
 
 function obfuscateText(text: string): string {
   // 如果文本长度小于等于6，全部替换成星号
@@ -22,11 +21,12 @@ function obfuscateText(text: string): string {
   return `${start}${obfuscatedPart}${end}`;
 }
 
-export function configRapidSecretTextRenderer(config: RapidSecretTextRendererRockConfig): RapidSecretTextRendererRockConfig {
-  return config;
+export function configRapidSecretTextRenderer(config: RockComponentProps<RapidSecretTextRendererRockConfig>): RapidSecretTextRendererRockConfig {
+  config.$type = RapidSecretTextRendererMeta.$type;
+  return config as RapidSecretTextRendererRockConfig;
 }
 
-export function RapidSecretTextRenderer(props: RapidSecretTextRendererProps) {
+export function RapidSecretTextRendererComponent(props: RockInstanceProps<RapidSecretTextRendererProps>) {
   const { style, iconStyle, value, canViewOrigin, canCopy, messageCopySuccess } = props;
 
   const [isOriginMode, setIsOriginMode] = useState(false);
@@ -64,7 +64,9 @@ export function RapidSecretTextRenderer(props: RapidSecretTextRendererProps) {
   );
 }
 
+export const RapidSecretTextRenderer = wrapToRockComponent(RapidSecretTextRendererMeta, RapidSecretTextRendererComponent);
+
 export default {
-  Renderer: genRockRenderer(RapidSecretTextRendererMeta.$type, RapidSecretTextRenderer, true),
+  Renderer: RapidSecretTextRendererComponent,
   ...RapidSecretTextRendererMeta,
 } as Rock<RapidSecretTextRendererRockConfig>;

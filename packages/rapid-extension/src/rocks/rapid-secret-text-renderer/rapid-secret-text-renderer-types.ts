@@ -1,5 +1,7 @@
-import { SimpleRockConfig } from "@ruiapp/move-style";
+import type { RockConfig } from "@ruiapp/move-style";
 import { CSSProperties } from "react";
+
+export const RAPID_SECRET_TEXT_RENDERER_ROCK_TYPE = "rapidSecretTextRenderer" as const;
 
 export interface RapidSecretTextRendererProps {
   value: string | null | undefined;
@@ -13,4 +15,4 @@ export interface RapidSecretTextRendererProps {
   messageCopySuccess?: string;
 }
 
-export interface RapidSecretTextRendererRockConfig extends SimpleRockConfig, RapidSecretTextRendererProps {}
+export type RapidSecretTextRendererRockConfig = RockConfig<RapidSecretTextRendererProps, typeof RAPID_SECRET_TEXT_RENDERER_ROCK_TYPE>;
