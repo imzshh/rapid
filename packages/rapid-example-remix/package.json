@@ -33,7 +33,7 @@
     "@ruiapp/rapid-core": "workspace:^",
     "@ruiapp/rapid-express": "workspace:^",
     "@ruiapp/rapid-extension": "workspace:^",
-    "@ruiapp/react-renderer": "^0.6.9",
+    "@ruiapp/react-renderer": "^0.6.11",
     "@ruiapp/react-rocks": "^0.4.1",
     "ahooks": "^3.7.10",
     "antd": "4.24.15",
