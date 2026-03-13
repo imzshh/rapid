@@ -1,7 +1,8 @@
 import type { RockMeta } from "@ruiapp/move-style";
+import { RAPID_OPTION_FIELD_RENDERER_ROCK_TYPE } from "./rapid-option-field-renderer-types";
 
 export default {
-  $type: "rapidOptionFieldRenderer",
+  $type: RAPID_OPTION_FIELD_RENDERER_ROCK_TYPE,
 
   slots: {
     separator: {
@@ -33,4 +34,4 @@ export default {
   },
 
   propertyPanels: [],
-} as RockMeta;
+} as RockMeta<typeof RAPID_OPTION_FIELD_RENDERER_ROCK_TYPE>;

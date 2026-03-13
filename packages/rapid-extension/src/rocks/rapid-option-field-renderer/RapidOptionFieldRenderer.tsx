@@ -1,7 +1,7 @@
-import { Rock } from "@ruiapp/move-style";
+import { Rock, RockComponentProps, RockInstanceProps } from "@ruiapp/move-style";
 import RapidOptionFieldRendererMeta from "./RapidOptionFieldRendererMeta";
 import { RapidOptionFieldRendererProps, RapidOptionFieldRendererRockConfig } from "./rapid-option-field-renderer-types";
-import { genRockRenderer } from "@ruiapp/react-renderer";
+import { useRockInstanceContext, wrapToRockComponent } from "@ruiapp/react-renderer";
 import { find, isArray } from "lodash";
 import rapidAppDefinition from "../../rapidAppDefinition";
 import { getMetaDictionaryEntryLocaleName } from "../../helpers/i18nHelper";
@@ -9,12 +9,14 @@ import { RapidDictionaryEntryRendererComponent } from "../rapid-dictionary-entry
 import { RapidArrayRenderer } from "../rapid-array-renderer/RapidArrayRenderer";
 import { ReactNode } from "react";
 
-export function configRapidOptionFieldRenderer(config: RapidOptionFieldRendererRockConfig): RapidOptionFieldRendererRockConfig {
-  return config;
+export function configRapidOptionFieldRenderer(config: RockComponentProps<RapidOptionFieldRendererRockConfig>): RapidOptionFieldRendererRockConfig {
+  config.$type = RapidOptionFieldRendererMeta.$type;
+  return config as RapidOptionFieldRendererRockConfig;
 }
 
-export function RapidOptionFieldRenderer(props: RapidOptionFieldRendererProps) {
-  const { dictionaryCode, value, item, separator, noSeparator, listContainer, itemContainer, _context: context } = props;
+export function RapidOptionFieldRendererComponent(props: RockInstanceProps<RapidOptionFieldRendererProps>) {
+  const context = useRockInstanceContext();
+  const { dictionaryCode, value, item, separator, noSeparator, listContainer, itemContainer } = props;
 
   if (!value) {
     return null;
@@ -43,7 +45,7 @@ export function RapidOptionFieldRenderer(props: RapidOptionFieldRendererProps) {
         ...entry,
         name: getMetaDictionaryEntryLocaleName(framework, dataDictionary, entry),
       };
-      return <RapidDictionaryEntryRendererComponent value={entry} {...({} as any)} />;
+      return <RapidDictionaryEntryRendererComponent value={entry} />;
     }
     return "" + value;
   };
@@ -69,7 +71,9 @@ export function RapidOptionFieldRenderer(props: RapidOptionFieldRendererProps) {
   }
 }
 
+export const RapidOptionFieldRenderer = wrapToRockComponent(RapidOptionFieldRendererMeta, RapidOptionFieldRendererComponent);
+
 export default {
-  Renderer: genRockRenderer(RapidOptionFieldRendererMeta.$type, RapidOptionFieldRenderer, true),
+  Renderer: RapidOptionFieldRendererComponent,
   ...RapidOptionFieldRendererMeta,
-} as Rock<RapidOptionFieldRendererRockConfig>;
+} as unknown as Rock<RapidOptionFieldRendererRockConfig>;

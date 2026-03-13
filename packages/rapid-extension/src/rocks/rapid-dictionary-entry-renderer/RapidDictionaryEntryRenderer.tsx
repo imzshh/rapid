@@ -9,7 +9,7 @@ export function configRapidDictionaryEntryRenderer(config: RockComponentProps<Ra
   return config as RapidDictionaryEntryRendererRockConfig;
 }
 
-export function RapidDictionaryEntryRendererComponent(props: RockInstanceProps<RapidDictionaryEntryRendererProps>) {
+export function RapidDictionaryEntryRendererComponent(props: RapidDictionaryEntryRendererProps) {
   const { value } = props;
 
   if (!value) {
