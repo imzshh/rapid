@@ -1,16 +1,17 @@
-import { Rock } from "@ruiapp/move-style";
+import { Rock, RockComponentProps, RockInstanceProps } from "@ruiapp/move-style";
 import RapidDatePickerMeta from "./RapidDatePickerMeta";
-import { genRockRenderer } from "@ruiapp/react-renderer";
+import { wrapToRockComponent } from "@ruiapp/react-renderer";
 import { RapidDatePickerProps, RapidDatePickerRockConfig } from "./rapid-date-picker-types";
 import { DatePicker } from "antd";
 import { isString } from "lodash";
 import moment from "moment";
 
-export function configRapidDatePicker(config: RapidDatePickerRockConfig): RapidDatePickerRockConfig {
-  return config;
+export function configRapidDatePicker(config: RockComponentProps<RapidDatePickerRockConfig>): RapidDatePickerRockConfig {
+  config.$type = RapidDatePickerMeta.$type;
+  return config as RapidDatePickerRockConfig;
 }
 
-export function RapidDatePicker(props: RapidDatePickerProps) {
+export function RapidDatePickerComponent(props: RockInstanceProps<RapidDatePickerProps>) {
   let { value, onChange, picker } = props;
 
   // Convert string value to moment object
@@ -46,8 +47,9 @@ export function RapidDatePicker(props: RapidDatePickerProps) {
   return <DatePicker value={value as moment.Moment} onChange={handleChange} picker={picker} showTime={false} />;
 }
 
-export default {
-  Renderer: genRockRenderer(RapidDatePickerMeta.$type, RapidDatePicker, true),
+export const RapidDatePicker = wrapToRockComponent<RapidDatePickerRockConfig>(RapidDatePickerMeta, RapidDatePickerComponent);
 
+export default {
+  Renderer: RapidDatePickerComponent,
   ...RapidDatePickerMeta,
 } as Rock<RapidDatePickerRockConfig>;
