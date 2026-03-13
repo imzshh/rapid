@@ -1,12 +1,15 @@
-import { MoveStyleUtils, Rock } from "@ruiapp/move-style";
+import type { Rock, RockComponentProps, RockInstanceProps } from "@ruiapp/move-style";
+import { MoveStyleUtils } from "@ruiapp/move-style";
+import { wrapToRockComponent } from "@ruiapp/react-renderer";
 import RapidObjectRendererMeta from "./RapidObjectRendererMeta";
-import { RapidObjectRendererProps, RapidObjectRendererRockConfig } from "./rapid-object-renderer-types";
+import type { RapidObjectRendererProps, RapidObjectRendererRockConfig } from "./rapid-object-renderer-types";
 
-export function configRapidObjectRenderer(config: RapidObjectRendererRockConfig): RapidObjectRendererRockConfig {
-  return config;
+export function configRapidObjectRenderer(config: RockComponentProps<RapidObjectRendererRockConfig>) {
+  config.$type = RapidObjectRendererMeta.$type;
+  return config as RapidObjectRendererRockConfig;
 }
 
-export function RapidObjectRenderer(props: RapidObjectRendererProps) {
+export function RapidObjectRendererComponent(props: RockInstanceProps<RapidObjectRendererProps>) {
   const { value, format, defaultText } = props;
   if (value) {
     if (!format) {
@@ -19,10 +22,9 @@ export function RapidObjectRenderer(props: RapidObjectRendererProps) {
   }
 }
 
+export const RapidObjectRenderer = wrapToRockComponent(RapidObjectRendererMeta, RapidObjectRendererComponent);
+
 export default {
-  $type: "rapidObjectRenderer",
-  Renderer(context, props: RapidObjectRendererRockConfig) {
-    return RapidObjectRenderer(props);
-  },
+  Renderer: RapidObjectRendererComponent,
   ...RapidObjectRendererMeta,
-} as Rock;
+} as Rock<RapidObjectRendererRockConfig>;

@@ -1,16 +1,6 @@
-import { SimpleRockConfig } from "@ruiapp/move-style";
+import type { RockConfig } from "@ruiapp/move-style";
 
-export interface RapidObjectRendererProps {
-  value: Record<string, any> | null | undefined;
-
-  defaultText?: string;
-
-  format?: string;
-
-  items?: RapidPropertyRenderConfig[];
-}
-
-export interface RapidObjectRendererRockConfig extends SimpleRockConfig, RapidObjectRendererProps {}
+export const RAPID_OBJECT_RENDERER_ROCK_TYPE = "rapidObjectRenderer" as const;
 
 export interface RapidPropertyRenderConfig {
   /**
@@ -33,3 +23,12 @@ export interface RapidPropertyRenderConfig {
    */
   rendererProps?: Record<string, any>;
 }
+
+export interface RapidObjectRendererProps {
+  value?: Record<string, any> | null;
+  defaultText?: string;
+  format?: string;
+  items?: RapidPropertyRenderConfig[];
+}
+
+export type RapidObjectRendererRockConfig = RockConfig<RapidObjectRendererProps, typeof RAPID_OBJECT_RENDERER_ROCK_TYPE>;
