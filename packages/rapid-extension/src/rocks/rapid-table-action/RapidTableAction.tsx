@@ -1,20 +1,21 @@
-import { Rock, RockInstance, fireEvent } from "@ruiapp/move-style";
+import { Rock, RockComponentProps, RockInstanceProps, fireEvent } from "@ruiapp/move-style";
 import RapidTableActionMeta from "./RapidTableActionMeta";
-import { genRockRenderer } from "@ruiapp/react-renderer";
 import { RapidTableActionProps, RapidTableActionRockConfig } from "./rapid-table-action-types";
+import { useRockInstanceContext, wrapToRockComponent } from "@ruiapp/react-renderer";
 import { Modal, Tooltip } from "antd";
 import { getExtensionLocaleStringResource } from "../../helpers/i18nHelper";
 import "./style.css";
 import React from "react";
 
-export function configRapidTableAction(config: RapidTableActionRockConfig): RapidTableActionRockConfig {
-  return config;
+export function configRapidTableAction(config: RockComponentProps<RapidTableActionRockConfig>): RapidTableActionRockConfig {
+  config.$type = RapidTableActionMeta.$type;
+  return config as RapidTableActionRockConfig;
 }
 
-export function RapidTableAction(props: RapidTableActionProps) {
-  const { record, recordId, actionText, confirmTitle, confirmText, onAction, disabled, disabledTooltipText, url } = props;
-  const { _context: context } = props as any as RockInstance;
+export function RapidTableActionComponent(props: RockInstanceProps<RapidTableActionProps>) {
+  const context = useRockInstanceContext();
   const { framework } = context;
+  const { record, recordId, actionText, confirmTitle, confirmText, onAction, disabled, disabledTooltipText, url } = props;
 
   if (disabled) {
     const spanContent = (
@@ -63,7 +64,9 @@ export function RapidTableAction(props: RapidTableActionProps) {
   );
 }
 
+export const RapidTableAction = wrapToRockComponent(RapidTableActionMeta, RapidTableActionComponent);
+
 export default {
-  Renderer: genRockRenderer(RapidTableActionMeta.$type, RapidTableAction, true),
+  Renderer: RapidTableActionComponent,
   ...RapidTableActionMeta,
 } as Rock<RapidTableActionRockConfig>;
