@@ -1,4 +1,4 @@
-import type { RockEventHandlerConfig, SimpleRockConfig } from "@ruiapp/move-style";
+import type { RockConfig, RockEventHandlerConfig } from "@ruiapp/move-style";
 
 export const RAPID_SELECT_ROCK_TYPE = "rapidSelect" as const;
 
@@ -87,8 +87,9 @@ export interface RapidSelectProps {
   onChange?: (value: any, option: any | any[]) => void;
 }
 
-export interface RapidSelectRockConfig extends SimpleRockConfig, Omit<RapidSelectProps, "onChange"> {
-  $type: typeof RAPID_SELECT_ROCK_TYPE;
-
-  onChange?: RockEventHandlerConfig;
-}
+export type RapidSelectRockConfig = RockConfig<
+  Omit<RapidSelectProps, "onChange"> & {
+    onChange?: RockEventHandlerConfig;
+  },
+  typeof RAPID_SELECT_ROCK_TYPE
+>;

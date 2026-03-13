@@ -50,4 +50,4 @@ export default {
       ],
     },
   ],
-} as RockMeta;
+} as RockMeta<typeof RAPID_SELECT_ROCK_TYPE>;

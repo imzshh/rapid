@@ -1,17 +1,18 @@
-import { MoveStyleUtils, Rock, RockInstance } from "@ruiapp/move-style";
+import { MoveStyleUtils, Rock, RockComponentProps, RockInstanceProps } from "@ruiapp/move-style";
 import { Select, SelectProps } from "antd";
-import { RAPID_SELECT_ROCK_TYPE, RapidSelectProps, RapidSelectRockConfig } from "./rapid-select-types";
+import { RapidSelectProps, RapidSelectRockConfig } from "./rapid-select-types";
 import RapidSelectMeta from "./RapidSelectMeta";
 import { filter, get, isArray, isObject, map } from "lodash";
 import { objectMatch } from "../../utils/object-utility";
-import { genRockRenderer } from "@ruiapp/react-renderer";
+import { useRockInstanceContext, wrapToRockComponent } from "@ruiapp/react-renderer";
 
-export function configRapidSelect(config: RapidSelectRockConfig): RapidSelectRockConfig {
-  return config;
+export function configRapidSelect(config: RockComponentProps<RapidSelectRockConfig>): RapidSelectRockConfig {
+  config.$type = RapidSelectMeta.$type;
+  return config as RapidSelectRockConfig;
 }
 
-export function RapidSelect(props: RapidSelectProps) {
-  const { _context: context } = props as any as RockInstance;
+export function RapidSelectComponent(props: RockInstanceProps<RapidSelectProps>) {
+  const context = useRockInstanceContext();
   const scope = context?.scope;
 
   let listItems: Record<string, any>[] = [];
@@ -102,7 +103,9 @@ export function RapidSelect(props: RapidSelectProps) {
   return <Select {...antdProps}></Select>;
 }
 
+export const RapidSelect = wrapToRockComponent(RapidSelectMeta, RapidSelectComponent);
+
 export default {
-  Renderer: genRockRenderer(RapidSelectMeta.$type, RapidSelect, true),
+  Renderer: RapidSelectComponent,
   ...RapidSelectMeta,
 } as Rock<RapidSelectRockConfig>;
