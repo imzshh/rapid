@@ -5,4 +5,4 @@ export default {
   $type: RAPID_TOOLBAR_BUTTON_ROCK_TYPE,
 
   propertyPanels: [],
-} as RockMeta;
+} as RockMeta<typeof RAPID_TOOLBAR_BUTTON_ROCK_TYPE>;

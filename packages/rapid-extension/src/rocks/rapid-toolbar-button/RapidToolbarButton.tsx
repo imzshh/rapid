@@ -1,17 +1,18 @@
-import { handleComponentEvent, Rock, RockInstance } from "@ruiapp/move-style";
+import type { Rock, RockComponentProps, RockInstanceProps } from "@ruiapp/move-style";
 import { Button, Modal, Tooltip } from "antd";
 import RapidToolbarButtonMeta from "./RapidToolbarButtonMeta";
-import { genRockRenderer } from "@ruiapp/react-renderer";
-import { RapidToolbarButtonProps, RapidToolbarButtonRockConfig } from "./rapid-toolbar-button-types";
+import { useRockInstanceContext, wrapToRockComponent } from "@ruiapp/react-renderer";
+import type { RapidToolbarButtonProps, RapidToolbarButtonRockConfig } from "./rapid-toolbar-button-types";
 import { getExtensionLocaleStringResource } from "../../helpers/i18nHelper";
-import AntdIcon from "../../components/antd-icon/AntdIcon";
+import AntdIcon from "~/components/antd-icon/AntdIcon";
 
-export function configRapidToolbarButton(config: RapidToolbarButtonRockConfig): RapidToolbarButtonRockConfig {
-  return config;
+export function configRapidToolbarButton(config: RockComponentProps<RapidToolbarButtonRockConfig>): RapidToolbarButtonRockConfig {
+  config.$type = RapidToolbarButtonMeta.$type;
+  return config as RapidToolbarButtonRockConfig;
 }
 
-export function RapidToolbarButton(props: RapidToolbarButtonProps) {
-  const { _context: context } = props as any as RockInstance;
+export function RapidToolbarButtonComponent(props: RockInstanceProps<RapidToolbarButtonProps>) {
+  const context = useRockInstanceContext();
   const { framework } = context;
   const {
     onAction,
@@ -27,16 +28,11 @@ export function RapidToolbarButton(props: RapidToolbarButtonProps) {
     size,
     disabled,
     actionEventName = "onClick",
-    actionType,
-    // @ts-ignore - deprecated property
-    pageCode,
     url,
   } = props;
 
   let href: string | undefined;
-  if ((actionType as any) === "pageLink") {
-    href = `/pages/${pageCode}`;
-  } else if (url) {
+  if (url) {
     href = url;
   }
 
@@ -49,9 +45,7 @@ export function RapidToolbarButton(props: RapidToolbarButtonProps) {
         content: confirmText,
         okText: getExtensionLocaleStringResource(framework, "ok"),
         cancelText: getExtensionLocaleStringResource(framework, "cancel"),
-        onOk: async () => {
-          onAction?.();
-        },
+        onOk: () => onAction?.(),
       });
     } else {
       onAction?.();
@@ -88,7 +82,9 @@ export function RapidToolbarButton(props: RapidToolbarButtonProps) {
   return buttonElement;
 }
 
+export const RapidToolbarButton = wrapToRockComponent(RapidToolbarButtonMeta, RapidToolbarButtonComponent);
+
 export default {
-  Renderer: genRockRenderer(RapidToolbarButtonMeta.$type, RapidToolbarButton, true),
+  Renderer: RapidToolbarButtonComponent,
   ...RapidToolbarButtonMeta,
 } as Rock<RapidToolbarButtonRockConfig>;
