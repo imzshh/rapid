@@ -4,7 +4,7 @@ import { genRockRenderer } from "@ruiapp/react-renderer";
 import { RapidToolbarHttpRequestButtonProps, RapidToolbarHttpRequestButtonRockConfig } from "./rapid-toolbar-http-request-button-types";
 import { omit, pick } from "lodash";
 import { getExtensionLocaleStringResource } from "../../helpers/i18nHelper";
-import { RapidToolbarButton } from "../rapid-toolbar-button/RapidToolbarButton";
+import { RapidToolbarButtonComponent } from "../rapid-toolbar-button/RapidToolbarButton";
 
 export function configRapidToolbarHttpRequestButton(config: RapidToolbarHttpRequestButtonRockConfig): RapidToolbarHttpRequestButtonRockConfig {
   return config;
@@ -57,7 +57,7 @@ export function RapidToolbarHttpRequestButton(props: RapidToolbarHttpRequestButt
     });
   };
 
-  return <RapidToolbarButton {...buttonProps} onAction={handleAction} />;
+  return <RapidToolbarButtonComponent {...buttonProps} onAction={handleAction} />;
 }
 
 export default {

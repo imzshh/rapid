@@ -2,7 +2,7 @@ import { fireEvent, type Rock, type RockInstance } from "@ruiapp/move-style";
 import { genRockRenderer, renderRock, renderRockChildren } from "@ruiapp/react-renderer";
 import { Modal } from "antd";
 import { useState } from "react";
-import { RapidToolbarButton } from "../rapid-toolbar-button/RapidToolbarButton";
+import { RapidToolbarButtonComponent } from "../rapid-toolbar-button/RapidToolbarButton";
 import RapidToolbarModalButtonMeta from "./RapidToolbarModalButtonMeta";
 import type { RapidToolbarModalButtonProps, RapidToolbarModalButtonRockConfig } from "./rapid-toolbar-modal-button-types";
 import { omit } from "lodash";
@@ -70,7 +70,7 @@ export function RapidToolbarModalButton(props: RapidToolbarModalButtonProps) {
 
   return (
     <>
-      <RapidToolbarButton {...btnProps} text={text} onAction={handleOpen} />
+      <RapidToolbarButtonComponent {...btnProps} text={text} onAction={handleOpen} />
       <Modal title={modalTitle || text} open={modalOpen} onOk={handleOk} onCancel={handleCancel}>
         {renderRockChildren({ context, rockChildrenConfig: modalBody })}
       </Modal>

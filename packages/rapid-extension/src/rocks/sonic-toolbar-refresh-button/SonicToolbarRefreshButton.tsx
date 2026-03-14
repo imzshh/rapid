@@ -3,7 +3,7 @@ import { fireEvent } from "@ruiapp/move-style";
 import SonicToolbarRefreshButtonMeta from "./SonicToolbarRefreshButtonMeta";
 import { genRockRenderer } from "@ruiapp/react-renderer";
 import { SonicToolbarRefreshButtonProps, SonicToolbarRefreshButtonRockConfig } from "./sonic-toolbar-refresh-button-types";
-import { RapidToolbarButton } from "../rapid-toolbar-button/RapidToolbarButton";
+import { RapidToolbarButtonComponent } from "../rapid-toolbar-button/RapidToolbarButton";
 import { getExtensionLocaleStringResource } from "../../helpers/i18nHelper";
 
 export function configSonicToolbarRefreshButton(config: SonicToolbarRefreshButtonRockConfig): SonicToolbarRefreshButtonRockConfig {
@@ -26,7 +26,7 @@ export function SonicToolbarRefreshButton(props: SonicToolbarRefreshButtonProps)
     });
   };
 
-  return <RapidToolbarButton {...props} text={props.text || getExtensionLocaleStringResource(framework, "refresh")} onAction={handleAction} />;
+  return <RapidToolbarButtonComponent {...props} text={props.text || getExtensionLocaleStringResource(framework, "refresh")} onAction={handleAction} />;
 }
 
 export default {

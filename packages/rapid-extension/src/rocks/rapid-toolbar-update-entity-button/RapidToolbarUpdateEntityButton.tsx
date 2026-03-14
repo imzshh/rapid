@@ -7,7 +7,7 @@ import rapidAppDefinition from "../../rapidAppDefinition";
 import { message } from "antd";
 import { getExtensionLocaleStringResource } from "../../helpers/i18nHelper";
 import { getRapidApi } from "../../rapidApi";
-import { RapidToolbarButton } from "../rapid-toolbar-button/RapidToolbarButton";
+import { RapidToolbarButtonComponent } from "../rapid-toolbar-button/RapidToolbarButton";
 
 export function configRapidToolbarUpdateEntityButton(config: RapidToolbarUpdateEntityButtonRockConfig): RapidToolbarUpdateEntityButtonRockConfig {
   return config;
@@ -55,7 +55,7 @@ export function RapidToolbarUpdateEntityButton(props: RapidToolbarUpdateEntityBu
     }
   };
 
-  return <RapidToolbarButton {...props} onAction={handleAction} />;
+  return <RapidToolbarButtonComponent {...props} onAction={handleAction} />;
 }
 
 export default {

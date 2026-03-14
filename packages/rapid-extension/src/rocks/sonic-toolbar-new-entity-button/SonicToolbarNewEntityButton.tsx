@@ -3,7 +3,7 @@ import { fireEvent } from "@ruiapp/move-style";
 import SonicToolbarNewEntityButtonMeta from "./SonicToolbarNewEntityButtonMeta";
 import { genRockRenderer } from "@ruiapp/react-renderer";
 import { SonicToolbarNewEntityButtonProps, SonicToolbarNewEntityButtonRockConfig } from "./sonic-toolbar-new-entity-button-types";
-import { RapidToolbarButton } from "../rapid-toolbar-button/RapidToolbarButton";
+import { RapidToolbarButtonComponent } from "../rapid-toolbar-button/RapidToolbarButton";
 import { getExtensionLocaleStringResource } from "../../helpers/i18nHelper";
 
 export function configSonicToolbarNewEntityButton(config: SonicToolbarNewEntityButtonRockConfig): SonicToolbarNewEntityButtonRockConfig {
@@ -33,7 +33,12 @@ export function SonicToolbarNewEntityButton(props: SonicToolbarNewEntityButtonPr
   };
 
   return (
-    <RapidToolbarButton {...props} text={props.text || getExtensionLocaleStringResource(framework, "new")} actionEventName="onClick" onAction={handleAction} />
+    <RapidToolbarButtonComponent
+      {...props}
+      text={props.text || getExtensionLocaleStringResource(framework, "new")}
+      actionEventName="onClick"
+      onAction={handleAction}
+    />
   );
 }
 

@@ -230,7 +230,6 @@ export default {
       items: props.listActions,
       extras: toolbarExtraActions,
       rightExtras: toolboxEnabled ? [toolboxRockConfig] : [],
-      dataSourceCode: props.dataSourceCode,
     };
 
     const searchFormRockConfig: RockConfig | null = props.searchForm

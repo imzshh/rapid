@@ -2,7 +2,7 @@ import type { Rock, RockInstance, RockEvent } from "@ruiapp/move-style";
 import { genRockRenderer, renderRock } from "@ruiapp/react-renderer";
 import SonicToolbarSelectEntityButtonMeta from "./SonicToolbarSelectEntityButtonMeta";
 import type { SonicToolbarSelectEntityButtonProps, SonicToolbarSelectEntityButtonRockConfig } from "./sonic-toolbar-select-entity-button-types";
-import { RapidToolbarButton } from "../rapid-toolbar-button/RapidToolbarButton";
+import { RapidToolbarButtonComponent } from "../rapid-toolbar-button/RapidToolbarButton";
 import { Modal } from "antd";
 import { useState } from "react";
 import { getExtensionLocaleStringResource, getMetaEntityLocaleName } from "../../helpers/i18nHelper";
@@ -80,7 +80,7 @@ export function SonicToolbarSelectEntityButton(props: SonicToolbarSelectEntityBu
 
   return (
     <>
-      <RapidToolbarButton {...props} onAction={handleButtonClick} />
+      <RapidToolbarButtonComponent {...props} onAction={handleButtonClick} />
       <Modal
         open={modalOpen}
         title={getExtensionLocaleStringResource(framework, "selectEntityModalTitle", { entityName })}

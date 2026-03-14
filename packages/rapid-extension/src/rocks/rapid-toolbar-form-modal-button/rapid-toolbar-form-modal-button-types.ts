@@ -1,4 +1,4 @@
-import type { RockChildrenConfig, RockConfig, RockEventHandlerConfig, SimpleRockConfig } from "@ruiapp/move-style";
+import type { RockChildrenConfig, RockConfig, RockEventHandlerConfig } from "@ruiapp/move-style";
 import { RapidToolbarButtonProps } from "../rapid-toolbar-button/rapid-toolbar-button-types";
 
 export const RAPID_TOOLBAR_FORM_MODAL_BUTTON_ROCK_TYPE = "rapidToolbarFormModalButton" as const;
@@ -34,14 +34,11 @@ export interface RapidToolbarFormModalButtonProps extends Omit<RapidToolbarButto
   onSubmitError?: RockEventHandlerConfig;
 }
 
-export interface RapidToolbarFormModalButtonRockConfig
-  extends SimpleRockConfig,
-    Omit<RapidToolbarFormModalButtonProps, "onModalOpen" | "onModalOk" | "onModalCancel"> {
-  $type: typeof RAPID_TOOLBAR_FORM_MODAL_BUTTON_ROCK_TYPE;
-
-  onModalOpen?: RockEventHandlerConfig;
-
-  onModalOk?: RockEventHandlerConfig;
-
-  onModalCancel?: RockEventHandlerConfig;
-}
+export type RapidToolbarFormModalButtonRockConfig = RockConfig<
+  Omit<RapidToolbarFormModalButtonProps, "onModalOpen" | "onModalOk" | "onModalCancel"> & {
+    onModalOpen?: RockEventHandlerConfig;
+    onModalOk?: RockEventHandlerConfig;
+    onModalCancel?: RockEventHandlerConfig;
+  },
+  typeof RAPID_TOOLBAR_FORM_MODAL_BUTTON_ROCK_TYPE
+>;

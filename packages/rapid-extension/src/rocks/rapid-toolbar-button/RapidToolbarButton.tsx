@@ -11,7 +11,7 @@ export function configRapidToolbarButton(config: RockComponentProps<RapidToolbar
   return config as RapidToolbarButtonRockConfig;
 }
 
-export function RapidToolbarButtonComponent(props: RockInstanceProps<RapidToolbarButtonProps>) {
+export function RapidToolbarButtonComponent(props: RapidToolbarButtonProps) {
   const context = useRockInstanceContext();
   const { framework } = context;
   const {

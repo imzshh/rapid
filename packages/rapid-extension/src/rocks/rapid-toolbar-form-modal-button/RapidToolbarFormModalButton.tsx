@@ -1,21 +1,31 @@
-import { RockEventHandler, type Rock, type RockConfig, RockInstance, RockChildrenConfig } from "@ruiapp/move-style";
-import { genRockRenderer, renderRock, renderRockChildren } from "@ruiapp/react-renderer";
+import {
+  RockEventHandler,
+  type Rock,
+  type RockComponentProps,
+  type RockInstanceProps,
+  RockChildrenConfig,
+  omitSystemRockConfigFields,
+  RockInstance,
+} from "@ruiapp/move-style";
+import { renderRockChildren, useRockInstance, useRockInstanceContext, wrapToRockComponent } from "@ruiapp/react-renderer";
 import RapidToolbarFormModalButtonMeta from "./RapidToolbarFormModalButtonMeta";
 import { RapidToolbarFormModalButtonProps, RapidToolbarFormModalButtonRockConfig } from "./rapid-toolbar-form-modal-button-types";
 import { RapidFormRockConfig } from "../rapid-form/rapid-form-types";
 import { getExtensionLocaleStringResource } from "../../helpers/i18nHelper";
 import { Modal } from "antd";
 import { useState } from "react";
-import { RapidToolbarButton } from "../rapid-toolbar-button/RapidToolbarButton";
+import { RapidToolbarButtonComponent } from "../rapid-toolbar-button/RapidToolbarButton";
 import { omit } from "lodash";
 
-export function configRapidToolbarFormModalButton(config: RapidToolbarFormModalButtonRockConfig): RapidToolbarFormModalButtonRockConfig {
-  return config;
+export function configRapidToolbarFormModalButton(config: RockComponentProps<RapidToolbarFormModalButtonRockConfig>): RapidToolbarFormModalButtonRockConfig {
+  config.$type = RapidToolbarFormModalButtonMeta.$type;
+  return config as RapidToolbarFormModalButtonRockConfig;
 }
 
-export function RapidToolbarFormModalButton(props: RapidToolbarFormModalButtonProps) {
-  const { $id, _context: context } = props as any as RockInstance;
+export function RapidToolbarFormModalButtonComponent(props: RockInstanceProps<RapidToolbarFormModalButtonProps>) {
+  const context = useRockInstanceContext();
   const { framework, page } = context;
+  const { $id } = useRockInstance(props, RapidToolbarFormModalButtonMeta.$type);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalSaving, setModalSaving] = useState(false);
 
@@ -86,11 +96,11 @@ export function RapidToolbarFormModalButton(props: RapidToolbarFormModalButtonPr
     modalBody = props.modalBody || [];
   }
 
-  const btnProps = omit(props, ["$id", "_state", "_scope", "_initialized", "onModalOpen", "onModalOk", "onModalCancel"]);
+  const btnProps = omit(omitSystemRockConfigFields(props as RockInstance), ["onModalOpen", "onModalOk", "onModalCancel"]);
 
   return (
     <>
-      <RapidToolbarButton {...btnProps} onAction={handleOpen} />
+      <RapidToolbarButtonComponent {...btnProps} onAction={handleOpen} />
       <Modal
         title={props.modalTitle || props.text}
         open={modalOpen}
@@ -108,7 +118,9 @@ export function RapidToolbarFormModalButton(props: RapidToolbarFormModalButtonPr
   );
 }
 
+export const RapidToolbarFormModalButton = wrapToRockComponent(RapidToolbarFormModalButtonMeta, RapidToolbarFormModalButtonComponent);
+
 export default {
-  Renderer: genRockRenderer(RapidToolbarFormModalButtonMeta.$type, RapidToolbarFormModalButton, true),
+  Renderer: RapidToolbarFormModalButtonComponent,
   ...RapidToolbarFormModalButtonMeta,
 } as Rock<RapidToolbarFormModalButtonRockConfig>;
