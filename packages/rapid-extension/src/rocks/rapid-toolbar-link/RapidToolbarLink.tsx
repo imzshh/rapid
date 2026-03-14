@@ -1,21 +1,24 @@
-import { Rock } from "@ruiapp/move-style";
+import type { Rock, RockComponentProps, RockInstanceProps } from "@ruiapp/move-style";
 import { Button } from "antd";
 import RapidToolbarLinkMeta from "./RapidToolbarLinkMeta";
-import { genRockRenderer } from "@ruiapp/react-renderer";
-import { RapidToolbarLinkProps, RapidToolbarLinkRockConfig } from "./rapid-toolbar-link-types";
+import { wrapToRockComponent } from "@ruiapp/react-renderer";
+import type { RapidToolbarLinkProps, RapidToolbarLinkRockConfig } from "./rapid-toolbar-link-types";
 import AntdIcon from "../../components/antd-icon/AntdIcon";
 
-export function configRapidToolbarLink(config: RapidToolbarLinkRockConfig): RapidToolbarLinkRockConfig {
-  return config;
+export function configRapidToolbarLink(config: RockComponentProps<RapidToolbarLinkRockConfig>): RapidToolbarLinkRockConfig {
+  config.$type = RapidToolbarLinkMeta.$type;
+  return config as RapidToolbarLinkRockConfig;
 }
 
-export function RapidToolbarLink(props: RapidToolbarLinkProps) {
-  const { text, icon, actionStyle, danger, size, url, target, onAction, actionEventName = "onClick" } = props;
+export function RapidToolbarLinkComponent(props: RockInstanceProps<RapidToolbarLinkProps>) {
+  const { text, icon, actionStyle, danger, ghost, size, disabled, url, target, onAction, actionEventName = "onClick" } = props;
 
   const buttonProps: Record<string, any> = {
     type: actionStyle,
     danger,
+    ghost,
     size,
+    disabled,
     href: url,
     target,
   };
@@ -31,7 +34,9 @@ export function RapidToolbarLink(props: RapidToolbarLinkProps) {
   );
 }
 
+export const RapidToolbarLink = wrapToRockComponent(RapidToolbarLinkMeta, RapidToolbarLinkComponent);
+
 export default {
-  Renderer: genRockRenderer(RapidToolbarLinkMeta.$type, RapidToolbarLink, true),
+  Renderer: RapidToolbarLinkComponent,
   ...RapidToolbarLinkMeta,
 } as Rock<RapidToolbarLinkRockConfig>;

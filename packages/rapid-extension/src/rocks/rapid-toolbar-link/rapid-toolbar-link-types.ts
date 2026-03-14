@@ -1,4 +1,4 @@
-import type { RockEventHandlerConfig, SimpleRockConfig } from "@ruiapp/move-style";
+import type { RockConfig, RockEventHandlerConfig } from "@ruiapp/move-style";
 
 export const RAPID_TOOLBAR_LINK_ROCK_TYPE = "rapidToolbarLink" as const;
 
@@ -13,7 +13,7 @@ export interface RapidToolbarLinkProps {
   confirmTitle?: string;
   confirmText?: string;
   recordId?: string;
-  onAction?: RockEventHandlerConfig;
+  onAction?: () => Promise<void> | void;
   actionStyle?: "default" | "primary" | "dashed" | "text" | "link";
   danger?: boolean;
   ghost?: boolean;
@@ -22,6 +22,9 @@ export interface RapidToolbarLinkProps {
   target?: string;
 }
 
-export interface RapidToolbarLinkRockConfig extends SimpleRockConfig, RapidToolbarLinkProps {
-  $type: typeof RAPID_TOOLBAR_LINK_ROCK_TYPE;
-}
+export type RapidToolbarLinkRockConfig = RockConfig<
+  Omit<RapidToolbarLinkProps, "onAction"> & {
+    onAction?: RockEventHandlerConfig;
+  },
+  typeof RAPID_TOOLBAR_LINK_ROCK_TYPE
+>;
