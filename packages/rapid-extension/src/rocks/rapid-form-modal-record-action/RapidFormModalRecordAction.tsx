@@ -7,7 +7,7 @@ import { Modal, message } from "antd";
 import { RapidFormRockConfig } from "../rapid-form/rapid-form-types";
 import { getExtensionLocaleStringResource } from "../../helpers/i18nHelper";
 import { useState } from "react";
-import { RapidTableAction } from "../rapid-table-action/RapidTableAction";
+import { RapidTableActionComponent } from "../rapid-table-action/RapidTableAction";
 
 export function configRapidFormModalRecordAction(config: RapidFormModalRecordActionRockConfig): RapidFormModalRecordActionRockConfig {
   return config;
@@ -111,7 +111,7 @@ export function RapidFormModalRecordAction(props: RapidFormModalRecordActionRock
 
   return (
     <>
-      <RapidTableAction {...MoveStyleUtils.omitSystemRockConfigFields(props as RockConfig)} onAction={handleOpenModal} />
+      <RapidTableActionComponent {...MoveStyleUtils.omitSystemRockConfigFields(props as RockConfig)} onAction={handleOpenModal} />
       <Modal
         title={props.modalTitle || props.actionText}
         open={modalOpen}

@@ -1,4 +1,4 @@
-import { Rock, RockComponentProps, RockInstanceProps, fireEvent } from "@ruiapp/move-style";
+import { Rock, RockComponentProps } from "@ruiapp/move-style";
 import RapidTableActionMeta from "./RapidTableActionMeta";
 import { RapidTableActionProps, RapidTableActionRockConfig } from "./rapid-table-action-types";
 import { useRockInstanceContext, wrapToRockComponent } from "@ruiapp/react-renderer";
@@ -12,7 +12,7 @@ export function configRapidTableAction(config: RockComponentProps<RapidTableActi
   return config as RapidTableActionRockConfig;
 }
 
-export function RapidTableActionComponent(props: RockInstanceProps<RapidTableActionProps>) {
+export function RapidTableActionComponent(props: RapidTableActionProps) {
   const context = useRockInstanceContext();
   const { framework } = context;
   const { record, recordId, actionText, confirmTitle, confirmText, onAction, disabled, disabledTooltipText, url } = props;

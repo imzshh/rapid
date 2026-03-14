@@ -7,11 +7,10 @@ import { isUndefined, merge, set } from "lodash";
 import rapidAppDefinition from "../../rapidAppDefinition";
 import type { RapidDataDictionaryEntry, RapidField, RapidFieldType } from "@ruiapp/rapid-common";
 import { generateRockConfigOfError } from "../../rock-generators/generateRockConfigOfError";
-import type { EntityStoreConfig } from "../../stores/entity-store";
 import type { RapidFormItemConfig, RapidFormItemType } from "../rapid-form-item/rapid-form-item-types";
 import type { RapidFormRockConfig } from "../rapid-form/rapid-form-types";
 import type { RapidSelectRockConfig } from "../rapid-select/rapid-select-types";
-import { RapidOptionFieldRendererConfig } from "../rapid-option-field-renderer/rapid-option-field-renderer-types";
+import { RapidOptionFieldRendererProps } from "../rapid-option-field-renderer/rapid-option-field-renderer-types";
 import { message } from "antd";
 import { RapidEntityTableSelectRockConfig } from "../rapid-entity-table-select/rapid-entity-table-select-types";
 import { generateEntityDetailStoreConfig } from "../../helpers/entityStoreHelper";
@@ -112,7 +111,7 @@ function generateDataFormItemForOptionProperty(
     formItemConfig.rendererProps ||
     ({
       dictionaryCode: dataDictionaryCode,
-    } as RapidOptionFieldRendererConfig);
+    } as RapidOptionFieldRendererProps);
 
   let formItemType = decideFormItemType(formItemConfig, rpdField);
 

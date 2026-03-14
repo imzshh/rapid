@@ -1,15 +1,14 @@
-import type { Rock, RuiRockLogger, RockConfig, RockInstance } from "@ruiapp/move-style";
-import { genRockRenderer, renderRock } from "@ruiapp/react-renderer";
+import type { Rock, RockComponentProps, RockConfig, RockInstanceProps, RuiRockLogger } from "@ruiapp/move-style";
+import { renderRock, useRockInstance, useRockInstanceContext, wrapToRockComponent } from "@ruiapp/react-renderer";
 import RapidEntityDescriptionsMeta from "./RapidEntityDescriptionsMeta";
 import type { RapidDescriptionsItemConfig, RapidEntityDescriptionsProps, RapidEntityDescriptionsRockConfig } from "./rapid-entity-descriptions-types";
-import { get, isUndefined, omit } from "lodash";
+import { get, isUndefined } from "lodash";
 import rapidAppDefinition from "../../rapidAppDefinition";
-import type { RapidDataDictionary, RapidDataDictionaryEntry, RapidEntity, RapidField, RapidFieldType } from "@ruiapp/rapid-common";
+import type { RapidDataDictionary, RapidEntity, RapidField } from "@ruiapp/rapid-common";
 import { generateRockConfigOfError } from "../../rock-generators/generateRockConfigOfError";
-import { RapidOptionFieldRendererConfig } from "../rapid-option-field-renderer/rapid-option-field-renderer-types";
+import type { RapidOptionFieldRendererProps } from "../rapid-option-field-renderer/rapid-option-field-renderer-types";
 import RapidExtensionSetting from "../../RapidExtensionSetting";
 import { generateEntityDetailStoreConfig } from "../../helpers/entityStoreHelper";
-import { Descriptions } from "antd";
 
 export interface GenerateEntityDescriptionItemOption {
   descriptionItemConfig: RapidDescriptionsItemConfig;
@@ -23,7 +22,7 @@ function generateDescriptionItemForOptionProperty(option: GenerateEntityDescript
   const rpdField = rapidAppDefinition.getEntityFieldByCode(mainEntity, descriptionItemConfig.code);
   const dataDictionaryCode = rpdField?.dataDictionary;
 
-  let rendererProps: RapidOptionFieldRendererConfig = {
+  let rendererProps: RapidOptionFieldRendererProps = {
     dictionaryCode: dataDictionaryCode,
   };
   let descriptionItem: RapidDescriptionsItemConfig = {
@@ -95,12 +94,14 @@ function generateDataDescriptionItem(logger: RuiRockLogger, entityDescriptionsPr
   return descriptionItem;
 }
 
-export function configRapidEntityDescriptions(config: RapidEntityDescriptionsRockConfig): RapidEntityDescriptionsRockConfig {
-  return config;
+export function configRapidEntityDescriptions(config: RockComponentProps<RapidEntityDescriptionsRockConfig>): RapidEntityDescriptionsRockConfig {
+  config.$type = RapidEntityDescriptionsMeta.$type;
+  return config as RapidEntityDescriptionsRockConfig;
 }
 
-export function RapidEntityDescriptions(props: RapidEntityDescriptionsProps) {
-  const { $id, _context: context } = props as any as RockInstance;
+export function RapidEntityDescriptionsComponent(props: RockInstanceProps<RapidEntityDescriptionsProps>) {
+  const context = useRockInstanceContext();
+  const { $id } = useRockInstance(props, RapidEntityDescriptionsMeta.$type);
   const { page, scope, framework } = context;
   const logger = framework.getRockLogger(RapidEntityDescriptionsMeta.$type, $id);
   const dataDictionaries = rapidAppDefinition.getDataDictionaries();
@@ -211,6 +212,8 @@ export function RapidEntityDescriptions(props: RapidEntityDescriptionsProps) {
   return renderRock({ context, rockConfig });
 }
 
+export const RapidEntityDescriptions = wrapToRockComponent(RapidEntityDescriptionsMeta, RapidEntityDescriptionsComponent);
+
 export default {
   onInit(context, props) {
     const mainEntityCode = props.entityCode;
@@ -235,7 +238,7 @@ export default {
     }
   },
 
-  Renderer: genRockRenderer(RapidEntityDescriptionsMeta.$type, RapidEntityDescriptions, true),
+  Renderer: RapidEntityDescriptionsComponent,
 
   ...RapidEntityDescriptionsMeta,
 } as Rock<RapidEntityDescriptionsRockConfig>;

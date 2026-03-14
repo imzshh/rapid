@@ -2,7 +2,7 @@ import { Rock, RockInstance } from "@ruiapp/move-style";
 import SonicRecordActionDeleteEntityMeta from "./SonicRecordActionDeleteEntityMeta";
 import { genRockRenderer } from "@ruiapp/react-renderer";
 import { SonicRecordActionDeleteEntityProps, SonicRecordActionDeleteEntityRockConfig } from "./sonic-record-action-delete-entity-types";
-import { RapidTableAction } from "../rapid-table-action/RapidTableAction";
+import { RapidTableActionComponent } from "../rapid-table-action/RapidTableAction";
 import { getExtensionLocaleStringResource } from "../../helpers/i18nHelper";
 import { omit } from "lodash";
 
@@ -35,7 +35,7 @@ export function SonicRecordActionDeleteEntity(props: SonicRecordActionDeleteEnti
   const actionText = props.actionText || getExtensionLocaleStringResource(framework, "delete");
   const rapidTableActionProps = omit(props, ["confirmTitle", "confirmText"]);
 
-  return <RapidTableAction {...rapidTableActionProps} actionText={actionText} onAction={handleAction} />;
+  return <RapidTableActionComponent {...rapidTableActionProps} actionText={actionText} onAction={handleAction} />;
 }
 
 export default {

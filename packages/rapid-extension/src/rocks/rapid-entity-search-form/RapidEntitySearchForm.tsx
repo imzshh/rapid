@@ -11,7 +11,7 @@ import { generateRockConfigOfError } from "../../rock-generators/generateRockCon
 import type { RapidFormItemConfig, RapidFormItemType, RapidSearchFormItemConfig } from "../rapid-form-item/rapid-form-item-types";
 import type { RapidFormAction, RapidFormRockConfig } from "../rapid-form/rapid-form-types";
 import type { RapidSelectRockConfig } from "../rapid-select/rapid-select-types";
-import { RapidOptionFieldRendererConfig } from "../rapid-option-field-renderer/rapid-option-field-renderer-types";
+import type { RapidOptionFieldRendererProps } from "../rapid-option-field-renderer/rapid-option-field-renderer-types";
 import { searchParamsToFilters } from "../../functions/searchParamsToFilters";
 import { RapidEntityTableSelectRockConfig } from "../rapid-entity-table-select/rapid-entity-table-select-types";
 import { RapidExtStorage } from "../../utils/storage-utility";
@@ -85,13 +85,12 @@ function generateSearchFormItemForOptionProperty(framework: Framework, option: G
     allowClear: !formItemConfig.required,
     placeholder: formItemConfig.placeholder,
     mode: isMultiple ? "multiple" : undefined,
-    multiple: isMultiple,
     listItems: dictionaryEntries,
     listTextFieldName: "name",
     listValueFieldName: "value",
     ...formItemConfig.formControlProps,
   };
-  let rendererProps: RapidOptionFieldRendererConfig = {
+  let rendererProps: Partial<RapidOptionFieldRendererProps> = {
     dictionaryCode: dataDictionaryCode,
   };
   let formItem: RapidFormItemConfig = {
@@ -137,7 +136,6 @@ export function generateSearchFormItemForRelationProperty(framework: Framework, 
     allowClear: !formItemConfig.required,
     placeholder: formItemConfig.placeholder,
     mode: isMultiple ? "multiple" : undefined,
-    multiple: isMultiple,
     valueFieldName: "id",
     ...formItemConfig.formControlProps,
     listDataSourceCode,
@@ -185,7 +183,6 @@ function generateSearchFormItem(framework: Framework, logger: RuiRockLogger, ent
 
   const formControlProps = {
     mode: isMultiple ? "multiple" : undefined,
-    multiple: isMultiple,
     ...(formItemConfig.formControlProps || {}),
   };
 

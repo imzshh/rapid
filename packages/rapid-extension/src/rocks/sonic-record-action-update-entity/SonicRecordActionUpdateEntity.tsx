@@ -2,7 +2,7 @@ import { Rock, RockInstance } from "@ruiapp/move-style";
 import SonicRecordActionUpdateEntityMeta from "./SonicRecordActionUpdateEntityMeta";
 import { genRockRenderer } from "@ruiapp/react-renderer";
 import { SonicRecordActionUpdateEntityProps, SonicRecordActionUpdateEntityRockConfig } from "./sonic-record-action-update-entity-types";
-import { RapidTableAction } from "../rapid-table-action/RapidTableAction";
+import { RapidTableActionComponent } from "../rapid-table-action/RapidTableAction";
 
 export function configSonicRecordActionUpdateEntity(config: SonicRecordActionUpdateEntityRockConfig): SonicRecordActionUpdateEntityRockConfig {
   return config;
@@ -31,7 +31,7 @@ export function SonicRecordActionUpdateEntity(props: SonicRecordActionUpdateEnti
     });
   };
 
-  return <RapidTableAction {...props} onAction={handleAction} />;
+  return <RapidTableActionComponent {...props} onAction={handleAction} />;
 }
 
 export default {
