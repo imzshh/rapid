@@ -1,9 +1,11 @@
-import type { RockEventHandler, RockEventHandlerConfig, SimpleRockConfig } from "@ruiapp/move-style";
+import type { RockConfig, RockEventHandlerConfig } from "@ruiapp/move-style";
+
+export const RAPID_TREE_SELECT_ROCK_TYPE = "rapidTreeSelect" as const;
 
 /**
  * 下拉树选择组件
  */
-export interface RapidTreeSelectConfig extends SimpleRockConfig {
+export interface RapidTreeSelectProps {
   /**
    * 是否支持清除
    */
@@ -28,6 +30,12 @@ export interface RapidTreeSelectConfig extends SimpleRockConfig {
    * 下拉列表的数据源编号
    */
   listDataSourceCode?: string;
+
+  listDataSource?: {
+    data?: {
+      list: Record<string, any>[];
+    };
+  };
 
   /**
    * 树节点中表示值的字段名。默认为`id`。
@@ -62,4 +70,13 @@ export interface RapidTreeSelectConfig extends SimpleRockConfig {
   listIdField?: string;
   treeChildrenField?: string;
   treeTopParentValue?: string | number;
+
+  onChange?: (value: any, label: any, extra: any) => void;
 }
+
+export type RapidTreeSelectRockConfig = RockConfig<
+  Omit<RapidTreeSelectProps, "onChange"> & {
+    onChange?: RockEventHandlerConfig;
+  },
+  typeof RAPID_TREE_SELECT_ROCK_TYPE
+>;

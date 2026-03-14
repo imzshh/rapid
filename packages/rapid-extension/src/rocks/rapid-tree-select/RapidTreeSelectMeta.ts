@@ -1,7 +1,8 @@
-import { RockMeta } from "@ruiapp/move-style";
+import type { RockMeta } from "@ruiapp/move-style";
+import { RAPID_TREE_SELECT_ROCK_TYPE } from "./rapid-tree-select-types";
 
 export default {
-  $type: "rapidTreeSelect",
+  $type: RAPID_TREE_SELECT_ROCK_TYPE,
 
   slots: {},
 
@@ -49,4 +50,4 @@ export default {
       ],
     },
   ],
-} as RockMeta;
+} as RockMeta<typeof RAPID_TREE_SELECT_ROCK_TYPE>;
