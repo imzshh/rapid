@@ -1,10 +1,12 @@
-import type { RockConfig, SimpleRockConfig } from "@ruiapp/move-style";
+import type { RockConfig } from "@ruiapp/move-style";
 
-export type RapidToolbarConfig = {
-  extraClassName?: "";
+export const RAPID_TOOLBAR_ROCK_TYPE = "rapidToolbar" as const;
+
+export interface RapidToolbarProps {
+  extraClassName?: string;
   items?: RockConfig[];
   extras?: RockConfig[];
   rightExtras?: RockConfig[];
-};
+}
 
-export interface RapidToolbarRockConfig extends SimpleRockConfig, RapidToolbarConfig {}
+export type RapidToolbarRockConfig = RockConfig<RapidToolbarProps, typeof RAPID_TOOLBAR_ROCK_TYPE>;
