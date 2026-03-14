@@ -1,5 +1,5 @@
-import type { RockEventHandlerConfig, SimpleRockConfig } from "@ruiapp/move-style";
-import { RapidToolbarButtonProps } from "../rapid-toolbar-button/rapid-toolbar-button-types";
+import type { RockConfig, RockEventHandlerConfig } from "@ruiapp/move-style";
+import type { RapidToolbarButtonProps } from "../rapid-toolbar-button/rapid-toolbar-button-types";
 
 export const RAPID_TOOLBAR_UPDATE_ENTITY_BUTTON_ROCK_TYPE = "rapidToolbarUpdateEntityButton" as const;
 
@@ -13,8 +13,10 @@ export interface RapidToolbarUpdateEntityButtonProps extends RapidToolbarButtonP
   onError?: () => Promise<void> | void;
 }
 
-export interface RapidToolbarUpdateEntityButtonRockConfig extends SimpleRockConfig, Omit<RapidToolbarUpdateEntityButtonProps, "onSuccess" | "onError"> {
-  $type: typeof RAPID_TOOLBAR_UPDATE_ENTITY_BUTTON_ROCK_TYPE;
-  onSuccess?: RockEventHandlerConfig;
-  onError?: RockEventHandlerConfig;
-}
+export type RapidToolbarUpdateEntityButtonRockConfig = RockConfig<
+  Omit<RapidToolbarUpdateEntityButtonProps, "onSuccess" | "onError"> & {
+    onSuccess?: RockEventHandlerConfig;
+    onError?: RockEventHandlerConfig;
+  },
+  typeof RAPID_TOOLBAR_UPDATE_ENTITY_BUTTON_ROCK_TYPE
+>;
