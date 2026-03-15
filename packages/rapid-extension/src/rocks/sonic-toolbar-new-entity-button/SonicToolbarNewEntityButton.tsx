@@ -1,17 +1,17 @@
-import type { Rock, RockInstance } from "@ruiapp/move-style";
-import { fireEvent } from "@ruiapp/move-style";
+import type { Rock, RockComponentProps, RockInstance, RockInstanceProps } from "@ruiapp/move-style";
+import { fireEvent, omitSystemRockConfigFields } from "@ruiapp/move-style";
 import SonicToolbarNewEntityButtonMeta from "./SonicToolbarNewEntityButtonMeta";
-import { genRockRenderer } from "@ruiapp/react-renderer";
-import { SonicToolbarNewEntityButtonProps, SonicToolbarNewEntityButtonRockConfig } from "./sonic-toolbar-new-entity-button-types";
+import { useRockInstanceContext, wrapToRockComponent } from "@ruiapp/react-renderer";
+import type { SonicToolbarNewEntityButtonProps, SonicToolbarNewEntityButtonRockConfig } from "./sonic-toolbar-new-entity-button-types";
 import { RapidToolbarButtonComponent } from "../rapid-toolbar-button/RapidToolbarButton";
 import { getExtensionLocaleStringResource } from "../../helpers/i18nHelper";
-
-export function configSonicToolbarNewEntityButton(config: SonicToolbarNewEntityButtonRockConfig): SonicToolbarNewEntityButtonRockConfig {
-  return config;
+export function configSonicToolbarNewEntityButton(config: RockComponentProps<SonicToolbarNewEntityButtonRockConfig>): SonicToolbarNewEntityButtonRockConfig {
+  config.$type = SonicToolbarNewEntityButtonMeta.$type;
+  return config as SonicToolbarNewEntityButtonRockConfig;
 }
 
-export function SonicToolbarNewEntityButton(props: SonicToolbarNewEntityButtonProps) {
-  const { _context: context } = props as any as RockInstance;
+export function SonicToolbarNewEntityButtonComponent(props: RockInstanceProps<SonicToolbarNewEntityButtonProps>) {
+  const context = useRockInstanceContext();
   const { framework, page, scope } = context;
 
   const handleAction = async () => {
@@ -32,9 +32,11 @@ export function SonicToolbarNewEntityButton(props: SonicToolbarNewEntityButtonPr
     });
   };
 
+  const btnProps = omitSystemRockConfigFields(props as RockInstance);
+
   return (
     <RapidToolbarButtonComponent
-      {...props}
+      {...btnProps}
       text={props.text || getExtensionLocaleStringResource(framework, "new")}
       actionEventName="onClick"
       onAction={handleAction}
@@ -42,7 +44,9 @@ export function SonicToolbarNewEntityButton(props: SonicToolbarNewEntityButtonPr
   );
 }
 
+export const SonicToolbarNewEntityButton = wrapToRockComponent(SonicToolbarNewEntityButtonMeta, SonicToolbarNewEntityButtonComponent);
+
 export default {
-  Renderer: genRockRenderer(SonicToolbarNewEntityButtonMeta.$type, SonicToolbarNewEntityButton, true),
+  Renderer: SonicToolbarNewEntityButtonComponent,
   ...SonicToolbarNewEntityButtonMeta,
 } as Rock<SonicToolbarNewEntityButtonRockConfig>;

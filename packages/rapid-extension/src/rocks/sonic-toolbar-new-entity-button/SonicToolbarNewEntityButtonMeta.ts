@@ -7,4 +7,4 @@ export default {
   slots: {},
 
   propertyPanels: [],
-} as RockMeta;
+} as RockMeta<typeof SONIC_TOOLBAR_NEW_ENTITY_BUTTON_ROCK_TYPE>;
