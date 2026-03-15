@@ -1,5 +1,5 @@
-import type { Rock, RockInstance, RockEvent } from "@ruiapp/move-style";
-import { genRockRenderer, renderRock } from "@ruiapp/react-renderer";
+import { omitSystemRockConfigFields, type Rock, type RockComponentProps, type RockEvent, type RockInstance, type RockInstanceProps } from "@ruiapp/move-style";
+import { renderRock, useRockInstance, useRockInstanceContext, wrapToRockComponent } from "@ruiapp/react-renderer";
 import SonicToolbarSelectEntityButtonMeta from "./SonicToolbarSelectEntityButtonMeta";
 import type { SonicToolbarSelectEntityButtonProps, SonicToolbarSelectEntityButtonRockConfig } from "./sonic-toolbar-select-entity-button-types";
 import { RapidToolbarButtonComponent } from "../rapid-toolbar-button/RapidToolbarButton";
@@ -10,13 +10,17 @@ import rapidAppDefinition from "../../rapidAppDefinition";
 import { find, get } from "lodash";
 import type { SonicEntityListRockConfig } from "../sonic-entity-list/sonic-entity-list-types";
 
-export function configSonicToolbarSelectEntityButton(config: SonicToolbarSelectEntityButtonRockConfig): SonicToolbarSelectEntityButtonRockConfig {
-  return config;
+export function configSonicToolbarSelectEntityButton(
+  config: RockComponentProps<SonicToolbarSelectEntityButtonRockConfig>,
+): SonicToolbarSelectEntityButtonRockConfig {
+  config.$type = SonicToolbarSelectEntityButtonMeta.$type;
+  return config as SonicToolbarSelectEntityButtonRockConfig;
 }
 
-export function SonicToolbarSelectEntityButton(props: SonicToolbarSelectEntityButtonProps) {
-  const { $id, _context: context } = props as any as RockInstance;
+export function SonicToolbarSelectEntityButtonComponent(props: RockInstanceProps<SonicToolbarSelectEntityButtonProps>) {
+  const context = useRockInstanceContext();
   const { framework } = context;
+  const { $id } = useRockInstance(props, SonicToolbarSelectEntityButtonMeta.$type);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedIds, setSelectedIds] = useState<any[]>([]);
   const [selectedRecords, setSelectedRecords] = useState<any[]>([]);
@@ -34,7 +38,7 @@ export function SonicToolbarSelectEntityButton(props: SonicToolbarSelectEntityBu
   };
 
   const handleModalOk = async () => {
-    props.onSelected?.({ selectedIds, selectedRecords });
+    await props.onSelected?.({ selectedIds, selectedRecords });
     setModalOpen(false);
   };
 
@@ -78,9 +82,11 @@ export function SonicToolbarSelectEntityButton(props: SonicToolbarSelectEntityBu
     ],
   };
 
+  const buttonProps = omitSystemRockConfigFields(props as unknown as RockInstance);
+
   return (
     <>
-      <RapidToolbarButtonComponent {...props} onAction={handleButtonClick} />
+      <RapidToolbarButtonComponent {...buttonProps} onAction={handleButtonClick} />
       <Modal
         open={modalOpen}
         title={getExtensionLocaleStringResource(framework, "selectEntityModalTitle", { entityName })}
@@ -94,7 +100,9 @@ export function SonicToolbarSelectEntityButton(props: SonicToolbarSelectEntityBu
   );
 }
 
+export const SonicToolbarSelectEntityButton = wrapToRockComponent(SonicToolbarSelectEntityButtonMeta, SonicToolbarSelectEntityButtonComponent);
+
 export default {
-  Renderer: genRockRenderer(SonicToolbarSelectEntityButtonMeta.$type, SonicToolbarSelectEntityButton, true),
+  Renderer: SonicToolbarSelectEntityButtonComponent,
   ...SonicToolbarSelectEntityButtonMeta,
 } as Rock<SonicToolbarSelectEntityButtonRockConfig>;

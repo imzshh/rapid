@@ -1,8 +1,8 @@
-import type { RockConfig, RockEventHandlerConfig, SimpleRockConfig } from "@ruiapp/move-style";
+import type { RockConfig, RockEventHandlerConfig } from "@ruiapp/move-style";
 import type { EntityFilterFieldOperators, EntityFilterOptions, FindEntityOrderByOptions } from "@ruiapp/rapid-common";
 import type { RapidToolbarButtonProps } from "../rapid-toolbar-button/rapid-toolbar-button-types";
 import type { RapidTableColumnConfig } from "../rapid-table-column/rapid-table-column-types";
-import { IRapidEntityListToolboxConfig } from "../rapid-entity-list-toolbox/RapidEntityListToolbox";
+import type { IRapidEntityListToolboxConfig } from "../rapid-entity-list-toolbox/RapidEntityListToolbox";
 
 export const SONIC_TOOLBAR_SELECT_ENTITY_BUTTON_ROCK_TYPE = "sonicToolbarSelectEntityButton" as const;
 
@@ -65,8 +65,9 @@ export interface SonicToolbarSelectEntityButtonProps extends Omit<RapidToolbarBu
   onSelected?: (args: { selectedIds: any[]; selectedRecords: any[] }) => Promise<void> | void;
 }
 
-export interface SonicToolbarSelectEntityButtonRockConfig extends SimpleRockConfig, Omit<SonicToolbarSelectEntityButtonProps, "onSelected"> {
-  $type: typeof SONIC_TOOLBAR_SELECT_ENTITY_BUTTON_ROCK_TYPE;
-
-  onSelected?: RockEventHandlerConfig;
-}
+export type SonicToolbarSelectEntityButtonRockConfig = RockConfig<
+  Omit<SonicToolbarSelectEntityButtonProps, "onSelected"> & {
+    onSelected?: RockEventHandlerConfig;
+  },
+  typeof SONIC_TOOLBAR_SELECT_ENTITY_BUTTON_ROCK_TYPE
+>;
