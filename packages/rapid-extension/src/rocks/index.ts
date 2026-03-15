@@ -7,7 +7,6 @@ import RapidMonthPicker from "./rapid-month-picker/RapidMonthPicker";
 import RapidDateTimeRenderer from "./rapid-date-time-renderer/RapidDateTimeRenderer";
 import RapidDescriptionsRenderer from "./rapid-descriptions-renderer/RapidDescriptionsRenderer";
 import RapidDictionaryEntryRenderer from "./rapid-dictionary-entry-renderer/RapidDictionaryEntryRenderer";
-import RapidDocumentFormControl from "./rapid-document-form-control/RapidDocumentFormControl";
 import RapidEntityDescriptions from "./rapid-entity-descriptions/RapidEntityDescriptions";
 import RapidEntityForm from "./rapid-entity-form/RapidEntityForm";
 import RapidEntityList from "./rapid-entity-list/RapidEntityList";
@@ -81,7 +80,6 @@ export default [
   RapidDateTimeRenderer,
   RapidDescriptionsRenderer,
   RapidDictionaryEntryRenderer,
-  RapidDocumentFormControl,
   RapidEntityDescriptions,
   RapidEntityForm,
   RapidEntityList,

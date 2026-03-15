@@ -1,6 +1,6 @@
-import { RockConfig, SimpleRockConfig } from "@ruiapp/move-style";
-import { RapidFieldType } from "@ruiapp/rapid-common";
-import { ReactNode } from "react";
+import type { RockConfig } from "@ruiapp/move-style";
+import type { RapidFieldType } from "@ruiapp/rapid-common";
+import type { CSSProperties, ReactNode } from "react";
 
 export const RAPID_DESCRIPTIONS_RENDERER_ROCK_TYPE = "rapidDescriptionsRenderer" as const;
 
@@ -38,12 +38,12 @@ export interface RapidDescriptionsItemRenderConfig {
   /**
    * label样式
    */
-  labelStyle?: React.CSSProperties;
+  labelStyle?: CSSProperties;
 
   /**
    * content样式
    */
-  contentStyle?: React.CSSProperties;
+  contentStyle?: CSSProperties;
 
   /**
    * 跨越的列数
@@ -136,7 +136,7 @@ export interface RapidDescriptionsRendererProps {
   /**
    * label样式
    */
-  labelStyle?: React.CSSProperties;
+  labelStyle?: CSSProperties;
 
   /**
    * 描述列表项配置
@@ -149,11 +149,9 @@ export interface RapidDescriptionsRendererProps {
   extra?: () => ReactNode;
 }
 
-export interface RapidDescriptionsRendererRockConfig extends SimpleRockConfig, Omit<RapidDescriptionsRendererProps, "extra"> {
-  $type: typeof RAPID_DESCRIPTIONS_RENDERER_ROCK_TYPE;
-
-  /**
-   * 额外内容
-   */
-  extra?: RockConfig;
-}
+export type RapidDescriptionsRendererRockConfig = RockConfig<
+  Omit<RapidDescriptionsRendererProps, "extra"> & {
+    extra?: RockConfig;
+  },
+  typeof RAPID_DESCRIPTIONS_RENDERER_ROCK_TYPE
+>;

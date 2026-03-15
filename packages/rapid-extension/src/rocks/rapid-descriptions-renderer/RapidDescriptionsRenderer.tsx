@@ -1,5 +1,5 @@
-import { Rock, RockConfig } from "@ruiapp/move-style";
-import { genRockRenderer, renderRock } from "@ruiapp/react-renderer";
+import { Rock, RockComponentProps, RockConfig, RockInstanceProps } from "@ruiapp/move-style";
+import { renderRock, useRockInstance, useRockInstanceContext, wrapToRockComponent, wrapToRockRenderer } from "@ruiapp/react-renderer";
 import { Descriptions } from "antd";
 import type { DescriptionsProps } from "antd";
 import RapidDescriptionsRendererMeta from "./RapidDescriptionsRendererMeta";
@@ -7,12 +7,15 @@ import { RapidDescriptionsRendererProps, RapidDescriptionsRendererRockConfig } f
 import { get } from "lodash";
 import RapidExtensionSetting from "../../RapidExtensionSetting";
 
-export function configRapidDescriptionsRenderer(config: RapidDescriptionsRendererRockConfig): RapidDescriptionsRendererRockConfig {
-  return config;
+export function configRapidDescriptionsRenderer(config: RockComponentProps<RapidDescriptionsRendererRockConfig>): RapidDescriptionsRendererRockConfig {
+  config.$type = RapidDescriptionsRendererMeta.$type;
+  return config as RapidDescriptionsRendererRockConfig;
 }
 
-export function RapidDescriptionsRenderer(props: RapidDescriptionsRendererProps & { $id?: string; _context?: any }) {
-  const { $id, value, title, layout, size, bordered, colon, column, labelStyle, items, extra, _context: context } = props;
+export function RapidDescriptionsRendererComponent(props: RockInstanceProps<RapidDescriptionsRendererProps>) {
+  const context = useRockInstanceContext();
+  const { $id } = useRockInstance(props, RapidDescriptionsRendererMeta.$type);
+  const { value, title, layout, size, bordered, colon, column, labelStyle, items, extra } = props;
 
   const antdProps: DescriptionsProps = {
     title,
@@ -51,7 +54,9 @@ export function RapidDescriptionsRenderer(props: RapidDescriptionsRendererProps 
   );
 }
 
+export const RapidDescriptionsRenderer = wrapToRockComponent(RapidDescriptionsRendererMeta, RapidDescriptionsRendererComponent);
+
 export default {
-  Renderer: genRockRenderer(RapidDescriptionsRendererMeta.$type, RapidDescriptionsRenderer, true),
+  Renderer: wrapToRockRenderer(RapidDescriptionsRendererMeta, RapidDescriptionsRendererComponent),
   ...RapidDescriptionsRendererMeta,
 } as Rock<RapidDescriptionsRendererRockConfig>;

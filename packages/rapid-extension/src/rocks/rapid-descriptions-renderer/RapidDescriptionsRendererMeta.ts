@@ -72,4 +72,4 @@ export default {
       ],
     },
   ],
-} as RockMeta;
+} as RockMeta<typeof RAPID_DESCRIPTIONS_RENDERER_ROCK_TYPE>;
