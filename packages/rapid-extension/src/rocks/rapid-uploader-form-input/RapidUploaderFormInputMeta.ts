@@ -4,5 +4,7 @@ import { RAPID_UPLOADER_FORM_INPUT_ROCK_TYPE } from "./rapid-uploader-form-input
 export default {
   $type: RAPID_UPLOADER_FORM_INPUT_ROCK_TYPE,
 
+  slots: {},
+
   propertyPanels: [],
-} as RockMeta;
+} as RockMeta<typeof RAPID_UPLOADER_FORM_INPUT_ROCK_TYPE>;

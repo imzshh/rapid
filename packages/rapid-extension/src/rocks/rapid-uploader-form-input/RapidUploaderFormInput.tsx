@@ -1,6 +1,6 @@
-import { Rock, RockInstance } from "@ruiapp/move-style";
+import { Rock, RockComponentProps, RockInstanceProps } from "@ruiapp/move-style";
 import RapidUploaderFormInputMeta from "./RapidUploaderFormInputMeta";
-import { genRockRenderer } from "@ruiapp/react-renderer";
+import { useRockInstanceContext, wrapToRockComponent } from "@ruiapp/react-renderer";
 import { RapidFileInfo, RapidUploaderFormInputProps, RapidUploaderFormInputRockConfig } from "./rapid-uploader-form-input-types";
 import { Button, Upload, UploadFile, UploadProps } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
@@ -8,12 +8,13 @@ import { isArray, set } from "lodash";
 import { useCallback, useMemo } from "react";
 import { getExtensionLocaleStringResource } from "~/helpers/i18nHelper";
 
-export function configRapidUploaderFormInput(config: RapidUploaderFormInputRockConfig): RapidUploaderFormInputRockConfig {
-  return config;
+export function configRapidUploaderFormInput(config: RockComponentProps<RapidUploaderFormInputRockConfig>): RapidUploaderFormInputRockConfig {
+  config.$type = RapidUploaderFormInputMeta.$type;
+  return config as RapidUploaderFormInputRockConfig;
 }
 
-export function RapidUploaderFormInput(props: RapidUploaderFormInputProps) {
-  const { _context: context } = props as any as RockInstance;
+export function RapidUploaderFormInputComponent(props: RockInstanceProps<RapidUploaderFormInputProps>) {
+  const context = useRockInstanceContext();
   const { framework } = context;
   const onUploadChange = useCallback<UploadProps["onChange"]>(
     (info) => {
@@ -100,7 +101,9 @@ function convertRpdFileInfoToAntdFileInfo(source: RapidFileInfo): UploadFile {
   };
 }
 
+export const RapidUploaderFormInput = wrapToRockComponent(RapidUploaderFormInputMeta, RapidUploaderFormInputComponent);
+
 export default {
-  Renderer: genRockRenderer(RapidUploaderFormInputMeta.$type, RapidUploaderFormInput, true),
+  Renderer: RapidUploaderFormInputComponent,
   ...RapidUploaderFormInputMeta,
 } as Rock<RapidUploaderFormInputRockConfig>;
