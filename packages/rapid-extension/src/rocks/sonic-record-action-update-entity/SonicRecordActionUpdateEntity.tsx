@@ -1,15 +1,18 @@
-import { Rock, RockInstance } from "@ruiapp/move-style";
+import { Rock, RockComponentProps, RockInstanceProps } from "@ruiapp/move-style";
 import SonicRecordActionUpdateEntityMeta from "./SonicRecordActionUpdateEntityMeta";
-import { genRockRenderer } from "@ruiapp/react-renderer";
+import { useRockInstanceContext, wrapToRockComponent } from "@ruiapp/react-renderer";
 import { SonicRecordActionUpdateEntityProps, SonicRecordActionUpdateEntityRockConfig } from "./sonic-record-action-update-entity-types";
 import { RapidTableActionComponent } from "../rapid-table-action/RapidTableAction";
 
-export function configSonicRecordActionUpdateEntity(config: SonicRecordActionUpdateEntityRockConfig): SonicRecordActionUpdateEntityRockConfig {
-  return config;
+export function configSonicRecordActionUpdateEntity(
+  config: RockComponentProps<SonicRecordActionUpdateEntityRockConfig>,
+): SonicRecordActionUpdateEntityRockConfig {
+  config.$type = SonicRecordActionUpdateEntityMeta.$type;
+  return config as SonicRecordActionUpdateEntityRockConfig;
 }
 
-export function SonicRecordActionUpdateEntity(props: SonicRecordActionUpdateEntityProps) {
-  const { _context: context } = props as any as RockInstance;
+export function SonicRecordActionUpdateEntityComponent(props: RockInstanceProps<SonicRecordActionUpdateEntityProps>) {
+  const context = useRockInstanceContext();
   const { framework, page, scope } = context;
 
   const handleAction = async () => {
@@ -34,7 +37,9 @@ export function SonicRecordActionUpdateEntity(props: SonicRecordActionUpdateEnti
   return <RapidTableActionComponent {...props} onAction={handleAction} />;
 }
 
+export const SonicRecordActionUpdateEntity = wrapToRockComponent(SonicRecordActionUpdateEntityMeta, SonicRecordActionUpdateEntityComponent);
+
 export default {
-  Renderer: genRockRenderer(SonicRecordActionUpdateEntityMeta.$type, SonicRecordActionUpdateEntity, true),
+  Renderer: SonicRecordActionUpdateEntityComponent,
   ...SonicRecordActionUpdateEntityMeta,
 } as Rock<SonicRecordActionUpdateEntityRockConfig>;
