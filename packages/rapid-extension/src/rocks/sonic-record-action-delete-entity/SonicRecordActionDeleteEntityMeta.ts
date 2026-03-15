@@ -7,4 +7,4 @@ export default {
   slots: {},
 
   propertyPanels: [],
-} as RockMeta;
+} as RockMeta<typeof SONIC_RECORD_ACTION_DELETE_ENTITY_ROCK_TYPE>;

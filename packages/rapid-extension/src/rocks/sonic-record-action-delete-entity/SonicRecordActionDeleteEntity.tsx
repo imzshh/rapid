@@ -1,17 +1,20 @@
-import { Rock, RockInstance } from "@ruiapp/move-style";
+import { Rock, RockComponentProps, RockInstanceProps } from "@ruiapp/move-style";
 import SonicRecordActionDeleteEntityMeta from "./SonicRecordActionDeleteEntityMeta";
-import { genRockRenderer } from "@ruiapp/react-renderer";
+import { useRockInstanceContext, wrapToRockComponent } from "@ruiapp/react-renderer";
 import { SonicRecordActionDeleteEntityProps, SonicRecordActionDeleteEntityRockConfig } from "./sonic-record-action-delete-entity-types";
 import { RapidTableActionComponent } from "../rapid-table-action/RapidTableAction";
 import { getExtensionLocaleStringResource } from "../../helpers/i18nHelper";
 import { omit } from "lodash";
 
-export function configSonicRecordActionDeleteEntity(config: SonicRecordActionDeleteEntityRockConfig): SonicRecordActionDeleteEntityRockConfig {
-  return config;
+export function configSonicRecordActionDeleteEntity(
+  config: RockComponentProps<SonicRecordActionDeleteEntityRockConfig>,
+): SonicRecordActionDeleteEntityRockConfig {
+  config.$type = SonicRecordActionDeleteEntityMeta.$type;
+  return config as SonicRecordActionDeleteEntityRockConfig;
 }
 
-export function SonicRecordActionDeleteEntity(props: SonicRecordActionDeleteEntityProps) {
-  const { _context: context } = props as any as RockInstance;
+export function SonicRecordActionDeleteEntityComponent(props: RockInstanceProps<SonicRecordActionDeleteEntityProps>) {
+  const context = useRockInstanceContext();
   const { framework, page, scope } = context;
 
   const handleAction = async () => {
@@ -38,7 +41,9 @@ export function SonicRecordActionDeleteEntity(props: SonicRecordActionDeleteEnti
   return <RapidTableActionComponent {...rapidTableActionProps} actionText={actionText} onAction={handleAction} />;
 }
 
+export const SonicRecordActionDeleteEntity = wrapToRockComponent(SonicRecordActionDeleteEntityMeta, SonicRecordActionDeleteEntityComponent);
+
 export default {
-  Renderer: genRockRenderer(SonicRecordActionDeleteEntityMeta.$type, SonicRecordActionDeleteEntity, true),
+  Renderer: SonicRecordActionDeleteEntityComponent,
   ...SonicRecordActionDeleteEntityMeta,
 } as Rock<SonicRecordActionDeleteEntityRockConfig>;
