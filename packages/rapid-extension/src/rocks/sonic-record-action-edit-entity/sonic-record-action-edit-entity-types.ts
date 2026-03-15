@@ -1,12 +1,18 @@
-import type { RockEventHandlerConfig, SimpleRockConfig } from "@ruiapp/move-style";
-import { RapidToolbarButtonProps } from "../rapid-toolbar-button/rapid-toolbar-button-types";
+import type { RockConfig } from "@ruiapp/move-style";
+import { RapidRecordActionBase } from "../../types/rapid-action-types";
 import { RapidEntityFormProps } from "../rapid-entity-form/rapid-entity-form-types";
 
-export interface SonicRecordActionEditEntityConfig extends Omit<RapidToolbarButtonProps, "actionEventName"> {
+export const SONIC_RECORD_ACTION_EDIT_ENTITY_ROCK_TYPE = "sonicRecordActionEditEntity" as const;
+
+export interface SonicRecordActionEditEntityProps extends Omit<RapidRecordActionBase, "$type" | "onAction"> {
   /**
    * 模态框的标题。
    */
   modalTitle?: string;
+
+  entityCode?: string;
+
+  dataSourceCode?: string;
 
   form?: Partial<RapidEntityFormProps>;
 
@@ -15,4 +21,4 @@ export interface SonicRecordActionEditEntityConfig extends Omit<RapidToolbarButt
   errorMessage?: string;
 }
 
-export interface SonicRecordActionEditEntityRockConfig extends SimpleRockConfig, SonicRecordActionEditEntityConfig {}
+export type SonicRecordActionEditEntityRockConfig = RockConfig<SonicRecordActionEditEntityProps, typeof SONIC_RECORD_ACTION_EDIT_ENTITY_ROCK_TYPE>;

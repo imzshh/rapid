@@ -1,36 +1,34 @@
-import { MoveStyleUtils, RockEventHandler, RockEventHandlerNotifyEvent, RockInstanceContext, type Rock } from "@ruiapp/move-style";
-import { renderRock } from "@ruiapp/react-renderer";
-import RapidEntityListMeta from "./SonicRecordActionEditEntityMeta";
-import type { SonicRecordActionEditEntityConfig, SonicRecordActionEditEntityRockConfig } from "./sonic-record-action-edit-entity-types";
-import { RapidTableActionRockConfig } from "../rapid-table-action/rapid-table-action-types";
+import { MoveStyleUtils, RockComponentProps, RockEventHandlerNotifyEvent, RockInstanceContext, RockInstanceProps, type Rock } from "@ruiapp/move-style";
+import { renderRock, useRockInstanceContext, wrapToRockComponent } from "@ruiapp/react-renderer";
+import SonicRecordActionEditEntityMeta from "./SonicRecordActionEditEntityMeta";
+import type { SonicRecordActionEditEntityProps, SonicRecordActionEditEntityRockConfig } from "./sonic-record-action-edit-entity-types";
 import { getExtensionLocaleStringResource } from "../../helpers/i18nHelper";
-import { omit } from "lodash";
+import { RapidTableActionRockConfig } from "../rapid-table-action/rapid-table-action-types";
 import { RapidEntityFormRockConfig } from "../rapid-entity-form/rapid-entity-form-types";
+import { RapidFormModalRecordActionRockConfig } from "../rapid-form-modal-record-action/rapid-form-modal-record-action-types";
 
-export default {
-  onInit(context, props) {},
+export function configSonicRecordActionEditEntity(config: RockComponentProps<SonicRecordActionEditEntityRockConfig>): SonicRecordActionEditEntityRockConfig {
+  config.$type = SonicRecordActionEditEntityMeta.$type;
+  return config as SonicRecordActionEditEntityRockConfig;
+}
 
-  onReceiveMessage(message, state, props) {},
+export function SonicRecordActionEditEntityComponent(props: RockInstanceProps<SonicRecordActionEditEntityProps>) {
+  const context = useRockInstanceContext();
+  const { form } = props;
 
-  Renderer(context, props) {
-    const { form } = props;
+  if (form) {
+    return renderActionWithSpecifiedForm(context, props);
+  } else {
+    return renderActionWithDefaultForm(context, props);
+  }
+}
 
-    if (form) {
-      return renderActionWithSpecifiedForm(context, props);
-    } else {
-      return renderActionWithDefaultForm(context, props);
-    }
-  },
-
-  ...RapidEntityListMeta,
-} as Rock<SonicRecordActionEditEntityRockConfig>;
-
-function renderActionWithDefaultForm(context: RockInstanceContext, props: SonicRecordActionEditEntityRockConfig) {
+function renderActionWithDefaultForm(context: RockInstanceContext, props: RockInstanceProps<SonicRecordActionEditEntityProps>) {
   const { framework } = context;
   const slotIndex = props.$slot.index || "0";
 
   const rockConfig: RapidTableActionRockConfig = {
-    ...(MoveStyleUtils.omitSystemRockConfigFields(props) as SonicRecordActionEditEntityConfig),
+    ...(MoveStyleUtils.omitSystemRockConfigFields(props as unknown as SonicRecordActionEditEntityRockConfig) as SonicRecordActionEditEntityProps),
     $id: `${props.$id}-link-${slotIndex}`,
     $type: "rapidTableAction",
     actionText: props.actionText || getExtensionLocaleStringResource(framework, "edit"),
@@ -48,16 +46,16 @@ function renderActionWithDefaultForm(context: RockInstanceContext, props: SonicR
   return renderRock({ context, rockConfig });
 }
 
-function renderActionWithSpecifiedForm(context: RockInstanceContext, props: SonicRecordActionEditEntityRockConfig) {
+function renderActionWithSpecifiedForm(context: RockInstanceContext, props: RockInstanceProps<SonicRecordActionEditEntityProps>) {
   const slotIndex = props.$slot.index || "0";
   const entityId = props.$slot.record.id;
   const scopeId = context.scope.config.$id;
   const { entityCode, form, dataSourceCode } = props;
 
-  const onSubmitSuccess = form.onSubmitSuccess || form.onSaveSuccess;
-  const onSubmitError = form.onSubmitError || form.onSaveError;
-  const rockConfig: SonicRecordActionEditEntityRockConfig = {
-    ...(MoveStyleUtils.omitSystemRockConfigFields(props) as SonicRecordActionEditEntityConfig),
+  const onSubmitSuccess = form?.onSubmitSuccess || form?.onSaveSuccess;
+  const onSubmitError = form?.onSubmitError || form?.onSaveError;
+  const rockConfig: RapidFormModalRecordActionRockConfig = {
+    ...(MoveStyleUtils.omitSystemRockConfigFields(props as unknown as SonicRecordActionEditEntityRockConfig) as SonicRecordActionEditEntityProps),
     $id: `${props.$id}-action`,
     $type: "rapidFormModalRecordAction",
     form: {
@@ -113,3 +111,10 @@ function renderActionWithSpecifiedForm(context: RockInstanceContext, props: Soni
 
   return renderRock({ context, rockConfig });
 }
+
+export const SonicRecordActionEditEntity = wrapToRockComponent(SonicRecordActionEditEntityMeta, SonicRecordActionEditEntityComponent);
+
+export default {
+  Renderer: SonicRecordActionEditEntityComponent,
+  ...SonicRecordActionEditEntityMeta,
+} as Rock<SonicRecordActionEditEntityRockConfig>;

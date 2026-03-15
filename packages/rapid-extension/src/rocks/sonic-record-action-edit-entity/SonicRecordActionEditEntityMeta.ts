@@ -1,9 +1,10 @@
 import type { RockMeta } from "@ruiapp/move-style";
+import { SONIC_RECORD_ACTION_EDIT_ENTITY_ROCK_TYPE } from "./sonic-record-action-edit-entity-types";
 
 export default {
-  $type: "sonicRecordActionEditEntity",
+  $type: SONIC_RECORD_ACTION_EDIT_ENTITY_ROCK_TYPE,
 
   slots: {},
 
   propertyPanels: [],
-} as RockMeta;
+} as RockMeta<typeof SONIC_RECORD_ACTION_EDIT_ENTITY_ROCK_TYPE>;
