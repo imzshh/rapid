@@ -17,7 +17,7 @@ export interface RapidCheckboxListFormInputProps {
   /**
    * 值变更回调
    */
-  onChange?: RockEventHandlerConfig;
+  onChange?: (checkedValues: (string | number | boolean)[]) => void;
 
   /**
    * 值的字段名
@@ -149,4 +149,9 @@ export interface RapidCheckboxListFormInputProps {
   direction?: "horizontal" | "vertical";
 }
 
-export type RapidCheckboxListFormInputRockConfig = RockConfig<RapidCheckboxListFormInputProps, typeof RAPID_CHECKBOX_LIST_FORM_INPUT_ROCK_TYPE>;
+export type RapidCheckboxListFormInputRockConfig = RockConfig<
+  Omit<RapidCheckboxListFormInputProps, "onChange"> & {
+    onChange?: RockEventHandlerConfig;
+  },
+  typeof RAPID_CHECKBOX_LIST_FORM_INPUT_ROCK_TYPE
+>;

@@ -1,6 +1,6 @@
-import { MoveStyleUtils, Rock, RockComponentProps, RockInstanceProps, fireEvent } from "@ruiapp/move-style";
+import { MoveStyleUtils, Rock, RockComponentProps, RockInstanceProps } from "@ruiapp/move-style";
 import { Checkbox } from "antd";
-import { RapidCheckboxListFormInputRockConfig } from "./rapid-checkbox-list-form-input-types";
+import { RapidCheckboxListFormInputProps, RapidCheckboxListFormInputRockConfig } from "./rapid-checkbox-list-form-input-types";
 import RapidCheckboxListFormInputMeta from "./RapidCheckboxListFormInputMeta";
 import { filter, get, isObject, map } from "lodash";
 import type { CheckboxGroupProps, CheckboxOptionType } from "antd/lib/checkbox";
@@ -14,9 +14,9 @@ export function configRapidCheckboxListFormInput(config: RockComponentProps<Rapi
   return config as RapidCheckboxListFormInputRockConfig;
 }
 
-export function RapidCheckboxListFormInputComponent(props: RockInstanceProps<RapidCheckboxListFormInputRockConfig>) {
+export function RapidCheckboxListFormInputComponent(props: RockInstanceProps<RapidCheckboxListFormInputProps>) {
   const context = useRockInstanceContext();
-  const { framework, page, scope } = context;
+  const { scope } = context;
   const {
     groupByFieldName,
     listTextFormat,
@@ -67,7 +67,7 @@ export function RapidCheckboxListFormInputComponent(props: RockInstanceProps<Rap
   const groupTextFieldName = propGroupTextFieldName || "name";
   const groupValueFieldName = propGroupValueFieldName || "id";
 
-  let selectedValue: string[];
+  let selectedValue: CheckboxGroupProps["value"];
   if (valueFieldName) {
     selectedValue = map(value, (item) => {
       if (isObject(item)) {
@@ -82,17 +82,7 @@ export function RapidCheckboxListFormInputComponent(props: RockInstanceProps<Rap
   const antdProps: CheckboxGroupProps = {
     disabled: disabled,
     value: selectedValue,
-    onChange: (checkedValues) => {
-      fireEvent({
-        eventName: "onChange",
-        framework,
-        page,
-        scope,
-        sender: props,
-        eventHandlers: onChange,
-        eventArgs: [checkedValues],
-      });
-    },
+    onChange,
     style: { width: "100%" },
   };
 
@@ -165,8 +155,8 @@ export default {
 
 interface CheckboxListProps {
   itemList: any[];
-  itemListStyle: CSSProperties;
-  direction: RapidCheckboxListFormInputRockConfig["direction"];
+  itemListStyle?: CSSProperties;
+  direction?: RapidCheckboxListFormInputProps["direction"];
   itemListClassName?: string;
   listTextFormat?: string;
   listTextFieldName?: string;
@@ -188,8 +178,8 @@ function CheckboxList(props: CheckboxListProps) {
           listDisabledFieldName: props.listDisabledFieldName,
         });
         return (
-          <div className={direction === "horizontal" ? "rapid-checkbox-list-item-horizontal" : "rapid-checkbox-list-item-vertical"}>
-            <Checkbox key={index} value={option.value} disabled={option.disabled}>
+          <div key={index} className={direction === "horizontal" ? "rapid-checkbox-list-item-horizontal" : "rapid-checkbox-list-item-vertical"}>
+            <Checkbox value={option.value} disabled={option.disabled}>
               {option.label}
             </Checkbox>
           </div>
