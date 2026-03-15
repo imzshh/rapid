@@ -1,21 +1,25 @@
-import type { RockConfig, SimpleRockConfig } from "@ruiapp/move-style";
-import { RapidActionBase } from "../../types/rapid-action-types";
-import { RapidFormItemType, RapidSearchFormItemConfig } from "../rapid-form-item/rapid-form-item-types";
+import type { RockConfig, RockEventHandlerConfig } from "@ruiapp/move-style";
+import type { RapidActionBase } from "../../types/rapid-action-types";
+import type { RapidFormItemType, RapidSearchFormItemConfig } from "../rapid-form-item/rapid-form-item-types";
 
-export type SonicToolbarFormItemConfig = RapidActionBase &
-  RapidSearchFormItemConfig & {
-    label?: string;
+export const SONIC_TOOLBAR_FORM_ITEM_ROCK_TYPE = "sonicToolbarFormItem" as const;
 
-    placeholder?: string;
+export interface SonicToolbarFormItemProps extends RapidActionBase, RapidSearchFormItemConfig {
+  label?: string;
+  placeholder?: string;
+  formItemType: RapidFormItemType;
+  formInput?: RockConfig;
+  dataSourceCode?: string;
+  enabledFilterCache?: boolean;
+  filterCacheName?: string;
+  formControlType?: string;
+  formControlProps?: Record<string, any>;
+  onAction?: RockEventHandlerConfig;
+}
 
-    formItemType: RapidFormItemType;
-
-    /**
-     * 表单控件
-     */
-    formInput?: RockConfig;
-
-    dataSourceCode?: string;
-  };
-
-export interface SonicToolbarFormItemRockConfig extends SimpleRockConfig, SonicToolbarFormItemConfig {}
+export type SonicToolbarFormItemRockConfig = RockConfig<
+  Omit<SonicToolbarFormItemProps, "onAction"> & {
+    onAction?: RockEventHandlerConfig;
+  },
+  typeof SONIC_TOOLBAR_FORM_ITEM_ROCK_TYPE
+>;
