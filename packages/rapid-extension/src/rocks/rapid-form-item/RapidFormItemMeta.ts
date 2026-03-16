@@ -35,4 +35,4 @@ export default {
       ],
     },
   ],
-} as RockMeta;
+} as RockMeta<typeof RAPID_FORM_ITEM_ROCK_TYPE>;

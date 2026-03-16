@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { RockI18nConfig, RockLocalesConfig, RockPropExpressions, SimpleRockConfig } from "@ruiapp/move-style";
+import type { RockConfig, RockI18nConfig, RockLocalesConfig, RockPropExpressions } from "@ruiapp/move-style";
 import { FindEntityOptions, RapidFieldType, RapidSearchFormItemFilterMode } from "../../rapid-types";
 import { FormItemProps } from "antd";
 
@@ -222,6 +222,4 @@ export type RapidFormItemType =
   | "imageList"
   | "custom";
 
-export interface RapidFormItemRockConfig extends SimpleRockConfig, RapidFormItemProps {
-  $type: typeof RAPID_FORM_ITEM_ROCK_TYPE;
-}
+export type RapidFormItemRockConfig = RockConfig<RapidFormItemProps, typeof RAPID_FORM_ITEM_ROCK_TYPE>;

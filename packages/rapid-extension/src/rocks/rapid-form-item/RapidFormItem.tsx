@@ -1,5 +1,5 @@
-import { Rock, RockConfig, RockInstance } from "@ruiapp/move-style";
-import { renderRock, genRockRenderer } from "@ruiapp/react-renderer";
+import { Rock, RockComponentProps, RockConfig, RockInstanceProps } from "@ruiapp/move-style";
+import { renderRock, useRockInstanceContext, wrapToRockComponent } from "@ruiapp/react-renderer";
 import RapidFormItemMeta from "./RapidFormItemMeta";
 import { RapidFormItemProps, RapidFormItemRockConfig, RapidFormItemType } from "./rapid-form-item-types";
 import RapidExtensionSetting from "../../RapidExtensionSetting";
@@ -86,19 +86,20 @@ const valuePropNameOfFormInput: Record<string, string> = {
   antdUpload: "fileList",
 };
 
-export function configRapidFormItem(config: RapidFormItemRockConfig): RapidFormItemRockConfig {
-  return config;
+export function configRapidFormItem(config: RockComponentProps<RapidFormItemRockConfig>): RapidFormItemRockConfig {
+  config.$type = RapidFormItemMeta.$type;
+  return config as RapidFormItemRockConfig;
 }
 
-export function RapidFormItem(props: RapidFormItemProps & { $id: string }) {
-  const { _context: context } = props as unknown as RockInstance;
+export function RapidFormItemComponent(props: RockInstanceProps<RapidFormItemProps>) {
+  const context = useRockInstanceContext();
   const isMountedRef = useRef<boolean>(false);
 
   const mode = props.mode || "input";
   let formControlType = null;
   let formItemValuePropName: string = "value";
   let formItemTrigger: string = "onChange";
-  let childRock: RockConfig = null;
+  let childRock: RockConfig;
 
   if (mode === "input") {
     formControlType = props.formControlType || formItemTypeToControlRockTypeMap[props.type] || "antdInput";
@@ -187,7 +188,9 @@ export function RapidFormItem(props: RapidFormItemProps & { $id: string }) {
   return renderRock({ context, rockConfig });
 }
 
+export const RapidFormItem = wrapToRockComponent(RapidFormItemMeta, RapidFormItemComponent);
+
 export default {
-  Renderer: genRockRenderer(RapidFormItemMeta.$type, RapidFormItem, true),
+  Renderer: RapidFormItemComponent,
   ...RapidFormItemMeta,
 } as Rock<RapidFormItemRockConfig>;
