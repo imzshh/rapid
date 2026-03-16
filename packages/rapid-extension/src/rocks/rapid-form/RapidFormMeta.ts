@@ -73,4 +73,4 @@ export default {
       ],
     },
   ],
-} as RockMeta;
+} as RockMeta<typeof RAPID_FORM_ROCK_TYPE>;

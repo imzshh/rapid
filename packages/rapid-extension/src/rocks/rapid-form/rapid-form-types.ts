@@ -1,4 +1,4 @@
-import { SimpleRockConfig, HttpRequestOptions, RockConfig, RockEventHandlerConfig, RockExpsConfig } from "@ruiapp/move-style";
+import { HttpRequestOptions, RockConfig, RockEventHandlerConfig, RockExpsConfig } from "@ruiapp/move-style";
 import { RapidFormItemConfig } from "../rapid-form-item/rapid-form-item-types";
 import { RapidFormSubmitOptions } from "../../types/rapid-action-types";
 
@@ -230,9 +230,7 @@ export type RapidFormActionType =
   | "submit" // 提交
   | "reset"; // 重置
 
-export interface RapidFormRockConfig extends SimpleRockConfig, RapidFormProps {
-  $type: typeof RAPID_FORM_ROCK_TYPE;
-}
+export type RapidFormRockConfig = RockConfig<RapidFormProps, typeof RAPID_FORM_ROCK_TYPE>;
 
 export interface RapidFormState {
   form: any;

@@ -23,8 +23,6 @@ export function SonicToolbarFormItemComponent(props: RockInstanceProps<SonicTool
     type: props.formItemType,
     label: props.label,
     placeholder: props.placeholder,
-    filterMode: props.filterMode,
-    filterFields: props.filterFields,
     formControlType: props.formControlType,
     formControlProps: {
       ...props.formControlProps,

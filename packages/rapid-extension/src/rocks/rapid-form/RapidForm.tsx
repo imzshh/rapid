@@ -1,24 +1,27 @@
-import { MoveStyleUtils, Rock, RockConfig, RockEvent, RockEventHandlerScript, RockInstance, fireEvent } from "@ruiapp/move-style";
-import { renderRock } from "@ruiapp/react-renderer";
+import { Rock, RockComponentProps, RockConfig, RockEvent, RockInstance, RockInstanceProps, fireEvent } from "@ruiapp/move-style";
+import { renderRock, useRockInstance, useRockInstanceContext, wrapToRockComponent, wrapToRockRenderer } from "@ruiapp/react-renderer";
 import RapidFormMeta from "./RapidFormMeta";
-import { RAPID_FORM_ROCK_TYPE, RapidFormProps, RapidFormRockConfig, RapidFormState } from "./rapid-form-types";
+import { RapidFormProps, RapidFormRockConfig, RapidFormState } from "./rapid-form-types";
 import { assign, each, get, mapValues, merge, set, trim } from "lodash";
-import { Form, Row, Col, Space, Spin, FormInstance } from "antd";
-import { useEffect, useMemo, useState } from "react";
+import { Form, Row, Col, Space, Spin } from "antd";
+import { useEffect, useMemo } from "react";
 import { parseRockExpressionFunc } from "../../utils/parse-utility";
 import { generateRockConfigOfError } from "../../rock-generators/generateRockConfigOfError";
 import { RapidFormSubmitOptions } from "../../types/rapid-action-types";
 import { getExtensionLocaleStringResource } from "../../helpers/i18nHelper";
 
-export function configRapidForm(config: RapidFormRockConfig): RapidFormRockConfig {
-  return config;
+export function configRapidForm(config: RockComponentProps<RapidFormRockConfig>): RapidFormRockConfig {
+  config.$type = RapidFormMeta.$type;
+  return config as RapidFormRockConfig;
 }
 
-export function RapidForm(props: RapidFormProps) {
-  const { $id, _context: context, _state: state } = props as unknown as RockInstance;
-  const { form } = state as RapidFormState;
+export function RapidFormComponent(props: RockInstanceProps<RapidFormProps>) {
+  const context = useRockInstanceContext();
+  const { $id } = useRockInstance(props, RapidFormMeta.$type) as RockInstance;
+  const { _state: state } = props;
+  const { form } = state;
   const { framework, page, scope } = context;
-  const logger = framework.getRockLogger(RAPID_FORM_ROCK_TYPE, $id);
+  const logger = framework.getRockLogger(RapidFormMeta.$type, $id);
 
   // 当前主要是触发 rerender
   // const [, setCurrentFormData] = useState<Record<string, any>>({});
@@ -129,7 +132,7 @@ export function RapidForm(props: RapidFormProps) {
     }
 
     return values || {};
-  }, [props.defaultFormFields, props.disabledLoadStore, props.fieldNameOfFormDataInDataSource, dataSource, props.formDataAdapter]);
+  }, [context, dataSource, form, props.defaultFormFields, props.disabledLoadStore, props.fieldNameOfFormDataInDataSource, props.formDataAdapter]);
 
   useEffect(() => {
     form.setFieldsValue(initialValues);
@@ -282,25 +285,25 @@ function omitUndefinedValues(data: Record<string, any>) {
   return mapValues(data, (v) => (v === undefined ? null : v));
 }
 
-export default {
-  $type: RAPID_FORM_ROCK_TYPE,
+export const RapidForm = wrapToRockComponent(RapidFormMeta, RapidFormComponent);
 
-  onResolveState(props, state) {
+export default {
+  onResolveState(props: RapidFormProps, _state: RapidFormState) {
     const [form] = Form.useForm();
     return {
       form,
     };
   },
 
-  async onReceiveMessage(message, state, props, rockInstance) {
+  async onReceiveMessage(message, state: RapidFormState, props: RapidFormProps, rockInstance: RockInstance) {
     // TODO: refactor to write less if-else
     const form = state.form;
     if (message.name === "submit") {
       try {
-        const values = await form.validateFields();
+        await form.validateFields();
         form.submit();
       } catch (err) {
-        message.framework.getRockLogger().error(props, `Failed to submit form: ${err.message}`, { error: err });
+        message.framework.getRockLogger().error(props, `Failed to submit form: ${(err as Error).message}`, { error: err });
       }
     } else if (message.name === "validateFields") {
       state.form.validateFields();
@@ -335,9 +338,7 @@ export default {
     }
   },
 
-  Renderer(context, props, state) {
-    return RapidForm(props);
-  },
+  Renderer: wrapToRockRenderer(RapidFormMeta, RapidFormComponent),
 
   ...RapidFormMeta,
 } as Rock<RapidFormRockConfig, RapidFormState>;
