@@ -5,6 +5,7 @@ import RapidCurrencyRenderer from "./rapid-currency-renderer/RapidCurrencyRender
 import RapidDatePicker from "./rapid-date-picker/RapidDatePicker";
 import RapidMonthPicker from "./rapid-month-picker/RapidMonthPicker";
 import RapidDateTimeRenderer from "./rapid-date-time-renderer/RapidDateTimeRenderer";
+import RapidDescriptionsItem from "./rapid-descriptions-item/RapidDescriptionsItem";
 import RapidDescriptionsRenderer from "./rapid-descriptions-renderer/RapidDescriptionsRenderer";
 import RapidDictionaryEntryRenderer from "./rapid-dictionary-entry-renderer/RapidDictionaryEntryRenderer";
 import RapidEntityDescriptions from "./rapid-entity-descriptions/RapidEntityDescriptions";
@@ -78,6 +79,7 @@ export default [
   RapidDatePicker,
   RapidMonthPicker,
   RapidDateTimeRenderer,
+  RapidDescriptionsItem,
   RapidDescriptionsRenderer,
   RapidDictionaryEntryRenderer,
   RapidEntityDescriptions,

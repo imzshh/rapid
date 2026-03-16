@@ -47,6 +47,7 @@ export * from "./rocks/rapid-number-renderer/rapid-number-renderer-types";
 export * from "./rocks/rapid-checkbox-list-form-input/rapid-checkbox-list-form-input-types";
 export * from "./rocks/rapid-currency-renderer/rapid-currency-renderer-types";
 export * from "./rocks/rapid-date-picker/rapid-date-picker-types";
+export * from "./rocks/rapid-descriptions-item/rapid-descriptions-item-types";
 export * from "./rocks/rapid-descriptions-renderer/rapid-descriptions-renderer-types";
 export * from "./rocks/rapid-dictionary-entry-renderer/rapid-dictionary-entry-renderer-types";
 export * from "./rocks/rapid-entity-descriptions/rapid-entity-descriptions-types";

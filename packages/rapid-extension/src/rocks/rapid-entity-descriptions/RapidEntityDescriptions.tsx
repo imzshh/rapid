@@ -1,7 +1,7 @@
 import type { Rock, RockComponentProps, RockConfig, RockInstanceProps, RuiRockLogger } from "@ruiapp/move-style";
 import { renderRock, useRockInstance, useRockInstanceContext, wrapToRockComponent } from "@ruiapp/react-renderer";
 import RapidEntityDescriptionsMeta from "./RapidEntityDescriptionsMeta";
-import type { RapidDescriptionsItemConfig, RapidEntityDescriptionsProps, RapidEntityDescriptionsRockConfig } from "./rapid-entity-descriptions-types";
+import type { RapidEntityDescriptionsProps, RapidEntityDescriptionsRockConfig } from "./rapid-entity-descriptions-types";
 import { get, isUndefined } from "lodash";
 import rapidAppDefinition from "../../rapidAppDefinition";
 import type { RapidDataDictionary, RapidEntity, RapidField } from "@ruiapp/rapid-common";
@@ -9,6 +9,7 @@ import { generateRockConfigOfError } from "../../rock-generators/generateRockCon
 import type { RapidOptionFieldRendererProps } from "../rapid-option-field-renderer/rapid-option-field-renderer-types";
 import RapidExtensionSetting from "../../RapidExtensionSetting";
 import { generateEntityDetailStoreConfig } from "../../helpers/entityStoreHelper";
+import type { RapidDescriptionsItemConfig, RapidDescriptionsItemRockConfig } from "../rapid-descriptions-item/rapid-descriptions-item-types";
 
 export interface GenerateEntityDescriptionItemOption {
   descriptionItemConfig: RapidDescriptionsItemConfig;
@@ -175,16 +176,17 @@ export function RapidEntityDescriptionsComponent(props: RockInstanceProps<RapidE
     page.interpreteComponentProperties(props as any as RockConfig, descriptionItem as any, {});
 
     const itemRockId = `${$id}-items-${descriptionItemConfig.uniqueKey || descriptionItemConfig.code}`;
-    const descriptionItemRockConfig: RockConfig = {
+    const descriptionItemRockConfig: RapidDescriptionsItemRockConfig = {
       $id: itemRockId,
-      $type: "antdDescriptionsItem",
+      $type: "rapidDescriptionsItem",
       _hidden: (descriptionItem as any)._hidden,
       $i18n: descriptionItemConfig.$i18n,
       $locales: descriptionItemConfig.$locales,
+      code: descriptionItem.code,
       label: descriptionItem.label,
       labelStyle: descriptionItem.labelStyle,
       contentStyle: descriptionItem.contentStyle,
-      span: descriptionItem.column,
+      column: descriptionItem.column,
       children: {
         $id: `${itemRockId}-display`,
         $type: descriptionItem.rendererType,

@@ -1,5 +1,5 @@
 import type { RockConfig, SimpleRockConfig } from "@ruiapp/move-style";
-import { RapidDescriptionsItemConfig } from "../rapid-entity-descriptions/rapid-entity-descriptions-types";
+import type { RapidDescriptionsItemConfig } from "../rapid-descriptions-item/rapid-descriptions-item-types";
 import { FindEntityFindRelationEntitiesOptions } from "@ruiapp/rapid-common";
 import { CSSProperties } from "react";
 import { RapidEntityFormRockConfig } from "../rapid-entity-form/rapid-entity-form-types";

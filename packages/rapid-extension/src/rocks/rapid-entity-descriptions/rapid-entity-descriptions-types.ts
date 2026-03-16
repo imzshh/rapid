@@ -1,7 +1,9 @@
-import type { RockConfig, RockExpsConfig, RockI18nConfig, RockLocalesConfig } from "@ruiapp/move-style";
-import { FindEntityFindRelationEntitiesOptions, RapidFieldType } from "@ruiapp/rapid-common";
-import { CSSProperties } from "react";
-import { RapidPropertyDisplayType } from "~/types/rapid-extension-types";
+import type { RockConfig } from "@ruiapp/move-style";
+import { FindEntityFindRelationEntitiesOptions } from "@ruiapp/rapid-common";
+import type { CSSProperties } from "react";
+import type { RapidDescriptionsItemConfig } from "../rapid-descriptions-item/rapid-descriptions-item-types";
+
+export type { RapidDescriptionsItemConfig } from "../rapid-descriptions-item/rapid-descriptions-item-types";
 
 export const RAPID_ENTITY_DESCRIPTIONS_ROCK_TYPE = "rapidEntityDescriptions" as const;
 
@@ -69,92 +71,5 @@ export interface RapidEntityDescriptionsProps {
    */
   items: RapidDescriptionsItemConfig[];
 }
-
-/**
- * 描述项
- */
-export type RapidDescriptionsItemConfig = {
-  /**
-   * 描述项类型
-   */
-  type?: RapidPropertyDisplayType;
-
-  /**
-   * 值的类型
-   */
-  valueFieldType?: RapidFieldType;
-
-  /**
-   * 获取value的字段名，默认为code。
-   * 例如record为`{"name": "do sth.", "project": {"id":23, name: "RUI"}}`，此时设置`code`为`project`，`fieldName`为`project.name`，单元格将展示`RUI`。
-   */
-  valueFieldName?: string;
-
-  /**
-   * 多个值
-   */
-  multipleValues?: boolean;
-
-  /**
-   * 表单项编码
-   */
-  code: string;
-
-  uniqueKey?: string;
-
-  /**
-   * 表单项标签文字
-   */
-  label?: string;
-
-  /**
-   * 自定义标签样式
-   */
-  labelStyle?: CSSProperties;
-
-  /**
-   * 自定义内容样式
-   */
-  contentStyle?: CSSProperties;
-
-  /**
-   * 栏数，默认为1
-   */
-  column?: number;
-
-  /**
-   * 属性值
-   */
-  value?: any;
-
-  /**
-   * 占位文字
-   */
-  placeholder?: string;
-
-  /**
-   * 默认值
-   */
-  defaultValue?: any;
-
-  /**
-   * 展示值的渲染器类型
-   */
-  rendererType?: string;
-
-  /**
-   * 展示值的渲染器属性
-   */
-  rendererProps?: Record<string, any>;
-
-  /**
-   * 是否隐藏。作用同`_hidden`。
-   */
-  hidden?: boolean;
-
-  $exps?: RockExpsConfig;
-  $i18n?: RockI18nConfig;
-  $locales?: RockLocalesConfig;
-};
 
 export type RapidEntityDescriptionsRockConfig = RockConfig<RapidEntityDescriptionsProps, typeof RAPID_ENTITY_DESCRIPTIONS_ROCK_TYPE>;
