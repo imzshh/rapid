@@ -1,7 +1,7 @@
-import { EventEmitter, MoveStyleUtils, type Rock, type RockInstance } from "@ruiapp/move-style";
+import { EventEmitter, MoveStyleUtils, type Rock, type RockComponentProps, type RockInstanceProps } from "@ruiapp/move-style";
 import SonicEntityTableSelectMeta from "./SonicEntityTableSelectMeta";
 import { type SonicEntityTableSelectProps, type SonicEntityTableSelectRockConfig } from "./sonic-entity-table-select-types";
-import { genRockRenderer, renderRock, wrapToRockRenderer } from "@ruiapp/react-renderer";
+import { renderRock, useRockInstance, useRockInstanceContext, wrapToRockComponent } from "@ruiapp/react-renderer";
 import { Table, Select, Input, Empty, Spin } from "antd";
 import { debounce, filter, forEach, get, isArray, isObject, isPlainObject, isString, isUndefined, last, map, omit, pick, split } from "lodash";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -28,17 +28,20 @@ interface ICurrentState {
   reloadKey?: string | number;
 }
 
-function getListDataSourceCode(props: SonicEntityTableSelectRockConfig) {
-  // @ts-ignore
+type CreateListDataStoreConfigProps = SonicEntityTableSelectProps & { $id: string; listDataSourceCode?: string };
+
+function getListDataSourceCode(props: CreateListDataStoreConfigProps) {
   return props.listDataSourceCode || `${props.$id}-list`;
 }
 
-export function configSonicEntityTableSelect(config: SonicEntityTableSelectRockConfig): SonicEntityTableSelectRockConfig {
-  return config;
+export function configSonicEntityTableSelect(config: RockComponentProps<SonicEntityTableSelectRockConfig>): SonicEntityTableSelectRockConfig {
+  config.$type = SonicEntityTableSelectMeta.$type;
+  return config as SonicEntityTableSelectRockConfig;
 }
 
-export function SonicEntityTableSelectComponent(props: SonicEntityTableSelectProps) {
-  const { $id, _context: context } = props as any as RockInstance;
+export function SonicEntityTableSelectComponent(props: RockInstanceProps<SonicEntityTableSelectProps>) {
+  const context = useRockInstanceContext();
+  const { $id } = useRockInstance(props, SonicEntityTableSelectMeta.$type);
   const { framework } = context;
   const logger = framework.getRockLogger(SonicEntityTableSelectMeta.$type, $id);
 
@@ -84,10 +87,10 @@ export function SonicEntityTableSelectComponent(props: SonicEntityTableSelectPro
 
   const [store] = useState(() => {
     const listStore = new EntityStore(framework, context.page, context.scope);
-    listStore.setConfig(createListDataStoreConfig({ ...props, $id } as any, entity));
+    listStore.setConfig(createListDataStoreConfig({ ...props, $id }, entity));
     return listStore;
   });
-  const apiIns = useRequest({ ...props, $id } as any, store);
+  const apiIns = useRequest(props, store);
   const { loadSelectedRecords, loading } = useSelectedRecords(props, (records) => {
     forEach(records, (record) => {
       const recordValue = get(record, listValueFieldName);
@@ -349,6 +352,8 @@ export function SonicEntityTableSelectComponent(props: SonicEntityTableSelectPro
   );
 }
 
+export const SonicEntityTableSelect = wrapToRockComponent(SonicEntityTableSelectMeta, SonicEntityTableSelectComponent);
+
 export default {
   onReceiveMessage(message, state, props) {
     if (message.name === "refreshData") {
@@ -358,7 +363,7 @@ export default {
     }
   },
 
-  Renderer: wrapToRockRenderer(SonicEntityTableSelectMeta, SonicEntityTableSelectComponent),
+  Renderer: SonicEntityTableSelectComponent,
   ...SonicEntityTableSelectMeta,
 } as Rock<SonicEntityTableSelectRockConfig>;
 
@@ -370,7 +375,7 @@ interface IRequestState {
   loading?: boolean;
 }
 
-function createListDataStoreConfig(props: SonicEntityTableSelectRockConfig, entity: RapidEntity): EntityStoreConfig {
+function createListDataStoreConfig(props: CreateListDataStoreConfigProps, entity: RapidEntity): EntityStoreConfig {
   const listDataSourceCode = getListDataSourceCode(props);
   let { requestParams = {} } = props;
 
@@ -393,7 +398,7 @@ function createListDataStoreConfig(props: SonicEntityTableSelectRockConfig, enti
   };
 }
 
-function useRequest(props: SonicEntityTableSelectRockConfig, store: EntityStore) {
+function useRequest(props: SonicEntityTableSelectProps, store: EntityStore) {
   const [state, setState] = useMergeState<IRequestState>({});
 
   const request = async (params: any) => {

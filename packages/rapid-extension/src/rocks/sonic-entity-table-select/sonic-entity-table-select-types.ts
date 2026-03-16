@@ -1,4 +1,4 @@
-import type { SimpleRockConfig } from "@ruiapp/move-style";
+import type { RockConfig } from "@ruiapp/move-style";
 import { FilterFieldConfig } from "../rapid-form-item/rapid-form-item-types";
 import { RapidTableSelectRockConfig } from "../rapid-table-select/rapid-table-select-types";
 import { RapidTableColumnConfig } from "../rapid-table-column/rapid-table-column-types";
@@ -59,6 +59,4 @@ export interface SonicEntityTableSelectProps {
   tableHeight?: number;
 }
 
-export interface SonicEntityTableSelectRockConfig extends SimpleRockConfig, SonicEntityTableSelectProps {
-  $type: typeof SONIC_ENTITY_TABLE_SELECT_ROCK_TYPE;
-}
+export type SonicEntityTableSelectRockConfig = RockConfig<SonicEntityTableSelectProps, typeof SONIC_ENTITY_TABLE_SELECT_ROCK_TYPE>;

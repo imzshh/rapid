@@ -4,6 +4,8 @@ import { SONIC_ENTITY_TABLE_SELECT_ROCK_TYPE } from "./sonic-entity-table-select
 export default {
   $type: SONIC_ENTITY_TABLE_SELECT_ROCK_TYPE,
 
+  props: {},
+
   slots: {},
 
   propertyPanels: [
@@ -23,4 +25,4 @@ export default {
       ],
     },
   ],
-} as RockMeta;
+} as RockMeta<typeof SONIC_ENTITY_TABLE_SELECT_ROCK_TYPE>;
