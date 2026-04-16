@@ -68,6 +68,6 @@ export function RapidArrayRendererComponent(props: RapidArrayRendererProps) {
 export const RapidArrayRenderer = wrapToRockComponent<RapidArrayRendererRockConfig>(RapidArrayRendererMeta, RapidArrayRendererComponent);
 
 export default {
-  Renderer: wrapToRockRenderer(RapidArrayRendererMeta, RapidArrayRendererComponent),
+  Renderer: wrapToRockRenderer(RapidArrayRendererMeta, RapidArrayRendererComponent, true),
   ...RapidArrayRendererMeta,
 } as Rock<RapidArrayRendererRockConfig>;

@@ -57,6 +57,6 @@ export function RapidDescriptionsRendererComponent(props: RockInstanceProps<Rapi
 export const RapidDescriptionsRenderer = wrapToRockComponent(RapidDescriptionsRendererMeta, RapidDescriptionsRendererComponent);
 
 export default {
-  Renderer: wrapToRockRenderer(RapidDescriptionsRendererMeta, RapidDescriptionsRendererComponent),
+  Renderer: wrapToRockRenderer(RapidDescriptionsRendererMeta, RapidDescriptionsRendererComponent, true),
   ...RapidDescriptionsRendererMeta,
 } as Rock<RapidDescriptionsRendererRockConfig>;

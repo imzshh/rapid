@@ -22,6 +22,6 @@ export function RapidDescriptionsItemComponent(props: RockInstanceProps<RapidDes
 export const RapidDescriptionsItem = wrapToRockComponent(RapidDescriptionsItemMeta, RapidDescriptionsItemComponent);
 
 export default {
-  Renderer: wrapToRockRenderer(RapidDescriptionsItemMeta, RapidDescriptionsItemComponent),
+  Renderer: wrapToRockRenderer(RapidDescriptionsItemMeta, RapidDescriptionsItemComponent, true),
   ...RapidDescriptionsItemMeta,
 } as Rock<RapidDescriptionsItemRockConfig>;

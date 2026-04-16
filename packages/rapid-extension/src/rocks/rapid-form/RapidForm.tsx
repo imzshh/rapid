@@ -338,7 +338,7 @@ export default {
     }
   },
 
-  Renderer: wrapToRockRenderer(RapidFormMeta, RapidFormComponent),
+  Renderer: wrapToRockRenderer(RapidFormMeta, RapidFormComponent, true),
 
   ...RapidFormMeta,
 } as Rock<RapidFormRockConfig, RapidFormState>;

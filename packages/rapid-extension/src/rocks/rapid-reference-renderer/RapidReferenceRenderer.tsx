@@ -29,6 +29,6 @@ export function RapidReferenceRendererComponent(props: RockInstanceProps<RapidRe
 export const RapidReferenceRenderer = wrapToRockComponent(RapidReferenceRendererMeta, RapidReferenceRendererComponent);
 
 export default {
-  Renderer: wrapToRockRenderer(RapidReferenceRendererMeta, RapidReferenceRendererComponent),
+  Renderer: wrapToRockRenderer(RapidReferenceRendererMeta, RapidReferenceRendererComponent, true),
   ...RapidReferenceRendererMeta,
 } as Rock<RapidReferenceRendererRockConfig>;

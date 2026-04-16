@@ -484,6 +484,7 @@ export default {
       children: [
         {
           $type: "box",
+          $id: `${props.$id}-box`,
           className: "sonic-entity-list",
           children: childrenConfig,
           style: props.style,

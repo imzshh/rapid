@@ -7,4 +7,4 @@ export default {
   slots: {},
 
   propertyPanels: [],
-} as RockMeta;
+} as RockMeta<typeof RAPID_FORM_MODAL_RECORD_ACTION_ROCK_TYPE>;

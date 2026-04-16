@@ -1,27 +1,37 @@
-import { MoveStyleUtils, RockInstance, RuiEvent, fireEvent, type Rock, type RockConfig } from "@ruiapp/move-style";
-import { genRockRenderer, renderRock } from "@ruiapp/react-renderer";
+import {
+  MoveStyleUtils,
+  RockInstance,
+  fireEvent,
+  omitSystemRockConfigFields,
+  type Rock,
+  type RockComponentProps,
+  type RockConfig,
+  type RockInstanceProps,
+} from "@ruiapp/move-style";
+import { renderRock, useRockInstance, useRockInstanceContext, wrapToRockComponent } from "@ruiapp/react-renderer";
 import RapidFormModalRecordActionMeta from "./RapidFormModalRecordActionMeta";
-import { RapidFormModalRecordActionRockConfig } from "./rapid-form-modal-record-action-types";
-import { cloneDeep } from "lodash";
+import { RapidFormModalRecordActionProps, RapidFormModalRecordActionRockConfig } from "./rapid-form-modal-record-action-types";
+import { cloneDeep, omit } from "lodash";
 import { Modal, message } from "antd";
 import { RapidFormRockConfig } from "../rapid-form/rapid-form-types";
 import { getExtensionLocaleStringResource } from "../../helpers/i18nHelper";
 import { useState } from "react";
 import { RapidTableActionComponent } from "../rapid-table-action/RapidTableAction";
 
-export function configRapidFormModalRecordAction(config: RapidFormModalRecordActionRockConfig): RapidFormModalRecordActionRockConfig {
-  return config;
+export function configRapidFormModalRecordAction(config: RockComponentProps<RapidFormModalRecordActionRockConfig>): RapidFormModalRecordActionRockConfig {
+  config.$type = RapidFormModalRecordActionMeta.$type;
+  return config as RapidFormModalRecordActionRockConfig;
 }
 
-export function RapidFormModalRecordAction(props: RapidFormModalRecordActionRockConfig) {
-  const { $id, _context: context } = props as unknown as RockInstance;
+export function RapidFormModalRecordActionComponent(props: RockInstanceProps<RapidFormModalRecordActionProps>) {
+  const context = useRockInstanceContext();
+  const { $id } = useRockInstance(props, RapidFormModalRecordActionMeta.$type);
   const { framework, page, scope } = context;
   const { resetFormOnModalOpen, form, onSubmit, onFormSubmit, successMessage, errorMessage, onModalOpen, onModalCancel } = props;
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modalSaving, setModalSaving] = useState(false);
 
-  // TODO: need a better implementation. a component should not care about whether it's in a slot.
   const slotIndex = props.$slot?.index || "0";
   const formRockId = `${$id}-form-${slotIndex}`;
   const formRockConfig = cloneDeep(form) as RapidFormRockConfig;
@@ -109,9 +119,21 @@ export function RapidFormModalRecordAction(props: RapidFormModalRecordActionRock
     children: [formRockConfig],
   };
 
+  const btnProps = omit(omitSystemRockConfigFields(props as unknown as RockInstance), [
+    "modalTitle",
+    "form",
+    "errorMessage",
+    "successMessage",
+    "onFormSubmit",
+    "onSubmit",
+    "onModalOpen",
+    "onModalCancel",
+    "resetFormOnModalOpen",
+  ]);
+
   return (
     <>
-      <RapidTableActionComponent {...MoveStyleUtils.omitSystemRockConfigFields(props as RockConfig)} onAction={handleOpenModal} />
+      <RapidTableActionComponent {...btnProps} onAction={handleOpenModal} />
       <Modal
         title={props.modalTitle || props.actionText}
         open={modalOpen}
@@ -127,8 +149,10 @@ export function RapidFormModalRecordAction(props: RapidFormModalRecordActionRock
   );
 }
 
+export const RapidFormModalRecordAction = wrapToRockComponent(RapidFormModalRecordActionMeta, RapidFormModalRecordActionComponent);
+
 export default {
-  Renderer: genRockRenderer(RapidFormModalRecordActionMeta.$type, RapidFormModalRecordAction, true),
+  Renderer: RapidFormModalRecordActionComponent,
 
   ...RapidFormModalRecordActionMeta,
 } as Rock<RapidFormModalRecordActionRockConfig>;
